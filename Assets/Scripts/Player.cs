@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿//
+//Player.cs
+//プレイヤーに関するスクリプト
+//2017/10/4 Taipui
+//
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
@@ -7,30 +12,57 @@ using DG.Tweening;
 
 public class Player : MonoBehaviour
 {
+	/// <summary>
+	/// プレイヤーのColliderのTransform
+	/// </summary>
 	[SerializeField]
 	Transform PlayerColliderTfm;
 
+	/// <summary>
+	/// 発射する弾
+	/// </summary>
 	[SerializeField]
 	GameObject Bullet;
 
+	/// <summary>
+	/// 弾の発射位置
+	/// </summary>
 	[SerializeField]
 	Transform LaunchTfm;
 
+	/// <summary>
+	/// PlayerColliderへの参照
+	/// </summary>
+	[SerializeField]
+	PlayerCollider Pc;
+
+	/// <summary>
+	/// 横方向の入力
+	/// </summary>
 	readonly ReactiveProperty<float> dx = new ReactiveProperty<float>(0.0f);
-	readonly ReactiveProperty<float> dy = new ReactiveProperty<float>(0.0f);
 
-	readonly ReactiveProperty<float> rotateVal = new ReactiveProperty<float>(0.0f);
-
-	const float Rotate_Speed = 1.0f;
-
+	/// <summary>
+	/// プレイヤーの移動速度
+	/// </summary>
 	const float Move_Speed = 2.0f;
-	const float Anim_Speed = 2.0f;
 
+	/// <summary>
+	/// プレイヤーが回転する時のTween
+	/// </summary>
 	Tweener rotateTween;
 
+	/// <summary>
+	/// プレイヤーの向き
+	/// </summary>
 	string dir;
+	/// <summary>
+	/// プレイヤーの前回までの向き
+	/// </summary>
 	string dirOld;
 
+	/// <summary>
+	/// プレイヤーが回転中かどうか
+	/// </summary>
 	bool isRotating;
 
 	void Start ()
@@ -41,19 +73,19 @@ public class Player : MonoBehaviour
 
 		var anim = GetComponent<Animator>();
 
-		this.UpdateAsObservable().Subscribe(_ => {
+		this.FixedUpdateAsObservable().Subscribe(_ => {
 			dx.Value = Input.GetAxis("Horizontal");
-			dy.Value = Input.GetAxis("Vertical");
 
 			anim.SetFloat("Speed", Mathf.Abs(dx.Value));
 			anim.speed = 1.5f;
 
-			PlayerColliderTfm.Translate(new Vector3(dx.Value * Time.deltaTime * Move_Speed, 0.0f));
+			var velocity = new Vector3(dx.Value, 0);
+
+			velocity *= Move_Speed;
+
+			PlayerColliderTfm.localPosition += velocity * Time.fixedDeltaTime;
 
 			transform.position = PlayerColliderTfm.position;
-
-			Debug.Log("dir:" + dir + ", dirOld:" + dirOld);
-//			Debug.Log(dx);
 		})
 		.AddTo(this);
 
@@ -75,6 +107,7 @@ public class Player : MonoBehaviour
 				var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 				var direction = mousePos - LaunchTfm.position;
 				obj.GetComponent<Rigidbody2D>().velocity = direction.normalized * 50.0f;
+				Pc.eraseGroundChip();
 			})
 			.AddTo(this);
 	}
@@ -101,4 +134,3 @@ public class Player : MonoBehaviour
 		});
 	}
 }
-
