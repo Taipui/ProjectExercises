@@ -127,11 +127,16 @@
       <Project>{46840CC9-F624-E329-B2C9-4530A6636ACC}</Project>
       <Name>ProjectExercises</Name>
     </ProjectReference>
+    <ProjectReference Include="ProjectExercises.Plugins.csproj">
+      <Project>{388F640C-020F-D771-8770-A36128E58050}</Project>
+      <Name>ProjectExercises.Plugins</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\UnityChan\Editor\CreateLocatorHere.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Plugins\UniRx\ReadMe.txt" />
     <None Include="Assets\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_akarami_blend.shader" />
     <None Include="Assets\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_eye.shader" />
     <None Include="Assets\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_eye_blend.shader" />
