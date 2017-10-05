@@ -16,6 +16,9 @@ public class PlayerCollider : MonoBehaviour
 	/// </summary>
 	public void eraseGroundChip()
 	{
+		if (contactGroundChip == null) {
+			return;
+		}
 		Destroy(contactGroundChip);
 	}
 

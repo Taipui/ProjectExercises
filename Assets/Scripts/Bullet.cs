@@ -16,5 +16,14 @@ public class Bullet : MonoBehaviour
 			})
 			.AddTo(this);
 	}
+
+	void OnCollisionEnter2D(Collision2D collision)
+	{
+		if (collision.gameObject.tag != "Ground") {
+			return;
+		}
+		Destroy(GetComponent<Rigidbody2D>());
+		tag = "Ground";
+	}
 }
 

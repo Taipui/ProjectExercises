@@ -10,14 +10,8 @@ using UniRx;
 using UniRx.Triggers;
 using DG.Tweening;
 
-public class Player : MonoBehaviour
+public class Player : Character
 {
-	/// <summary>
-	/// プレイヤーのColliderのTransform
-	/// </summary>
-	[SerializeField]
-	Transform PlayerColliderTfm;
-
 	/// <summary>
 	/// 発射する弾
 	/// </summary>
@@ -65,8 +59,10 @@ public class Player : MonoBehaviour
 	/// </summary>
 	bool isRotating;
 
-	void Start ()
+	protected override void Start ()
 	{
+		base.Start();
+
 		dir = "D";
 		dirOld = dir;
 		isRotating = false;
@@ -83,9 +79,7 @@ public class Player : MonoBehaviour
 
 			velocity *= Move_Speed;
 
-			PlayerColliderTfm.localPosition += velocity * Time.fixedDeltaTime;
-
-			transform.position = PlayerColliderTfm.position;
+			CharacterColliderTfm.localPosition += velocity * Time.fixedDeltaTime;
 		})
 		.AddTo(this);
 
@@ -103,15 +97,14 @@ public class Player : MonoBehaviour
 
 		this.UpdateAsObservable().Where(x => !!Input.GetMouseButtonDown(0))
 			.Subscribe(_ => {
-				var obj = Instantiate(Bullet, LaunchTfm.position, Quaternion.identity);
-				var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-				var direction = mousePos - LaunchTfm.position;
-				obj.GetComponent<Rigidbody2D>().velocity = direction.normalized * 50.0f;
-				Pc.eraseGroundChip();
+				launch();
 			})
 			.AddTo(this);
 	}
 
+	/// <summary>
+	/// プレイヤーの向きを変える
+	/// </summary>
 	void rotate()
 	{
 		if (dir == dirOld) {
@@ -132,5 +125,17 @@ public class Player : MonoBehaviour
 				dirOld = dir;
 				isRotating = false;
 		});
+	}
+
+	/// <summary>
+	/// 弾を発射する
+	/// </summary>
+	void launch()
+	{
+		var obj = Instantiate(Bullet, LaunchTfm.position, Quaternion.identity);
+		var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		var direction = mousePos - LaunchTfm.position;
+		obj.GetComponent<Rigidbody2D>().velocity = direction.normalized * 40.0f;
+		Pc.eraseGroundChip();
 	}
 }
