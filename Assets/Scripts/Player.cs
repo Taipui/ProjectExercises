@@ -80,7 +80,7 @@ public class Player : Character
 	/// <summary>
 	/// プレイヤーのジャンプ力
 	/// </summary>
-	const float Jump_Power = 5.0f;
+	const float Jump_Power = 250.0f;
 
 	/// <summary>
 	/// アニメーションのデフォルトの再生速度
@@ -89,15 +89,15 @@ public class Player : Character
 	/// <summary>
 	/// 着地判定を調べる回数
 	/// </summary>
-	private readonly int landingCheckLimit = 100;
+	private readonly int landingCheckLimit = 1000;
 	/// <summary>
 	/// 着地判定チェックを行う時間間隔
 	/// </summary>
-	private readonly float waitTime = 0.05F;
+	private readonly float waitTime = 0.01f;
 	/// <summary>
 	/// 着地モーションへの移項を許可する距離
 	/// </summary>
-	private readonly float landingDistance = 0.3f;
+	private readonly float landingDistance = 0.45f;
 
 	/// <summary>
 	/// プレイヤーのアニメーター
@@ -108,6 +108,11 @@ public class Player : Character
 	/// ジャンプ時にプレイヤーのColliderを上方向にずらす量
 	/// </summary>
 	const float Is_Jumping_Collider_Height_Offset = 0.7f;
+
+	/// <summary>
+	/// 前回のプレイヤーのY座標
+	/// </summary>
+	float prevYPos = 0.0f;
 
 	protected override void Start ()
 	{
@@ -122,6 +127,7 @@ public class Player : Character
 		isJumping = false;
 
 		var currentSpeed = 0.0f;
+
 
 		this.FixedUpdateAsObservable().Subscribe(_ => {
 			anim.SetFloat("Speed", Mathf.Abs(currentSpeed));
@@ -180,16 +186,24 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		this.FixedUpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.Space))
+		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.Space))
 			.Subscribe(_ => {
 				StartCoroutine(jump(anim));
 			})
 			.AddTo(this);
 
 		this.UpdateAsObservable().Subscribe(_ => {
-//			Debug.Log(isJumping);
+			var offsetPos = new Vector2(transform.position.x, transform.position.y - 0.1f);
+			var raycast = Physics2D.Raycast(offsetPos, Vector2.down);
+			Debug.Log(raycast.distance);
 		})
 		.AddTo(this);
+
+		this.UpdateAsObservable().Where(x => !!isJumping)
+			.Subscribe(_ => {
+
+			})
+			.AddTo(this);
 	}
 
 	/// <summary>
@@ -235,7 +249,7 @@ public class Player : Character
 	IEnumerator jump(Animator anim)
 	{
 		if (!!isJumping) {
-			yield return null;
+			yield break;
 		}
 		isJumping = true;
 		anim.SetTrigger("Jump");
@@ -271,10 +285,11 @@ public class Player : Character
 	{
 		defaultSpeed = anim.speed;
 		// キャラクターをジャンプさせる
-		rb.AddForce(Vector3.up * Jump_Power, ForceMode2D.Impulse);
-//		LegCollider.enabled = false;
-//		BodyCollider.offset = new Vector2(BodyCollider.offset.x, BodyCollider.offset.y + Is_Jumping_Collider_Height_Offset);
-//		LegCollider.offset = new Vector2(LegCollider.offset.x, LegCollider.offset.y + Is_Jumping_Collider_Height_Offset);
+		rb.AddForce(Vector3.up * Jump_Power * Time.deltaTime, ForceMode2D.Impulse);
+		//		LegCollider.enabled = false;
+		//		BodyCollider.offset = new Vector2(BodyCollider.offset.x, BodyCollider.offset.y + Is_Jumping_Collider_Height_Offset);
+		//		LegCollider.offset = new Vector2(LegCollider.offset.x, LegCollider.offset.y + Is_Jumping_Collider_Height_Offset);
+		prevYPos = transform.position.y;
 	}
 
 	/// <summary>
@@ -283,8 +298,8 @@ public class Player : Character
 	void OnJumpTopPoint()
 	{
 		// アニメーションを停止して、着地判定のチェックを行う
-		anim.speed = 0;
-		StartCoroutine(CheckLanding());
+		anim.speed = 0.0f;
+		StartCoroutine(checkLanding());
 	}
 
 	/// <summary>
@@ -300,18 +315,21 @@ public class Player : Character
 	/// 足下との距離を計算して、一定距離まで近づいたらアニメーションを再開させる
 	/// </summary>
 	/// <returns>The landing.</returns>
-	IEnumerator CheckLanding()
+	IEnumerator checkLanding()
 	{
 		// 規定回数チェックして成功しない場合も着地モーションに移行する
-		for (int count = 0; count < landingCheckLimit; count++) {
-			var raycast = Physics2D.Raycast(transform.position, Vector2.down);
+		for (var cnt = 0; cnt < landingCheckLimit; ++cnt) {
+			var offsetPos = new Vector2(transform.position.x, transform.position.y - 0.1f);
+			var raycast = Physics2D.Raycast(offsetPos, Vector2.down);
 			// レイを飛ばして、成功且つ一定距離内であった場合、着地モーションへ移行させる
 			if (!!raycast && raycast.distance < landingDistance) {
+				Debug.Log(raycast.distance);
 				break;
 			}
-			yield return new WaitForSeconds(waitTime);
+			yield return null;
+//			yield return new WaitForSeconds(waitTime);
 		}
-		anim.speed = defaultSpeed;
+		anim.speed = 1.0f;
 		//yield return new WaitForSecondsRealtime(0.005f);
 		//LegCollider.offset = new Vector2(LegCollider.offset.x, LegCollider.offset.y - Is_Jumping_Collider_Height_Offset);
 		//LegCollider.enabled = true;
