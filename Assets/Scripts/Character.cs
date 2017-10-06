@@ -12,6 +12,11 @@ public class Character : MonoBehaviour
 	[SerializeField]
 	protected Transform CharacterColliderTfm;
 
+	/// <summary>
+	/// ジャンプ中かどうか
+	/// </summary>
+	protected bool isJumping;
+
 	protected virtual void Start ()
 	{
 		CharacterColliderTfm.position = transform.position;
@@ -20,6 +25,18 @@ public class Character : MonoBehaviour
 			transform.position = CharacterColliderTfm.position;
 		})
 		.AddTo(this);
+
+		//this.FixedUpdateAsObservable().Where(x => !isJumping)
+		//	.Subscribe(_ => {
+		//		transform.position = CharacterColliderTfm.position;
+		//	})
+		//.AddTo(this);
+
+		//this.FixedUpdateAsObservable().Where(x => !!isJumping)
+		//	.Subscribe(_ => {
+		//		CharacterColliderTfm.position = transform.position;
+		//	})
+		//.AddTo(this);
 	}
 }
 

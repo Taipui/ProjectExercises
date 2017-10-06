@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class PlayerCollider : MonoBehaviour
 {
+	/// <summary>
+	/// 最初に接した地面のチップのGameObject
+	/// </summary>
 	GameObject contactGroundChip;
 
 	void Start ()
 	{
-		
+
 	}
 
 	/// <summary>
