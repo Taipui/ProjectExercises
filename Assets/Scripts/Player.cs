@@ -100,6 +100,11 @@ public class Player : Character
 	Transform StockTfm;
 	#endregion
 
+	/// <summary>
+	/// 特殊能力を発動したかどうか
+	/// </summary>
+	readonly ReactiveProperty<bool> isSp = new ReactiveProperty<bool>(false);
+
 	protected override void Start ()
 	{
 		base.Start();
@@ -184,6 +189,7 @@ public class Player : Character
 		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.Space))
 			.Subscribe(_ => {
 				StartCoroutine(jump(anim));
+				isSp.Value = true;
 			})
 			.AddTo(this);
 
@@ -213,6 +219,18 @@ public class Player : Character
 				Destroy(obj);
 				launch();
 				prevStock = val;
+			})
+			.AddTo(this);
+
+		isSp.AsObservable().Where(val => !!val)
+			.Subscribe(_ => {
+				Time.timeScale = 0.5f;
+			})
+			.AddTo(this);
+
+		isSp.AsObservable().Where(val => !val)
+			.Subscribe(_ => {
+				Time.timeScale = 1.0f;
 			})
 			.AddTo(this);
 	}
@@ -280,23 +298,6 @@ public class Player : Character
 	}
 
 	/// <summary>
-	/// ジャンプのアニメーション終了通知
-	/// </summary>
-	/// <param name="anim"></param>
-	/// <returns></returns>
-	IEnumerator waitJumpAnimEnd(Animator anim)
-	{
-		while (true) {
-			var nowState = anim.GetCurrentAnimatorStateInfo(0);
-			if (nowState.IsName("Jump") && nowState.normalizedTime >= 0.9f) {
-				yield break;
-			} else {
-				yield return new WaitForSeconds(0.1f);
-			}
-		}
-	}
-
-	/// <summary>
 	/// ジャンプモーションで、足が離れる瞬間に呼び出されるメソッド
 	/// </summary>
 	void OnJumpStart()
@@ -321,6 +322,7 @@ public class Player : Character
 	void OnJumpEnd()
 	{
 		isJumping = false;
+		isSp.Value = false;
 	}
 
 	/// <summary>
