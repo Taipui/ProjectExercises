@@ -12,18 +12,6 @@ using DG.Tweening;
 
 public class Player : Character
 {
-	/// <summary>
-	/// 発射する弾
-	/// </summary>
-	[SerializeField]
-	GameObject Bullet;
-
-	/// <summary>
-	/// 弾の発射位置
-	/// </summary>
-	[SerializeField]
-	Transform LaunchTfm;
-
 	#region PlayerCollider関連
 	/// <summary>
 	/// PlayerColliderへの参照
@@ -80,7 +68,7 @@ public class Player : Character
 	/// <summary>
 	/// プレイヤーのジャンプ力
 	/// </summary>
-	const float Jump_Power = 250.0f;
+	const float Jump_Power = 5.0f;
 
 	/// <summary>
 	/// アニメーションのデフォルトの再生速度
@@ -97,7 +85,7 @@ public class Player : Character
 	/// <summary>
 	/// 着地モーションへの移項を許可する距離
 	/// </summary>
-	private readonly float landingDistance = 0.45f;
+	private readonly float landingDistance = 0.5f;
 
 	/// <summary>
 	/// プレイヤーのアニメーター
@@ -113,6 +101,18 @@ public class Player : Character
 	/// 前回のプレイヤーのY座標
 	/// </summary>
 	float prevYPos = 0.0f;
+
+	/// <summary>
+	/// 地面を掘るため
+	/// </summary>
+	[SerializeField]
+	GameObject SnowBallMask;
+
+	/// <summary>
+	/// 雪玉のマスクを格納するTransform
+	/// </summary>
+	[SerializeField]
+	Transform SnowBallsTfm;
 
 	protected override void Start ()
 	{
@@ -195,7 +195,7 @@ public class Player : Character
 		this.UpdateAsObservable().Subscribe(_ => {
 			var offsetPos = new Vector2(transform.position.x, transform.position.y - 0.1f);
 			var raycast = Physics2D.Raycast(offsetPos, Vector2.down);
-			Debug.Log(raycast.distance);
+//			Debug.Log(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 		})
 		.AddTo(this);
 
@@ -240,7 +240,9 @@ public class Player : Character
 		var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		var direction = mousePos - LaunchTfm.position;
 		obj.GetComponent<Rigidbody2D>().velocity = direction.normalized * 40.0f;
-		Pc.eraseGroundChip();
+				Pc.eraseGroundChip();
+		//obj = Instantiate(SnowBallMask, new Vector3(transform.position.x, transform.position.y - 0.05f), Quaternion.Euler(new Vector3(0.0f, 0.0f, Random.Range(0, 360))));
+		//obj.transform.SetParent(SnowBallsTfm);
 	}
 
 	/// <summary>
@@ -285,7 +287,7 @@ public class Player : Character
 	{
 		defaultSpeed = anim.speed;
 		// キャラクターをジャンプさせる
-		rb.AddForce(Vector3.up * Jump_Power * Time.deltaTime, ForceMode2D.Impulse);
+		rb.AddForce(Vector3.up * Jump_Power, ForceMode2D.Impulse);
 		//		LegCollider.enabled = false;
 		//		BodyCollider.offset = new Vector2(BodyCollider.offset.x, BodyCollider.offset.y + Is_Jumping_Collider_Height_Offset);
 		//		LegCollider.offset = new Vector2(LegCollider.offset.x, LegCollider.offset.y + Is_Jumping_Collider_Height_Offset);

@@ -17,6 +17,18 @@ public class Character : MonoBehaviour
 	/// </summary>
 	protected bool isJumping;
 
+	/// <summary>
+	/// 発射する弾
+	/// </summary>
+	[SerializeField]
+	protected GameObject Bullet;
+
+	/// <summary>
+	/// 弾の発射位置
+	/// </summary>
+	[SerializeField]
+	protected Transform LaunchTfm;
+
 	protected virtual void Start ()
 	{
 		CharacterColliderTfm.position = transform.position;
