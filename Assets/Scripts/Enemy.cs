@@ -22,7 +22,7 @@ public class Enemy : Character
 	{
 		base.Start();
 
-		Observable.Interval(System.TimeSpan.FromSeconds(3.0f)).Subscribe(_ => {
+		Observable.Interval(System.TimeSpan.FromSeconds(1.0f)).Subscribe(_ => {
 			launch();
 		})
 		.AddTo(this);
@@ -33,65 +33,11 @@ public class Enemy : Character
 	/// </summary>
 	void launch()
 	{
-//		var obj = Instantiate(Bullet, LaunchTfm.position, Quaternion.identity);
-		//		var direction = new Vector3(Random.Range(-8.0f, 8.0f), Random.Range(-5.0f, 5.0f), -10.0f) - LaunchTfm.position;
-		//		var direction = new Vector3(-0.1f, 2.3f, -10.0f) - transform.position;
-		//		obj.GetComponent<Rigidbody2D>().velocity = direction.normalized * 40.0f;
-		ShootFixedAngle(PlayerTfm.position, 60.0f);
+		if (Random.Range(0, 2) == 0) {
+			return;
+		}
+		ShootFixedAngle(PlayerTfm.position, Random.Range(30.0f, 80.0f));
 		Pc.eraseGroundChip();
-	}
-
-	private void ShootFixedSpeedInPlaneDirection(Vector3 i_targetPosition, float i_speed)
-	{
-		if (i_speed <= 0.0f) {
-			// その位置に着地させることは不可能のようだ！
-			Debug.LogWarning("!!");
-			return;
-		}
-
-		// xz平面の距離を計算。
-		Vector2 startPos = LaunchTfm.position;
-		Vector2 targetPos = PlayerTfm.position;
-		float distance = Vector2.Distance(targetPos, startPos);
-
-		float time = distance / i_speed;
-
-		ShootFixedTime(i_targetPosition, time);
-	}
-
-	private void ShootFixedTime(Vector3 i_targetPosition, float i_time)
-	{
-		float speedVec = ComputeVectorFromTime(i_targetPosition, i_time);
-		float angle = ComputeAngleFromTime(i_targetPosition, i_time);
-
-		if (speedVec <= 0.0f) {
-			// その位置に着地させることは不可能のようだ！
-			Debug.LogWarning("!!");
-			return;
-		}
-
-		Vector3 vec = ConvertVectorToVector3(speedVec, angle, i_targetPosition);
-		InstantiateShootObject(vec);
-	}
-
-	private float ComputeVectorFromTime(Vector3 i_targetPosition, float i_time)
-	{
-		Vector2 vec = ComputeVectorXYFromTime(i_targetPosition, i_time);
-
-		float v_x = vec.x;
-		float v_y = vec.y;
-
-		float v0Square = v_x * v_x + v_y * v_y;
-		// 負数を平方根計算すると虚数になってしまう。
-		// 虚数はfloatでは表現できない。
-		// こういう場合はこれ以上の計算は打ち切ろう。
-		if (v0Square <= 0.0f) {
-			return 0.0f;
-		}
-
-		float v0 = Mathf.Sqrt(v0Square);
-
-		return v0;
 	}
 
 	private Vector2 ComputeVectorXYFromTime(Vector3 i_targetPosition, float i_time)
@@ -118,19 +64,6 @@ public class Enemy : Character
 		float v_y = (y - y0) / t + (g * t) / 2;
 
 		return new Vector2(v_x, v_y);
-	}
-
-	private float ComputeAngleFromTime(Vector3 i_targetPosition, float i_time)
-	{
-		Vector2 vec = ComputeVectorXYFromTime(i_targetPosition, i_time);
-
-		float v_x = vec.x;
-		float v_y = vec.y;
-
-		float rad = Mathf.Atan2(v_y, v_x);
-		float angle = rad * Mathf.Rad2Deg;
-
-		return angle;
 	}
 
 	private Vector3 ConvertVectorToVector3(float i_v0, float i_angle, Vector3 i_targetPosition)
@@ -213,4 +146,3 @@ public class Enemy : Character
 		return v0;
 	}
 }
-
