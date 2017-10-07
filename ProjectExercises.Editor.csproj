@@ -121,26 +121,14 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>Library\UnityAssemblies\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
-    <Reference Include="DemiLib">
-      <HintPath>Assets\Demigiant\DemiLib\Core\DemiLib.dll</HintPath>
-    </Reference>
-    <Reference Include="DemiEditor">
-      <HintPath>Assets\Demigiant\DemiLib\Core\Editor\DemiEditor.dll</HintPath>
-    </Reference>
     <Reference Include="DOTween">
       <HintPath>Assets\Demigiant\DOTween\DOTween.dll</HintPath>
     </Reference>
-    <Reference Include="DOTween43">
-      <HintPath>Assets\Demigiant\DOTween\DOTween43.dll</HintPath>
-    </Reference>
-    <Reference Include="DOTween46">
-      <HintPath>Assets\Demigiant\DOTween\DOTween46.dll</HintPath>
-    </Reference>
-    <Reference Include="DOTween50">
-      <HintPath>Assets\Demigiant\DOTween\DOTween50.dll</HintPath>
-    </Reference>
     <Reference Include="DOTweenEditor">
       <HintPath>Assets\Demigiant\DOTween\Editor\DOTweenEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpCompress.3.5">
+      <HintPath>Assets\Movinarc\PackageUninstaller\Editor\SharpCompress.3.5.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -154,17 +142,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Movinarc\PackageUninstaller\Editor\PUManager.cs" />
+    <Compile Include="Assets\Movinarc\PackageUninstaller\Editor\PUSelection.cs" />
+    <Compile Include="Assets\Movinarc\PackageUninstaller\Editor\TreeNode.cs" />
     <Compile Include="Assets\UnityChan\Editor\CreateLocatorHere.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Demigiant\DOTween\DOTween.XML" />
-    <None Include="Assets\Demigiant\DOTween\DOTween43.xml" />
-    <None Include="Assets\Demigiant\DOTween\DOTween46.xml" />
-    <None Include="Assets\Demigiant\DOTween\DOTween50.xml" />
     <None Include="Assets\Demigiant\DOTween\Editor\DOTweenEditor.XML" />
     <None Include="Assets\Demigiant\DOTween\readme.txt" />
-    <None Include="Assets\Demigiant\DemiLib\Core\DemiLib.xml" />
-    <None Include="Assets\Demigiant\DemiLib\Core\Editor\DemiEditor.xml" />
+    <None Include="Assets\Movinarc\PackageUninstaller\README.txt" />
     <None Include="Assets\Plugins\UniRx\ReadMe.txt" />
     <None Include="Assets\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_akarami_blend.shader" />
     <None Include="Assets\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_eye.shader" />
