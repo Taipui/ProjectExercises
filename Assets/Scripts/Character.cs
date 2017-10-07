@@ -17,18 +17,23 @@ public class Character : MonoBehaviour
 	/// </summary>
 	protected bool isJumping;
 
+	#region 弾関連
 	/// <summary>
 	/// 発射する弾
 	/// </summary>
 	[SerializeField]
 	protected GameObject Bullet;
-
 	/// <summary>
 	/// 弾の発射位置
 	/// </summary>
 	[SerializeField]
 	protected Transform LaunchTfm;
-
+	/// <summary>
+	/// 発射した弾をまとめるGameObjectのTransform
+	/// </summary>
+	[SerializeField]
+	protected Transform BulletParentTfm;
+	#endregion
 	/// <summary>
 	/// 消す地面のチップを判断するためのレイの長さ
 	/// </summary>
@@ -53,32 +58,6 @@ public class Character : MonoBehaviour
 			Debug.DrawRay(new Vector3(transform.position.x, transform.position.y - Erase_GroundChip_Ray_Dist), Vector3.down, Color.red);
 		})
 		.AddTo(this);
-
-		//this.FixedUpdateAsObservable().Where(x => !isJumping)
-		//	.Subscribe(_ => {
-		//		transform.position = CharacterColliderTfm.position;
-		//	})
-		//.AddTo(this);
-
-		//this.FixedUpdateAsObservable().Where(x => !!isJumping)
-		//	.Subscribe(_ => {
-		//		CharacterColliderTfm.position = transform.position;
-		//	})
-		//.AddTo(this);
-	}
-
-	/// <summary>
-	/// プレイヤーの足元にある地面のチップを消す
-	/// </summary>
-	protected void eraseGroundChip()
-	{
-		//var offsetPos = new Vector2(transform.position.x, transform.position.y - Erase_GroundChip_Ray_Dist);
-		//var raycast = Physics2D.Raycast(offsetPos, Vector2.down);
-		//if (!!raycast && raycast.collider.tag == "Ground") {
-		//	Destroy(raycast.collider.gameObject);
-		//}
-
-		Gce.checkGroundChip();
 	}
 
 	/// <summary>

@@ -1,15 +1,13 @@
-﻿//
-//Player.cs
-//プレイヤーに関するスクリプト
-//2017/10/4 Taipui
-//
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 using DG.Tweening;
 
+/// <summary>
+/// プレイヤーに関するクラス
+/// </summary>
 public class Player : Character
 {
 	#region PlayerCollider関連
@@ -22,17 +20,7 @@ public class Player : Character
 	/// PlayerColliderのRigidbody2D
 	/// </summary>
 	[SerializeField]
-	Rigidbody2D rb;
-	/// <summary>
-	/// 上半身のCollider
-	/// </summary>
-	[SerializeField]
-	BoxCollider2D BodyCollider;
-	/// <summary>
-	/// 下半身のCollider
-	/// </summary>
-	[SerializeField]
-	CircleCollider2D LegCollider;
+	Rigidbody2D Rb;
 	/// <summary>
 	/// PlayerCollidersのTransform
 	/// </summary>
@@ -45,11 +33,11 @@ public class Player : Character
 	/// </summary>
 	const float Move_Speed = 2.0f;
 
+	#region 方向転換関係
 	/// <summary>
 	/// プレイヤーが回転する時のTween
 	/// </summary>
 	Tweener rotateTween;
-
 	/// <summary>
 	/// プレイヤーの向き
 	/// </summary>
@@ -58,22 +46,22 @@ public class Player : Character
 	/// プレイヤーの前回までの向き
 	/// </summary>
 	string dirOld;
-
 	/// <summary>
 	/// プレイヤーが回転中かどうか
 	/// </summary>
 	bool isRotating;
+	#endregion
 
+	/// <summary>
+	/// プレイヤーのアニメーター
+	/// </summary>
+	Animator anim;
 
+	#region ジャンプ関連
 	/// <summary>
 	/// プレイヤーのジャンプ力
 	/// </summary>
 	const float Jump_Power = 5.0f;
-
-	/// <summary>
-	/// アニメーションのデフォルトの再生速度
-	/// </summary>
-	private float defaultSpeed;
 	/// <summary>
 	/// 着地判定を調べる回数
 	/// </summary>
@@ -85,61 +73,37 @@ public class Player : Character
 	/// <summary>
 	/// 着地モーションへの移項を許可する距離
 	/// </summary>
-	private readonly float landingDistance = 0.5f;
-
-	/// <summary>
-	/// プレイヤーのアニメーター
-	/// </summary>
-	Animator anim;
-
+	private readonly float landingDistance = 0.62f;
 	/// <summary>
 	/// ジャンプ時にプレイヤーのColliderを上方向にずらす量
 	/// </summary>
 	const float Is_Jumping_Collider_Height_Offset = 0.7f;
+	#endregion
 
-	/// <summary>
-	/// 前回のプレイヤーのY座標
-	/// </summary>
-	float prevYPos = 0.0f;
-
-	/// <summary>
-	/// 地面を掘るため
-	/// </summary>
-	[SerializeField]
-	GameObject SnowBallMask;
-
-	/// <summary>
-	/// 雪玉のマスクを格納するTransform
-	/// </summary>
-	[SerializeField]
-	Transform SnowBallsTfm;
-
+	#region 弾関連
 	/// <summary>
 	/// 弾のストック数
 	/// </summary>
 	readonly ReactiveProperty<int> stock = new ReactiveProperty<int>(0);
-
 	/// <summary>
 	/// 前回のストック数
 	/// </summary>
 	int prevStock;
-
 	/// <summary>
 	/// 弾の最大ストック数
 	/// </summary>
-	const int Max_Stock = 5;
-
+	const int Max_Stock = 10;
 	/// <summary>
 	/// ストック用の弾
 	/// </summary>
 	[SerializeField]
 	GameObject StockBullet;
-
 	/// <summary>
 	/// ストック用の弾の親オブジェクトのTransform
 	/// </summary>
 	[SerializeField]
 	Transform StockTfm;
+	#endregion
 
 	protected override void Start ()
 	{
@@ -170,30 +134,18 @@ public class Player : Character
 			velocity *= Move_Speed;
 
 			CharacterColliderTfm.position += velocity * Time.fixedDeltaTime;
-
-			//if (!isJumping) {
-			//	CharacterColliderTfm.localPosition += velocity * Time.fixedDeltaTime;
-			//} else {
-			//	transform.localPosition += velocity * Time.fixedDeltaTime;
-			//}
 		})
 		.AddTo(this);
 
 		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.A))
 			.Subscribe(_ => {
-				anim.SetBool("IsIdle", false);
-				dir ="A";
-				rotate();
-				currentSpeed = -1.0f;
+				currentSpeed = changeDir("A");
 			})
 			.AddTo(this);
 
 		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.D))
 			.Subscribe(_ => {
-				anim.SetBool("IsIdle", false);
-				dir = "D";
-				rotate();
-				currentSpeed = 1.0f;
+				currentSpeed = changeDir("D");
 			})
 			.AddTo(this);
 
@@ -201,6 +153,18 @@ public class Player : Character
 			.Subscribe(_ => {
 				anim.SetBool("IsIdle", true);
 				currentSpeed = 0.0f;
+			})
+			.AddTo(this);
+
+		this.UpdateAsObservable().Where(x => !!Input.GetKeyUp(KeyCode.A) && !!Input.GetKey(KeyCode.D))
+			.Subscribe(_ => {
+				currentSpeed = changeDir("D");
+			})
+			.AddTo(this);
+
+		this.UpdateAsObservable().Where(x => !!Input.GetKeyUp(KeyCode.D) && !!Input.GetKey(KeyCode.A))
+			.Subscribe(_ => {
+				currentSpeed = changeDir("A");
 			})
 			.AddTo(this);
 
@@ -257,6 +221,19 @@ public class Player : Character
 			})
 			.AddTo(this);
 	}
+	
+	/// <summary>
+	/// 方向転換の処理
+	/// </summary>
+	/// <param name="dir_">向く方向</param>
+	/// <returns>移動速度</returns>
+	float changeDir(string dir_)
+	{
+		anim.SetBool("IsIdle", false);
+		dir = dir_;
+		rotate();
+		return dir_ == "A" ? -1.0f : 1.0f;
+	}
 
 	/// <summary>
 	/// プレイヤーの向きを変える
@@ -292,9 +269,7 @@ public class Player : Character
 		var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		var direction = mousePos - LaunchTfm.position;
 		obj.GetComponent<Rigidbody2D>().velocity = direction.normalized * 40.0f;
-//		eraseGroundChip();
-		//obj = Instantiate(SnowBallMask, new Vector3(transform.position.x, transform.position.y - 0.05f), Quaternion.Euler(new Vector3(0.0f, 0.0f, Random.Range(0, 360))));
-		//obj.transform.SetParent(SnowBallsTfm);
+		obj.transform.SetParent(BulletParentTfm);
 	}
 
 	/// <summary>
@@ -307,12 +282,6 @@ public class Player : Character
 		}
 		isJumping = true;
 		anim.SetTrigger("Jump");
-
-		//yield return new WaitForSeconds(0.3f);
-
-		//var jumpAnimCoroutine = StartCoroutine(waitJumpAnimEnd(anim));
-		//yield return jumpAnimCoroutine;
-		//isJumping = false;
 	}
 
 	/// <summary>
@@ -337,13 +306,8 @@ public class Player : Character
 	/// </summary>
 	void OnJumpStart()
 	{
-		defaultSpeed = anim.speed;
 		// キャラクターをジャンプさせる
-		rb.AddForce(Vector3.up * Jump_Power, ForceMode2D.Impulse);
-		//		LegCollider.enabled = false;
-		//		BodyCollider.offset = new Vector2(BodyCollider.offset.x, BodyCollider.offset.y + Is_Jumping_Collider_Height_Offset);
-		//		LegCollider.offset = new Vector2(LegCollider.offset.x, LegCollider.offset.y + Is_Jumping_Collider_Height_Offset);
-		prevYPos = transform.position.y;
+		Rb.AddForce(Vector3.up * Jump_Power, ForceMode2D.Impulse);
 	}
 
 	/// <summary>
@@ -361,7 +325,6 @@ public class Player : Character
 	/// </summary>
 	void OnJumpEnd()
 	{
-//		BodyCollider.offset = new Vector2(BodyCollider.offset.x, BodyCollider.offset.y - Is_Jumping_Collider_Height_Offset);
 		isJumping = false;
 	}
 
@@ -380,12 +343,8 @@ public class Player : Character
 				break;
 			}
 			yield return null;
-//			yield return new WaitForSeconds(waitTime);
 		}
 		anim.speed = 1.0f;
-		//yield return new WaitForSecondsRealtime(0.005f);
-		//LegCollider.offset = new Vector2(LegCollider.offset.x, LegCollider.offset.y - Is_Jumping_Collider_Height_Offset);
-		//LegCollider.enabled = true;
 	}
 
 	/// <summary>
