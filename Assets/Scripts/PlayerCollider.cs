@@ -35,5 +35,13 @@ public class PlayerCollider : MonoBehaviour
 		}
 		contactGroundChip = collision.gameObject;
 	}
+
+	void OnCollisionStay2D(Collision2D collision)
+	{
+		if (contactGroundChip != null) {
+			return;
+		}
+		contactGroundChip = collision.gameObject;
+	}
 }
 
