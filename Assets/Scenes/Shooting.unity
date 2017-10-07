@@ -1908,8 +1908,8 @@ MonoBehaviour:
   CharacterColliderTfm: {fileID: 1903388585}
   Bullet: {fileID: 1643971426085178, guid: 325224f187246bc44bf76f696688b0d5, type: 2}
   LaunchTfm: {fileID: 1784339767}
+  BulletParentTfm: {fileID: 0}
   Gce: {fileID: 650721150}
-  Pc: {fileID: 0}
   PlayerTfm: {fileID: 1610036694}
 --- !u!4 &1531212955 stripped
 Transform:
@@ -1933,15 +1933,10 @@ MonoBehaviour:
   CharacterColliderTfm: {fileID: 695919958}
   Bullet: {fileID: 1643971426085178, guid: 325224f187246bc44bf76f696688b0d5, type: 2}
   LaunchTfm: {fileID: 304928132}
+  BulletParentTfm: {fileID: 0}
   Gce: {fileID: 1708930797}
-  Pc: {fileID: 0}
-  rb: {fileID: 695919959}
-  BodyCollider: {fileID: 0}
-  LegCollider: {fileID: 0}
+  Rb: {fileID: 695919959}
   PlayerCollidersTfm: {fileID: 695919958}
-  SnowBallMask: {fileID: 1551954973676614, guid: 1a13b7f8a43259449a671663fa604f08,
-    type: 2}
-  SnowBallsTfm: {fileID: 606872841}
   StockBullet: {fileID: 1511924170475958, guid: 07d89fcf0afdf474cb64c7cc1713588d,
     type: 2}
   StockTfm: {fileID: 201632928}

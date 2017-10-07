@@ -12,11 +12,6 @@ public class Player : Character
 {
 	#region PlayerCollider関連
 	/// <summary>
-	/// PlayerColliderへの参照
-	/// </summary>
-	[SerializeField]
-	PlayerCollider Pc;
-	/// <summary>
 	/// PlayerColliderのRigidbody2D
 	/// </summary>
 	[SerializeField]

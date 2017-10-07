@@ -10,12 +10,6 @@ using UniRx.Triggers;
 public class Enemy : Character
 {
 	/// <summary>
-	/// PlayerColliderへの参照
-	/// </summary>
-	[SerializeField]
-	PlayerCollider Pc;
-
-	/// <summary>
 	/// プレイヤーのTransform
 	/// </summary>
 	[SerializeField]
