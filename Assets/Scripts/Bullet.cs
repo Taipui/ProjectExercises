@@ -6,6 +6,12 @@ using UniRx.Triggers;
 
 public class Bullet : MonoBehaviour
 {
+	/// <summary>
+	/// 地面に落ちた用のBullet
+	/// </summary>
+	[SerializeField]
+	GameObject GroundBullet;
+
 	const float Kill_Zone = -6.0f;
 
 	void Start ()
@@ -23,8 +29,11 @@ public class Bullet : MonoBehaviour
 			return;
 		}
 		//		Destroy(GetComponent<Rigidbody2D>());
-		GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-		tag = "Ground";
+		//var rb = GetComponent<Rigidbody2D>();
+		//rb.velocity = Vector2.zero;
+		//tag = "Ground";
+		Instantiate(GroundBullet, transform.position, Quaternion.identity);
+		Destroy(gameObject);
 	}
 }
 
