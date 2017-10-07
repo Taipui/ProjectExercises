@@ -22,7 +22,8 @@ public class Bullet : MonoBehaviour
 		if (collision.gameObject.tag != "Ground") {
 			return;
 		}
-		Destroy(GetComponent<Rigidbody2D>());
+		//		Destroy(GetComponent<Rigidbody2D>());
+		GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 		tag = "Ground";
 	}
 }
