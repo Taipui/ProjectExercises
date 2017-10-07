@@ -23,7 +23,10 @@ public class Enemy : Character
 		base.Start();
 
 		Observable.Interval(System.TimeSpan.FromSeconds(1.0f)).Subscribe(_ => {
-			launch();
+			//			launch();
+			if (Random.Range(0, 2) == 0) {
+				Gce.checkGroundChip();
+			}
 		})
 		.AddTo(this);
 	}
@@ -31,13 +34,13 @@ public class Enemy : Character
 	/// <summary>
 	/// 弾を発射する
 	/// </summary>
-	void launch()
+	protected override void launch()
 	{
-		if (Random.Range(0, 2) == 0) {
-			return;
-		}
+		//if (Random.Range(0, 2) == 0) {
+		//	return;
+		//}
 		ShootFixedAngle(PlayerTfm.position, Random.Range(30.0f, 80.0f));
-		Pc.eraseGroundChip();
+//		eraseGroundChip();
 	}
 
 	private Vector2 ComputeVectorXYFromTime(Vector3 i_targetPosition, float i_time)
@@ -145,4 +148,6 @@ public class Enemy : Character
 		float v0 = Mathf.Sqrt(v0Square);
 		return v0;
 	}
+
+	
 }

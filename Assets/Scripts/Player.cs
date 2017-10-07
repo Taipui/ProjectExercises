@@ -182,7 +182,8 @@ public class Player : Character
 
 		this.UpdateAsObservable().Where(x => !!Input.GetMouseButtonDown(0))
 			.Subscribe(_ => {
-				launch();
+				//				launch();
+				Gce.checkGroundChip();
 			})
 			.AddTo(this);
 
@@ -193,9 +194,6 @@ public class Player : Character
 			.AddTo(this);
 
 		this.UpdateAsObservable().Subscribe(_ => {
-			var offsetPos = new Vector2(transform.position.x, transform.position.y - 0.1f);
-			var raycast = Physics2D.Raycast(offsetPos, Vector2.down);
-//			Debug.Log(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 		})
 		.AddTo(this);
 
@@ -234,13 +232,13 @@ public class Player : Character
 	/// <summary>
 	/// 弾を発射する
 	/// </summary>
-	void launch()
+	protected override void launch()
 	{
 		var obj = Instantiate(Bullet, LaunchTfm.position, Quaternion.identity);
 		var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		var direction = mousePos - LaunchTfm.position;
 		obj.GetComponent<Rigidbody2D>().velocity = direction.normalized * 40.0f;
-		Pc.eraseGroundChip();
+//		eraseGroundChip();
 		//obj = Instantiate(SnowBallMask, new Vector3(transform.position.x, transform.position.y - 0.05f), Quaternion.Euler(new Vector3(0.0f, 0.0f, Random.Range(0, 360))));
 		//obj.transform.SetParent(SnowBallsTfm);
 	}

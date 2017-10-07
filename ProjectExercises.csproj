@@ -93,6 +93,8 @@
     <Compile Include="Assets\Scripts\Character.cs" />
     <Compile Include="Assets\Scripts\Common.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
+    <Compile Include="Assets\Scripts\GroundChip.cs" />
+    <Compile Include="Assets\Scripts\GroundChipEraser.cs" />
     <Compile Include="Assets\Scripts\GroundCreater.cs" />
     <Compile Include="Assets\Scripts\Hoge.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />

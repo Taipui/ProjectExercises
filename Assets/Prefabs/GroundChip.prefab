@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212165576569259848}
   - component: {fileID: 61373720454633008}
   - component: {fileID: 50954058543989928}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GroundChip
   m_TagString: Ground
   m_Icon: {fileID: 0}
