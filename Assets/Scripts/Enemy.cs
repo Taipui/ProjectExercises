@@ -149,5 +149,8 @@ public class Enemy : Character
 		return v0;
 	}
 
-	
+	public override void onErased()
+	{
+		launch();
+	}
 }

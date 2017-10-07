@@ -108,6 +108,34 @@ NavMeshSettings:
     tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &201632927
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 201632928}
+  m_Layer: 0
+  m_Name: Stock
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &201632928
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 201632927}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 304928132}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &304928132 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4480525061367650, guid: 3c90659f494ed6a4db94d64d1ee70a17,
@@ -2010,6 +2038,9 @@ MonoBehaviour:
   SnowBallMask: {fileID: 1551954973676614, guid: 1a13b7f8a43259449a671663fa604f08,
     type: 2}
   SnowBallsTfm: {fileID: 606872841}
+  StockBullet: {fileID: 1511924170475958, guid: 07d89fcf0afdf474cb64c7cc1713588d,
+    type: 2}
+  StockTfm: {fileID: 201632928}
 --- !u!4 &1610036694 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400326, guid: 8f0565f23a2b58541a475bd3c1393052, type: 3}

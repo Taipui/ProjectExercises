@@ -114,6 +114,33 @@ public class Player : Character
 	[SerializeField]
 	Transform SnowBallsTfm;
 
+	/// <summary>
+	/// 弾のストック数
+	/// </summary>
+	readonly ReactiveProperty<int> stock = new ReactiveProperty<int>(0);
+
+	/// <summary>
+	/// 前回のストック数
+	/// </summary>
+	int prevStock;
+
+	/// <summary>
+	/// 弾の最大ストック数
+	/// </summary>
+	const int Max_Stock = 5;
+
+	/// <summary>
+	/// ストック用の弾
+	/// </summary>
+	[SerializeField]
+	GameObject StockBullet;
+
+	/// <summary>
+	/// ストック用の弾の親オブジェクトのTransform
+	/// </summary>
+	[SerializeField]
+	Transform StockTfm;
+
 	protected override void Start ()
 	{
 		base.Start();
@@ -128,6 +155,9 @@ public class Player : Character
 
 		var currentSpeed = 0.0f;
 
+		prevStock = 0;
+
+		List<GameObject> StockBullets = new List<GameObject>();
 
 		this.FixedUpdateAsObservable().Subscribe(_ => {
 			anim.SetFloat("Speed", Mathf.Abs(currentSpeed));
@@ -180,9 +210,14 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!Input.GetMouseButtonDown(0))
+		this.UpdateAsObservable().Where(x => !!Input.GetMouseButtonDown(0) && stock.Value > 0)
 			.Subscribe(_ => {
-				//				launch();
+				--stock.Value;
+			})
+			.AddTo(this);
+
+		this.UpdateAsObservable().Where(x => !!Input.GetMouseButtonDown(1) && stock.Value < Max_Stock && !isJumping)
+			.Subscribe(_ => {
 				Gce.checkGroundChip();
 			})
 			.AddTo(this);
@@ -200,6 +235,25 @@ public class Player : Character
 		this.UpdateAsObservable().Where(x => !!isJumping)
 			.Subscribe(_ => {
 
+			})
+			.AddTo(this);
+
+		stock.AsObservable().Where(val => val > prevStock)
+			.Subscribe(val => {
+				var obj = Instantiate(StockBullet, new Vector3(StockTfm.localPosition.x, StockTfm.localPosition.y + 0.03f * val), Quaternion.Euler(0.0f, 90.0f, 0.0f));
+				obj.transform.SetParent(StockTfm, false);
+				StockBullets.Add(obj);
+				prevStock = val;
+			})
+			.AddTo(this);
+
+		stock.AsObservable().Where(val => val < prevStock)
+			.Subscribe(val => {
+				var obj = StockBullets[StockBullets.Count - 1];
+				StockBullets.RemoveAt(StockBullets.Count - 1);
+				Destroy(obj);
+				launch();
+				prevStock = val;
 			})
 			.AddTo(this);
 	}
@@ -323,7 +377,6 @@ public class Player : Character
 			var raycast = Physics2D.Raycast(offsetPos, Vector2.down);
 			// レイを飛ばして、成功且つ一定距離内であった場合、着地モーションへ移行させる
 			if (!!raycast && raycast.distance < landingDistance) {
-				Debug.Log(raycast.distance);
 				break;
 			}
 			yield return null;
@@ -333,6 +386,13 @@ public class Player : Character
 		//yield return new WaitForSecondsRealtime(0.005f);
 		//LegCollider.offset = new Vector2(LegCollider.offset.x, LegCollider.offset.y - Is_Jumping_Collider_Height_Offset);
 		//LegCollider.enabled = true;
+	}
 
+	/// <summary>
+	/// 地面のチップが消されたら呼ばれる
+	/// </summary>
+	public override void onErased()
+	{
+		++stock.Value;
 	}
 }

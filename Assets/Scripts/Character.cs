@@ -84,7 +84,7 @@ public class Character : MonoBehaviour
 	/// <summary>
 	/// 地面のチップが消されたら呼ばれる
 	/// </summary>
-	public void onErased()
+	public virtual void onErased()
 	{
 		launch();
 	}

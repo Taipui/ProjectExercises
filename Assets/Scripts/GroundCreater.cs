@@ -35,8 +35,6 @@ public class GroundCreater : MonoBehaviour
 
 	void Start ()
 	{
-		Debug.Log(GroundChip.transform.localScale);
-
 		var wPos = First_WPos;
 		var hPos = First_HPos;
 
