@@ -167,7 +167,7 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!Input.GetKeyUp(KeyCode.A) || !!Input.GetKeyUp(KeyCode.D))
+		this.UpdateAsObservable().Where(x => !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
 			.Subscribe(_ => {
 				anim.SetBool("IsIdle", true);
 				currentSpeed = 0.0f;
@@ -240,7 +240,7 @@ public class Player : Character
 		var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		var direction = mousePos - LaunchTfm.position;
 		obj.GetComponent<Rigidbody2D>().velocity = direction.normalized * 40.0f;
-				Pc.eraseGroundChip();
+		Pc.eraseGroundChip();
 		//obj = Instantiate(SnowBallMask, new Vector3(transform.position.x, transform.position.y - 0.05f), Quaternion.Euler(new Vector3(0.0f, 0.0f, Random.Range(0, 360))));
 		//obj.transform.SetParent(SnowBallsTfm);
 	}
