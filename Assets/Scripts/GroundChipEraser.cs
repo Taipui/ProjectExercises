@@ -8,9 +8,9 @@ using UnityEngine;
 public class GroundChipEraser : MonoBehaviour
 {
 	/// <summary>
-	/// デフォルトの座標
+	/// デフォルトのY座標
 	/// </summary>
-	Vector2 defaultPos;
+	float defaultYPos;
 
 	/// <summary>
 	/// Rigidbody2D
@@ -25,7 +25,7 @@ public class GroundChipEraser : MonoBehaviour
 
 	void Start ()
 	{
-		defaultPos = transform.position;
+		defaultYPos = transform.localPosition.y;
 		rb = GetComponent<Rigidbody2D>();
 	}
 
@@ -44,7 +44,7 @@ public class GroundChipEraser : MonoBehaviour
 		}
 		rb.simulated = false;
 		Destroy(collision.gameObject);
-		transform.position = defaultPos;
+		transform.localPosition = new Vector3(transform.localPosition.x, defaultYPos);
 		Character.onErased();
 	}
 }
