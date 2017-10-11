@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UniRx;
 using UniRx.Triggers;
 using DG.Tweening;
@@ -147,56 +146,56 @@ public class Player : Character
 		})
 		.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.A))
+		this.UpdateAsObservable().Where(x => Gm.CurrentGameState == GameManager.GameState.Play && !!Input.GetKeyDown(KeyCode.A))
 			.Subscribe(_ => {
 				currentSpeed = changeDir("A");
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.D))
+		this.UpdateAsObservable().Where(x => Gm.CurrentGameState == GameManager.GameState.Play && !!Input.GetKeyDown(KeyCode.D))
 			.Subscribe(_ => {
 				currentSpeed = changeDir("D");
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+		this.UpdateAsObservable().Where(x => Gm.CurrentGameState == GameManager.GameState.Play && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
 			.Subscribe(_ => {
 				anim.SetBool("IsIdle", true);
 				currentSpeed = 0.0f;
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!Input.GetKeyUp(KeyCode.A) && !!Input.GetKey(KeyCode.D))
+		this.UpdateAsObservable().Where(x => Gm.CurrentGameState == GameManager.GameState.Play && !!Input.GetKeyUp(KeyCode.A) && !!Input.GetKey(KeyCode.D))
 			.Subscribe(_ => {
 				currentSpeed = changeDir("D");
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!Input.GetKeyUp(KeyCode.D) && !!Input.GetKey(KeyCode.A))
+		this.UpdateAsObservable().Where(x => Gm.CurrentGameState == GameManager.GameState.Play && !!Input.GetKeyUp(KeyCode.D) && !!Input.GetKey(KeyCode.A))
 			.Subscribe(_ => {
 				currentSpeed = changeDir("A");
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.W))
+		this.UpdateAsObservable().Where(x => Gm.CurrentGameState == GameManager.GameState.Play && !!Input.GetKeyDown(KeyCode.W))
 			.Subscribe(_ => {
 				StartCoroutine(jump(anim));
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!Input.GetMouseButtonDown(0) && stock.Value > 0)
+		this.UpdateAsObservable().Where(x => Gm.CurrentGameState == GameManager.GameState.Play && !!Input.GetMouseButtonDown(0) && stock.Value > 0)
 			.Subscribe(_ => {
 				--stock.Value;
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!Input.GetMouseButtonDown(1) && stock.Value < Max_Stock && !isJumping)
+		this.UpdateAsObservable().Where(x => Gm.CurrentGameState == GameManager.GameState.Play && !!Input.GetMouseButtonDown(1) && stock.Value < Max_Stock && !isJumping)
 			.Subscribe(_ => {
 				Gce.checkGroundChip();
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.Space))
+		this.UpdateAsObservable().Where(x => Gm.CurrentGameState == GameManager.GameState.Play && !!Input.GetKeyDown(KeyCode.Space))
 			.Subscribe(_ => {
 				StartCoroutine(jump(anim));
 				isSp.Value = true;
@@ -241,6 +240,12 @@ public class Player : Character
 		isSp.AsObservable().Where(val => !val)
 			.Subscribe(_ => {
 				Time.timeScale = 1.0f;
+			})
+			.AddTo(this);
+
+		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.Return))
+			.Subscribe(_ => {
+				Gm.gameOver();
 			})
 			.AddTo(this);
 	}
@@ -368,6 +373,6 @@ public class Player : Character
 	/// </summary>
 	protected override void dead()
 	{
-		SceneManager.LoadScene(Common.GameOver);
+		Gm.gameOver();
 	}
 }

@@ -21,7 +21,8 @@ public class Enemy : Character
 
 		MyBulletTag = "EnemyBullet";
 
-		Observable.Interval(System.TimeSpan.FromSeconds(1.0f)).Subscribe(_ => {
+		Observable.Interval(System.TimeSpan.FromSeconds(1.0f)).Where(x => Gm.CurrentGameState == GameManager.GameState.Play)
+			.Subscribe(_ => {
 			if (Random.Range(0, 2) == 0) {
 				Gce.checkGroundChip();
 			}

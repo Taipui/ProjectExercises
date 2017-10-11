@@ -15,7 +15,7 @@ public class CharacterCollider : MonoBehaviour
 
 	void Start ()
 	{
-		Debug.Log(Character.MyBulletTag);
+
 	}
 
 	void OnCollisionEnter2D(Collision2D collision)

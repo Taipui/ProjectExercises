@@ -58,6 +58,12 @@ public class Character : MonoBehaviour
 	readonly ReactiveProperty<int> hp = new ReactiveProperty<int>(1);
 
 	/// <summary>
+	/// GameManager
+	/// </summary>
+	[SerializeField]
+	protected GameManager Gm;
+
+	/// <summary>
 	/// 体力をセット
 	/// </summary>
 	/// <param name="val">セットする体力</param>
