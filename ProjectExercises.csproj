@@ -92,6 +92,14 @@
   <ItemGroup>
     <Compile Include="Assets\Demigiant\DOTween\Examples\Basics.cs" />
     <Compile Include="Assets\Demigiant\DOTween\Examples\Sequences.cs" />
+    <Compile Include="Assets\SAColliderBuilder\Scripts\Internal\SABoneColliderCommon.cs" />
+    <Compile Include="Assets\SAColliderBuilder\Scripts\Internal\SAColliderBuilderCommon.cs" />
+    <Compile Include="Assets\SAColliderBuilder\Scripts\Internal\SAMeshColliderCommon.cs" />
+    <Compile Include="Assets\SAColliderBuilder\Scripts\SABoneCollider.cs" />
+    <Compile Include="Assets\SAColliderBuilder\Scripts\SABoneColliderBuilder.cs" />
+    <Compile Include="Assets\SAColliderBuilder\Scripts\SABoneColliderChild.cs" />
+    <Compile Include="Assets\SAColliderBuilder\Scripts\SAMeshCollider.cs" />
+    <Compile Include="Assets\SAColliderBuilder\Scripts\SAMeshColliderBuilder.cs" />
     <Compile Include="Assets\Scripts\Bullet.cs" />
     <Compile Include="Assets\Scripts\CameraMover.cs" />
     <Compile Include="Assets\Scripts\Character.cs" />
@@ -155,6 +163,8 @@
     <None Include="Assets\Demigiant\DOTween\readme.txt" />
     <None Include="Assets\Movinarc\PackageUninstaller\README.txt" />
     <None Include="Assets\Plugins\UniRx\ReadMe.txt" />
+    <None Include="Assets\SAColliderBuilder\Readme_en.txt" />
+    <None Include="Assets\SAColliderBuilder\Readme_jp.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\Anton OFL.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\Bangers - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
