@@ -10,12 +10,6 @@ using UniRx.Triggers;
 public class Character : MonoBehaviour
 {
 	/// <summary>
-	/// キャラクターのColliderのTransform
-	/// </summary>
-	[SerializeField]
-	protected Transform CharacterColliderTfm;
-
-	/// <summary>
 	/// ジャンプ中かどうか
 	/// </summary>
 	protected bool isJumping;
@@ -74,18 +68,6 @@ public class Character : MonoBehaviour
 
 	protected virtual void Start ()
 	{
-		CharacterColliderTfm.position = transform.position;
-
-		this.FixedUpdateAsObservable().Subscribe(_ => {
-			transform.position = CharacterColliderTfm.position;
-		})
-		.AddTo(this);
-
-		this.UpdateAsObservable().Subscribe(_ => {
-			Debug.DrawRay(new Vector3(transform.position.x, transform.position.y - Erase_GroundChip_Ray_Dist), Vector3.down, Color.red);
-		})
-		.AddTo(this);
-
 		hp.AsObservable().Where(val => val <= 0)
 			.Subscribe(_ => {
 				dead();

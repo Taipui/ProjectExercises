@@ -1,378 +1,317 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿//
+// Mecanimのアニメーションデータが、原点で移動しない場合の Rigidbody付きコントローラ
+// サンプル
+// 2014/03/13 N.Kobyasahi
+//
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 using UniRx;
 using UniRx.Triggers;
-using DG.Tweening;
 
-/// <summary>
-/// プレイヤーに関するクラス
-/// </summary>
-public class Player : Character
+namespace UnityChan
 {
-	#region PlayerCollider関連
-	/// <summary>
-	/// PlayerColliderのRigidbody2D
-	/// </summary>
-	[SerializeField]
-	Rigidbody2D Rb;
-	/// <summary>
-	/// PlayerCollidersのTransform
-	/// </summary>
-	[SerializeField]
-	Transform PlayerCollidersTfm;
-	#endregion
+	// 必要なコンポーネントの列記
+	[RequireComponent(typeof(Animator))]
+	[RequireComponent(typeof(CapsuleCollider))]
+	[RequireComponent(typeof(Rigidbody))]
 
-	/// <summary>
-	/// プレイヤーの移動速度
-	/// </summary>
-	const float Move_Speed = 2.0f;
-
-	#region 方向転換関係
-	/// <summary>
-	/// プレイヤーが回転する時のTween
-	/// </summary>
-	Tweener rotateTween;
-	/// <summary>
-	/// プレイヤーの向き
-	/// </summary>
-	string dir;
-	/// <summary>
-	/// プレイヤーの前回までの向き
-	/// </summary>
-	string dirOld;
-	/// <summary>
-	/// プレイヤーが回転中かどうか
-	/// </summary>
-	bool isRotating;
-	#endregion
-
-	/// <summary>
-	/// プレイヤーのアニメーター
-	/// </summary>
-	Animator anim;
-
-	#region ジャンプ関連
-	/// <summary>
-	/// プレイヤーのジャンプ力
-	/// </summary>
-	const float Jump_Power = 5.0f;
-	/// <summary>
-	/// 着地判定を調べる回数
-	/// </summary>
-	private readonly int landingCheckLimit = 1000;
-	/// <summary>
-	/// 着地判定チェックを行う時間間隔
-	/// </summary>
-	private readonly float waitTime = 0.01f;
-	/// <summary>
-	/// 着地モーションへの移項を許可する距離
-	/// </summary>
-	private readonly float landingDistance = 0.62f;
-	/// <summary>
-	/// ジャンプ時にプレイヤーのColliderを上方向にずらす量
-	/// </summary>
-	const float Is_Jumping_Collider_Height_Offset = 0.7f;
-	#endregion
-
-	#region 弾関連
-	/// <summary>
-	/// 弾のストック数
-	/// </summary>
-	readonly ReactiveProperty<int> stock = new ReactiveProperty<int>(0);
-	/// <summary>
-	/// 前回のストック数
-	/// </summary>
-	int prevStock;
-	/// <summary>
-	/// 弾の最大ストック数
-	/// </summary>
-	const int Max_Stock = 10;
-	/// <summary>
-	/// ストック用の弾
-	/// </summary>
-	[SerializeField]
-	GameObject StockBullet;
-	/// <summary>
-	/// ストック用の弾の親オブジェクトのTransform
-	/// </summary>
-	[SerializeField]
-	Transform StockTfm;
-	#endregion
-
-	/// <summary>
-	/// 特殊能力を発動したかどうか
-	/// </summary>
-	readonly ReactiveProperty<bool> isSp = new ReactiveProperty<bool>(false);
-
-	/// <summary>
-	/// デフォルトの体力
-	/// </summary>
-	const int Default_Hp = 3;
-
-	protected override void Start ()
+	public class Player : Character
 	{
-		base.Start();
 
-		dir = "D";
-		dirOld = dir;
-		isRotating = false;
+		public float animSpeed = 1.5f;              // アニメーション再生速度設定
+		public float lookSmoother = 3.0f;           // a smoothing setting for camera motion
+		public bool useCurves = true;               // Mecanimでカーブ調整を使うか設定する
+													// このスイッチが入っていないとカーブは使われない
+		public float useCurvesHeight = 0.5f;        // カーブ補正の有効高さ（地面をすり抜けやすい時には大きくする）
 
-		anim = GetComponent<Animator>();
+		// 以下キャラクターコントローラ用パラメタ
+		// 前進速度
+		public float forwardSpeed = 7.0f;
+		// 後退速度
+		public float backwardSpeed = 2.0f;
+		// 旋回速度
+		public float rotateSpeed = 2.0f;
+		// ジャンプ威力
+		public float jumpPower = 3.0f;
+		// キャラクターコントローラ（カプセルコライダ）の参照
+		private CapsuleCollider col;
+		private Rigidbody rb;
+		// キャラクターコントローラ（カプセルコライダ）の移動量
+		private Vector3 velocity;
+		// CapsuleColliderで設定されているコライダのHeiht、Centerの初期値を収める変数
+		private float orgColHight;
+		private Vector3 orgVectColCenter;
+		private Animator anim;                          // キャラにアタッチされるアニメーターへの参照
+		private AnimatorStateInfo currentBaseState;         // base layerで使われる、アニメーターの現在の状態の参照
 
-		isJumping = false;
+		private GameObject cameraObject;    // メインカメラへの参照
 
-		var currentSpeed = 0.0f;
+		// アニメーター各ステートへの参照
+		static int idleState = Animator.StringToHash("Base Layer.Idle");
+		static int locoState = Animator.StringToHash("Base Layer.Locomotion");
+		static int jumpState = Animator.StringToHash("Base Layer.Jump");
+		static int restState = Animator.StringToHash("Base Layer.Rest");
 
-		prevStock = 0;
+		#region 弾関連
+		/// <summary>
+		/// 弾のストック数
+		/// </summary>
+		readonly ReactiveProperty<int> stock = new ReactiveProperty<int>(0);
+		/// <summary>
+		/// 前回のストック数
+		/// </summary>
+		int prevStock;
+		/// <summary>
+		/// 弾の最大ストック数
+		/// </summary>
+		const int Max_Stock = 10;
+		/// <summary>
+		/// ストック用の弾
+		/// </summary>
+		[SerializeField]
+		GameObject StockBullet;
+		/// <summary>
+		/// ストック用の弾の親オブジェクトのTransform
+		/// </summary>
+		[SerializeField]
+		Transform StockTfm;
+		#endregion
 
-		List<GameObject> StockBullets = new List<GameObject>();
+		/// <summary>
+		/// 特殊能力を発動したかどうか
+		/// </summary>
+		readonly ReactiveProperty<bool> isSp = new ReactiveProperty<bool>(false);
 
-		setHp(Default_Hp);
+		/// <summary>
+		/// デフォルトの体力
+		/// </summary>
+		const int Default_Hp = 3;		
 
-		MyBulletTag = "PlayerBullet";
+		// 初期化
+		void Start()
+		{
+			// Animatorコンポーネントを取得する
+			anim = GetComponent<Animator>();
+			// CapsuleColliderコンポーネントを取得する（カプセル型コリジョン）
+			col = GetComponent<CapsuleCollider>();
+			rb = GetComponent<Rigidbody>();
+			//メインカメラを取得する
+			cameraObject = GameObject.FindWithTag("MainCamera");
+			// CapsuleColliderコンポーネントのHeight、Centerの初期値を保存する
+			orgColHight = col.height;
+			orgVectColCenter = col.center;
 
-		this.FixedUpdateAsObservable().Subscribe(_ => {
-			anim.SetFloat("Speed", Mathf.Abs(currentSpeed));
-			if (!isJumping) {
-				anim.speed = 1.5f;
-			}
+			prevStock = 0;
+			var stockBullets = new List<GameObject>();
 
-			var velocity = new Vector3(currentSpeed, 0);
+			MyBulletTag = "PlayerBullet";
 
-			velocity *= Move_Speed;
+			this.FixedUpdateAsObservable().Subscribe(_ => {
+				float h = Input.GetAxis("Horizontal");              // 入力デバイスの水平軸をhで定義
+				float v = Input.GetAxis("Vertical");                // 入力デバイスの垂直軸をvで定義
+				anim.SetFloat("Speed", h);                          // Animator側で設定している"Speed"パラメタにvを渡す
+				anim.SetFloat("Direction", h);                      // Animator側で設定している"Direction"パラメタにhを渡す
+				anim.speed = animSpeed;                             // Animatorのモーション再生速度に animSpeedを設定する
+				currentBaseState = anim.GetCurrentAnimatorStateInfo(0); // 参照用のステート変数にBase Layer (0)の現在のステートを設定する
+				rb.useGravity = true;//ジャンプ中に重力を切るので、それ以外は重力の影響を受けるようにする
 
-			CharacterColliderTfm.position += velocity * Time.fixedDeltaTime;
-		})
-		.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => Gm.CurrentGameState == GameManager.GameState.Play && !!Input.GetKeyDown(KeyCode.A))
-			.Subscribe(_ => {
-				currentSpeed = changeDir("A");
+
+				// 以下、キャラクターの移動処理
+				velocity = new Vector3(h, 0, 0);        // 上下のキー入力からZ軸方向の移動量を取得
+
+				//以下のvの閾値は、Mecanim側のトランジションと一緒に調整する
+				if (h > 0.1) {
+					velocity *= forwardSpeed;       // 移動速度を掛ける
+				} else if (h < -0.1) {
+					velocity *= backwardSpeed;  // 移動速度を掛ける
+				}
+
+				if (Input.GetButtonDown("Jump")) {  // スペースキーを入力したら
+					isSp.Value = true;
+					if (currentBaseState.nameHash != jumpState) {
+						//ステート遷移中でなかったらジャンプできる
+						if (!anim.IsInTransition(0)) {
+							rb.AddForce(Vector3.up * jumpPower, ForceMode.VelocityChange);
+							anim.SetBool("Jump", true);     // Animatorにジャンプに切り替えるフラグを送る
+						}
+					}
+
+				}
+
+				if (Input.GetKeyDown(KeyCode.W)) {
+					if (currentBaseState.nameHash != jumpState) {
+						//ステート遷移中でなかったらジャンプできる
+						if (!anim.IsInTransition(0)) {
+							rb.AddForce(Vector3.up * jumpPower, ForceMode.VelocityChange);
+							anim.SetBool("Jump", true);     // Animatorにジャンプに切り替えるフラグを送る
+						}
+					}
+
+				}
+
+
+				// 上下のキー入力でキャラクターを移動させる
+				transform.localPosition += velocity * Time.fixedDeltaTime;
+
+				// 左右のキー入力でキャラクタをY軸で旋回させる
+	//			transform.Rotate(0, h * rotateSpeed, 0);
+
+
+				// 以下、Animatorの各ステート中での処理
+				// Locomotion中
+				// 現在のベースレイヤーがlocoStateの時
+				if (currentBaseState.nameHash == locoState) {
+					//カーブでコライダ調整をしている時は、念のためにリセットする
+					if (useCurves) {
+						resetCollider();
+					}
+				}
+			// JUMP中の処理
+			// 現在のベースレイヤーがjumpStateの時
+			else if (currentBaseState.nameHash == jumpState) {
+																			// ステートがトランジション中でない場合
+					if (!anim.IsInTransition(0)) {
+
+						// 以下、カーブ調整をする場合の処理
+						if (useCurves) {
+							// 以下JUMP00アニメーションについているカーブJumpHeightとGravityControl
+							// JumpHeight:JUMP00でのジャンプの高さ（0〜1）
+							// GravityControl:1⇒ジャンプ中（重力無効）、0⇒重力有効
+							float jumpHeight = anim.GetFloat("JumpHeight");
+							float gravityControl = anim.GetFloat("GravityControl");
+							if (gravityControl > 0)
+								rb.useGravity = false;  //ジャンプ中の重力の影響を切る
+
+							// レイキャストをキャラクターのセンターから落とす
+							Ray ray = new Ray(transform.position + Vector3.up, -Vector3.up);
+							RaycastHit hitInfo = new RaycastHit();
+							// 高さが useCurvesHeight 以上ある時のみ、コライダーの高さと中心をJUMP00アニメーションについているカーブで調整する
+							if (Physics.Raycast(ray, out hitInfo)) {
+								if (hitInfo.distance > useCurvesHeight) {
+									col.height = orgColHight - jumpHeight;          // 調整されたコライダーの高さ
+									float adjCenterY = orgVectColCenter.y + jumpHeight;
+									col.center = new Vector3(0, adjCenterY, 0); // 調整されたコライダーのセンター
+								} else {
+									// 閾値よりも低い時には初期値に戻す（念のため）					
+									resetCollider();
+								}
+							}
+						}
+						// Jump bool値をリセットする（ループしないようにする）				
+						anim.SetBool("Jump", false);
+					}
+				}
+			// IDLE中の処理
+			// 現在のベースレイヤーがidleStateの時
+			else if (currentBaseState.nameHash == idleState) {
+					//カーブでコライダ調整をしている時は、念のためにリセットする
+					if (useCurves) {
+						resetCollider();
+					}
+				}
+			// REST中の処理
+			// 現在のベースレイヤーがrestStateの時
+			else if (currentBaseState.nameHash == restState) {
+					//cameraObject.SendMessage("setCameraPositionFrontView");		// カメラを正面に切り替える
+					// ステートが遷移中でない場合、Rest bool値をリセットする（ループしないようにする）
+					if (!anim.IsInTransition(0)) {
+						anim.SetBool("Rest", false);
+					}
+				}
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => Gm.CurrentGameState == GameManager.GameState.Play && !!Input.GetKeyDown(KeyCode.D))
-			.Subscribe(_ => {
-				currentSpeed = changeDir("D");
-			})
-			.AddTo(this);
+			this.UpdateAsObservable().Where(x => Gm.CurrentGameState == GameManager.GameState.Play && !!Input.GetMouseButtonDown(1) && stock.Value < Max_Stock && currentBaseState.nameHash != jumpState)
+				.Subscribe(_ => {
+					Gce.checkGroundChip();
+				})
+				.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => Gm.CurrentGameState == GameManager.GameState.Play && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
-			.Subscribe(_ => {
-				anim.SetBool("IsIdle", true);
-				currentSpeed = 0.0f;
-			})
-			.AddTo(this);
+			this.UpdateAsObservable().Where(x => Gm.CurrentGameState == GameManager.GameState.Play && !!Input.GetMouseButtonDown(0) && stock.Value > 0)
+				.Subscribe(_ => {
+					--stock.Value;
+				})
+				.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => Gm.CurrentGameState == GameManager.GameState.Play && !!Input.GetKeyUp(KeyCode.A) && !!Input.GetKey(KeyCode.D))
-			.Subscribe(_ => {
-				currentSpeed = changeDir("D");
-			})
-			.AddTo(this);
+			stock.AsObservable().Where(val => val > prevStock)
+				.Subscribe(val => {
+					var obj = Instantiate(StockBullet, new Vector3(StockTfm.localPosition.x, StockTfm.localPosition.y + 0.03f * val), Quaternion.Euler(0.0f, 90.0f, 0.0f));
+					obj.transform.SetParent(StockTfm, false);
+					stockBullets.Add(obj);
+					prevStock = val;
+				})
+				.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => Gm.CurrentGameState == GameManager.GameState.Play && !!Input.GetKeyUp(KeyCode.D) && !!Input.GetKey(KeyCode.A))
-			.Subscribe(_ => {
-				currentSpeed = changeDir("A");
-			})
-			.AddTo(this);
+			stock.AsObservable().Where(val => val < prevStock)
+				.Subscribe(val => {
+					var obj = stockBullets[stockBullets.Count - 1];
+					stockBullets.RemoveAt(stockBullets.Count - 1);
+					Destroy(obj);
+					launch();
+					prevStock = val;
+				})
+				.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => Gm.CurrentGameState == GameManager.GameState.Play && !!Input.GetKeyDown(KeyCode.W))
-			.Subscribe(_ => {
-				StartCoroutine(jump(anim));
-			})
-			.AddTo(this);
+			isSp.AsObservable().Where(val => !!val)
+				.Subscribe(_ => {
+					Time.timeScale = 0.5f;
+				})
+				.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => Gm.CurrentGameState == GameManager.GameState.Play && !!Input.GetMouseButtonDown(0) && stock.Value > 0)
-			.Subscribe(_ => {
-				--stock.Value;
-			})
-			.AddTo(this);
-
-		this.UpdateAsObservable().Where(x => Gm.CurrentGameState == GameManager.GameState.Play && !!Input.GetMouseButtonDown(1) && stock.Value < Max_Stock && !isJumping)
-			.Subscribe(_ => {
-				Gce.checkGroundChip();
-			})
-			.AddTo(this);
-
-		this.UpdateAsObservable().Where(x => Gm.CurrentGameState == GameManager.GameState.Play && !!Input.GetKeyDown(KeyCode.Space))
-			.Subscribe(_ => {
-				StartCoroutine(jump(anim));
-				isSp.Value = true;
-			})
-			.AddTo(this);
-
-		this.UpdateAsObservable().Subscribe(_ => {
-		})
-		.AddTo(this);
-
-		this.UpdateAsObservable().Where(x => !!isJumping)
-			.Subscribe(_ => {
-
-			})
-			.AddTo(this);
-
-		stock.AsObservable().Where(val => val > prevStock)
-			.Subscribe(val => {
-				var obj = Instantiate(StockBullet, new Vector3(StockTfm.localPosition.x, StockTfm.localPosition.y + 0.03f * val), Quaternion.Euler(0.0f, 90.0f, 0.0f));
-				obj.transform.SetParent(StockTfm, false);
-				StockBullets.Add(obj);
-				prevStock = val;
-			})
-			.AddTo(this);
-
-		stock.AsObservable().Where(val => val < prevStock)
-			.Subscribe(val => {
-				var obj = StockBullets[StockBullets.Count - 1];
-				StockBullets.RemoveAt(StockBullets.Count - 1);
-				Destroy(obj);
-				launch();
-				prevStock = val;
-			})
-			.AddTo(this);
-
-		isSp.AsObservable().Where(val => !!val)
-			.Subscribe(_ => {
-				Time.timeScale = 0.5f;
-			})
-			.AddTo(this);
-
-		isSp.AsObservable().Where(val => !val)
-			.Subscribe(_ => {
-				Time.timeScale = 1.0f;
-			})
-			.AddTo(this);
-
-		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.Return))
-			.Subscribe(_ => {
-				Gm.gameOver();
-			})
-			.AddTo(this);
-	}
-	
-	/// <summary>
-	/// 方向転換の処理
-	/// </summary>
-	/// <param name="dir_">向く方向</param>
-	/// <returns>移動速度</returns>
-	float changeDir(string dir_)
-	{
-		anim.SetBool("IsIdle", false);
-		dir = dir_;
-		rotate();
-		return dir_ == "A" ? -1.0f : 1.0f;
-	}
-
-	/// <summary>
-	/// プレイヤーの向きを変える
-	/// </summary>
-	void rotate()
-	{
-		if (dir == dirOld) {
-			return;
+			isSp.AsObservable().Where(val => !val)
+				.Subscribe(_ => {
+					Time.timeScale = 1.0f;
+				})
+				.AddTo(this);
 		}
-		if (!!isRotating) {
-			return;
+
+
+		// 以下、メイン処理.リジッドボディと絡めるので、FixedUpdate内で処理を行う.
+
+		// キャラクターのコライダーサイズのリセット関数
+		void resetCollider()
+		{
+			// コンポーネントのHeight、Centerの初期値を戻す
+			col.height = orgColHight;
+			col.center = orgVectColCenter;
 		}
-		isRotating = true;
-		var rotateVal = dir == "D" ? 90.0f : -90.0f;
-		if (rotateTween != null) {
-			rotateTween.Kill();
+
+		void OnJumpStart()
+		{
+
 		}
-		rotateTween = transform.DORotate(
-			new Vector3(0.0f, rotateVal),
-			0.1f
-			).OnComplete(() => {
-				dirOld = dir;
-				isRotating = false;
-		});
-	}
 
-	/// <summary>
-	/// 弾を発射する
-	/// </summary>
-	protected override void launch()
-	{
-		var obj = Instantiate(Bullet, LaunchTfm.position, Quaternion.identity);
-		var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-		var direction = mousePos - LaunchTfm.position;
-		obj.GetComponent<Rigidbody2D>().velocity = direction.normalized * 40.0f;
-		obj.transform.SetParent(BulletParentTfm);
-		obj.tag = MyBulletTag;
-	}
+		void OnJumpTopPoint()
+		{
 
-	/// <summary>
-	/// ジャンプする
-	/// </summary>
-	IEnumerator jump(Animator anim)
-	{
-		if (!!isJumping) {
-			yield break;
 		}
-		isJumping = true;
-		anim.SetTrigger("Jump");
-	}
 
-	/// <summary>
-	/// ジャンプモーションで、足が離れる瞬間に呼び出されるメソッド
-	/// </summary>
-	void OnJumpStart()
-	{
-		// キャラクターをジャンプさせる
-		Rb.AddForce(Vector3.up * Jump_Power, ForceMode2D.Impulse);
-	}
-
-	/// <summary>
-	/// ジャンプモーションで、頂点のフレームで呼び出されるメソッド
-	/// </summary>
-	void OnJumpTopPoint()
-	{
-		// アニメーションを停止して、着地判定のチェックを行う
-		anim.speed = 0.0f;
-		StartCoroutine(checkLanding());
-	}
-
-	/// <summary>
-	/// ジャンプモーションで、足が地上に着いたときに呼ばれるメソッド
-	/// </summary>
-	void OnJumpEnd()
-	{
-		isJumping = false;
-		isSp.Value = false;
-	}
-
-	/// <summary>
-	/// 足下との距離を計算して、一定距離まで近づいたらアニメーションを再開させる
-	/// </summary>
-	/// <returns>The landing.</returns>
-	IEnumerator checkLanding()
-	{
-		// 規定回数チェックして成功しない場合も着地モーションに移行する
-		for (var cnt = 0; cnt < landingCheckLimit; ++cnt) {
-			var offsetPos = new Vector2(transform.position.x, transform.position.y - 0.1f);
-			var raycast = Physics2D.Raycast(offsetPos, Vector2.down);
-			// レイを飛ばして、成功且つ一定距離内であった場合、着地モーションへ移行させる
-			if (!!raycast && raycast.distance < landingDistance) {
-				break;
-			}
-			yield return null;
+		void OnJumpEnd()
+		{
+			isSp.Value = false;
 		}
-		anim.speed = 1.0f;
-	}
 
-	/// <summary>
-	/// 地面のチップが消されたら呼ばれる
-	/// </summary>
-	public override void onErased()
-	{
-		++stock.Value;
-	}
+		/// <summary>
+		/// 弾を発射する
+		/// </summary>
+		protected override void launch()
+		{
+			var obj = Instantiate(Bullet, LaunchTfm.position, Quaternion.identity);
+			var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			var direction = mousePos - LaunchTfm.position;
+			obj.GetComponent<Rigidbody>().velocity = direction.normalized * 40.0f;
+			obj.transform.SetParent(BulletParentTfm);
+			obj.tag = MyBulletTag;
+		}
 
-	/// <summary>
-	/// 死亡処理
-	/// </summary>
-	protected override void dead()
-	{
-		Gm.gameOver();
+		/// <summary>
+		/// 地面のチップが消されたら呼ばれる
+		/// </summary>
+		public override void onErased()
+		{
+			++stock.Value;
+		}
 	}
 }

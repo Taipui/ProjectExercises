@@ -13,9 +13,9 @@ public class GroundChipEraser : MonoBehaviour
 	float defaultYPos;
 
 	/// <summary>
-	/// Rigidbody2D
+	/// Rigidbody
 	/// </summary>
-	Rigidbody2D rb;
+	Rigidbody rb;
 
 	/// <summary>
 	/// Character
@@ -26,7 +26,7 @@ public class GroundChipEraser : MonoBehaviour
 	void Start ()
 	{
 		defaultYPos = transform.localPosition.y;
-		rb = GetComponent<Rigidbody2D>();
+		rb = GetComponent<Rigidbody>();
 	}
 
 	/// <summary>
@@ -34,15 +34,15 @@ public class GroundChipEraser : MonoBehaviour
 	/// </summary>
 	public void checkGroundChip()
 	{
-		rb.simulated = true;
+		rb.isKinematic = false;
 	}
 
-	void OnCollisionEnter2D(Collision2D collision)
+	void OnCollisionEnter(Collision collision)
 	{
-		if (!rb.simulated) {
+		if (!!rb.isKinematic) {
 			return;
 		}
-		rb.simulated = false;
+		rb.isKinematic= true;
 		Destroy(collision.gameObject);
 		transform.localPosition = new Vector3(transform.localPosition.x, defaultYPos);
 		Character.onErased();
