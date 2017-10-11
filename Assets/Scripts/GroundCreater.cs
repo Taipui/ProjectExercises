@@ -36,14 +36,27 @@ public class GroundCreater : MonoBehaviour
 		var wPos = First_WPos;
 		var hPos = First_HPos;
 
-		for (var h = 0; h < Height_Num; ++h) {
-			for (var w = 0; w < Width_Num; ++w) {
+		//for (var h = 0; h < Height_Num; ++h) {
+		//	for (var w = 0; w < Width_Num; ++w) {
+		//		var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
+		//		obj.transform.SetParent(transform);
+		//		wPos += GroundChip.transform.localScale.x / 100;
+		//	}
+		//	hPos += GroundChip.transform.localScale.y / 100;
+		//	wPos = First_WPos;
+		//}
+
+		var elapse = 0.0f;
+
+		for (var w = 0; w < Width_Num; ++w) {
+			for (var h = 0; h < Mathf.Lerp(0.0f, Height_Num, (Mathf.Sin(w * .1f) + 1.0f) / 2); ++h) {
 				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
 				obj.transform.SetParent(transform);
-				wPos += GroundChip.transform.localScale.x / 100;
+				hPos += GroundChip.transform.localScale.y / 100;
+				elapse += Time.deltaTime;
 			}
-			hPos += GroundChip.transform.localScale.y / 100;
-			wPos = First_WPos;
+			wPos += GroundChip.transform.localScale.x / 100;
+			hPos = First_HPos;
 		}
 	}
 }
