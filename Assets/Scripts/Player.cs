@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UniRx;
 using UniRx.Triggers;
 using DG.Tweening;
@@ -357,5 +358,13 @@ public class Player : Character
 	public override void onErased()
 	{
 		++stock.Value;
+	}
+
+	/// <summary>
+	/// 死亡処理
+	/// </summary>
+	protected override void dead()
+	{
+		SceneManager.LoadScene(Common.GameOver);
 	}
 }

@@ -51,7 +51,7 @@ public class Character : MonoBehaviour
 	/// <summary>
 	/// 体力
 	/// </summary>
-	readonly ReactiveProperty<int> hp = new ReactiveProperty<int>(0);
+	readonly ReactiveProperty<int> hp = new ReactiveProperty<int>(1);
 
 	/// <summary>
 	/// 体力をセット
@@ -75,6 +75,12 @@ public class Character : MonoBehaviour
 			Debug.DrawRay(new Vector3(transform.position.x, transform.position.y - Erase_GroundChip_Ray_Dist), Vector3.down, Color.red);
 		})
 		.AddTo(this);
+
+		hp.AsObservable().Where(val => val <= 0)
+			.Subscribe(_ => {
+				dead();
+			})
+			.AddTo(this);
 	}
 
 	/// <summary>
@@ -90,7 +96,23 @@ public class Character : MonoBehaviour
 	/// </summary>
 	protected virtual void launch()
 	{
+		// 派生クラスで実装
+	}
 
+	/// <summary>
+	/// ダメージ処理
+	/// </summary>
+	public void damage()
+	{
+		--hp.Value;
+	}
+
+	/// <summary>
+	/// 死亡処理
+	/// </summary>
+	protected virtual void dead()
+	{
+		// 派生クラスで実装
 	}
 }
 

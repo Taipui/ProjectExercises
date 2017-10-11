@@ -126,4 +126,12 @@ public class Enemy : Character
 	{
 		launch();
 	}
+
+	/// <summary>
+	/// 死亡処理
+	/// </summary>
+	protected override void dead()
+	{
+		Destroy(gameObject);
+	}
 }
