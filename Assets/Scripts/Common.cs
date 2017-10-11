@@ -21,6 +21,5 @@ public static class Common
 	/// </summary>
 	public const string GameOver = "GameOver";
 	#endregion
-
 }
 

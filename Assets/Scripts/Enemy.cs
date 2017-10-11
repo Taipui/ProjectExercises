@@ -19,7 +19,7 @@ public class Enemy : Character
 	{
 		base.Start();
 
-		MyBulletTag = "EnemyBullet";
+		MyBulletLayer = "EnemyBullet";
 
 		Observable.Interval(System.TimeSpan.FromSeconds(1.0f)).Where(x => !!isPlay())
 			.Subscribe(_ => {
@@ -65,23 +65,9 @@ public class Enemy : Character
 	/// <param name="i_shootVector"></param>
 	void InstantiateShootObject(Vector3 i_shootVector)
 	{
-		if (Bullet == null) {
-			throw new System.NullReferenceException("m_shootObject");
+		foreach (Transform child in LauncherParent) {
+			child.GetComponent<Launcher>().launch(Bullet, PlayerTfm.position, 14, BulletParentTfm, i_shootVector);
 		}
-
-		if (LaunchTfm == null) {
-			throw new System.NullReferenceException("m_shootPoint");
-		}
-
-		var obj = Instantiate(Bullet, LaunchTfm.position, Quaternion.identity);
-		var rb = obj.GetComponent<Rigidbody>();
-		obj.transform.SetParent(BulletParentTfm);
-		obj.tag = MyBulletTag;
-
-		// 速さベクトルのままAddForce()を渡してはいけないぞ。力(速さ×重さ)に変換するんだ
-		var force = i_shootVector * rb.mass;
-
-		rb.AddForce(force, ForceMode.Impulse);
 	}
 
 	void ShootFixedAngle(Vector3 targetPos_, float angle)

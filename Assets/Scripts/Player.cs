@@ -291,7 +291,7 @@ public class Player : Character
 
 		prevStock = 0;
 
-		MyBulletTag = "PlayerBullet";
+		MyBulletLayer = "PlayerBullet";
 
 		setHp(Default_Hp);
 	}
@@ -401,12 +401,11 @@ public class Player : Character
 	/// </summary>
 	protected override void launch()
 	{
-		var obj = Instantiate(Bullet, LaunchTfm.position, Quaternion.identity);
 		var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		var direction = mousePos - LaunchTfm.position;
-		obj.GetComponent<Rigidbody>().velocity = direction.normalized * 40.0f;
-		obj.transform.SetParent(BulletParentTfm);
-		obj.tag = MyBulletTag;
+		foreach (Transform child in LauncherParent) {
+			child.GetComponent<Launcher>().launch(Bullet, mousePos, 13, BulletParentTfm, direction.normalized * 40.0f);
+		}
 	}
 
 	/// <summary>

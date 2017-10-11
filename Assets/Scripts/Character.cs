@@ -33,7 +33,7 @@ public class Character : MonoBehaviour
 	/// <summary>
 	/// 自分が発射する弾に設定するタグの名前
 	/// </summary>
-	public string MyBulletTag { protected set; get; }
+	public string MyBulletLayer { protected set; get; }
 	#endregion
 	/// <summary>
 	/// 消す地面のチップを判断するためのレイの長さ
@@ -50,6 +50,12 @@ public class Character : MonoBehaviour
 	/// </summary>
 	[SerializeField]
 	protected GameManager Gm;
+
+	/// <summary>
+	/// Launcherの親となるオブジェクト
+	/// </summary>
+	[SerializeField]
+	protected Transform LauncherParent;
 
 	/// <summary>
 	/// 体力をセット
@@ -107,10 +113,10 @@ public class Character : MonoBehaviour
 	/// <param name="obj">当たったもの</param>
 	protected void chechBullet(GameObject obj)
 	{
-		if (LayerMask.LayerToName(obj.layer) != "Bullet") {
+		if (obj.tag != "Bullet") {
 			return;
 		}
-		if (obj.tag == MyBulletTag) {
+		if (obj.tag == MyBulletLayer) {
 			return;
 		}
 
