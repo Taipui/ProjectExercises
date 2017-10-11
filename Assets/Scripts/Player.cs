@@ -86,11 +86,24 @@ namespace UnityChan
 		/// <summary>
 		/// デフォルトの体力
 		/// </summary>
-		const int Default_Hp = 3;		
+		const int Default_Hp = 3;
+
+		/// <summary>
+		/// GroundChipErase
+		/// </summary>
+		[SerializeField]
+		GroundChipEraser Gce;
+
+		/// <summary>
+		/// プレイヤーのCollider
+		/// </summary>
+		CapsuleCollider playerCollider;
 
 		// 初期化
-		void Start()
+		protected override void Start()
 		{
+			base.Start();
+
 			// Animatorコンポーネントを取得する
 			anim = GetComponent<Animator>();
 			// CapsuleColliderコンポーネントを取得する（カプセル型コリジョン）
@@ -106,6 +119,8 @@ namespace UnityChan
 			var stockBullets = new List<GameObject>();
 
 			MyBulletTag = "PlayerBullet";
+
+			setHp(Default_Hp);
 
 			this.FixedUpdateAsObservable().Subscribe(_ => {
 				float h = Input.GetAxis("Horizontal");              // 入力デバイスの水平軸をhで定義
@@ -312,6 +327,19 @@ namespace UnityChan
 		public override void onErased()
 		{
 			++stock.Value;
+		}
+
+		void OnCollisionEnter(Collision collision)
+		{
+			chechBullet(collision.gameObject);
+		}
+
+		/// <summary>
+		/// 死亡処理
+		/// </summary>
+		protected override void dead()
+		{
+			Gm.gameOver();
 		}
 	}
 }

@@ -41,12 +41,6 @@ public class Character : MonoBehaviour
 	const float Erase_GroundChip_Ray_Dist = -0.05f;
 
 	/// <summary>
-	/// GroundChipErase
-	/// </summary>
-	[SerializeField]
-	protected GroundChipEraser Gce;
-
-	/// <summary>
 	/// 体力
 	/// </summary>
 	readonly ReactiveProperty<int> hp = new ReactiveProperty<int>(1);
@@ -94,7 +88,7 @@ public class Character : MonoBehaviour
 	/// <summary>
 	/// ダメージ処理
 	/// </summary>
-	public void damage()
+	void damage()
 	{
 		--hp.Value;
 	}
@@ -106,5 +100,20 @@ public class Character : MonoBehaviour
 	{
 		// 派生クラスで実装
 	}
-}
 
+	/// <summary>
+	/// 当たったものが相手の弾かどうかを調べる
+	/// </summary>
+	/// <param name="obj">当たったもの</param>
+	protected void chechBullet(GameObject obj)
+	{
+		if (LayerMask.LayerToName(obj.layer) != "Bullet") {
+			return;
+		}
+		if (obj.tag == MyBulletTag) {
+			return;
+		}
+
+		damage();
+	}
+}

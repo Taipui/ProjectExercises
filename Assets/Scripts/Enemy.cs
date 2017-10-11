@@ -24,7 +24,7 @@ public class Enemy : Character
 		Observable.Interval(System.TimeSpan.FromSeconds(1.0f)).Where(x => Gm.CurrentGameState == GameManager.GameState.Play)
 			.Subscribe(_ => {
 			if (Random.Range(0, 2) == 0) {
-//				Gce.checkGroundChip();
+					onErased();
 			}
 		})
 		.AddTo(this);
@@ -69,14 +69,14 @@ public class Enemy : Character
 		}
 
 		var obj = Instantiate<GameObject>(Bullet, LaunchTfm.position, Quaternion.identity);
-		var rb = obj.GetComponent<Rigidbody2D>();
+		var rb = obj.GetComponent<Rigidbody>();
 		obj.transform.SetParent(BulletParentTfm);
 		obj.tag = MyBulletTag;
 
 		// 速さベクトルのままAddForce()を渡してはいけないぞ。力(速さ×重さ)に変換するんだ
 		var force = i_shootVector * rb.mass;
 
-		rb.AddForce(force, ForceMode2D.Impulse);
+		rb.AddForce(force, ForceMode.Impulse);
 	}
 
 	void ShootFixedAngle(Vector3 targetPos_, float angle)
@@ -137,5 +137,10 @@ public class Enemy : Character
 	protected override void dead()
 	{
 		Destroy(gameObject);
+	}
+
+	void OnCollisionEnter(Collision collision)
+	{
+		chechBullet(collision.gameObject);
 	}
 }
