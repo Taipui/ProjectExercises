@@ -24,7 +24,7 @@ public class Enemy : Character
 		Observable.Interval(System.TimeSpan.FromSeconds(1.0f)).Where(x => Gm.CurrentGameState == GameManager.GameState.Play)
 			.Subscribe(_ => {
 			if (Random.Range(0, 2) == 0) {
-				Gce.checkGroundChip();
+//				Gce.checkGroundChip();
 			}
 		})
 		.AddTo(this);

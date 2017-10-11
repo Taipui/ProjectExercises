@@ -14,6 +14,17 @@ public class Bullet : MonoBehaviour
 
 	const float Kill_Zone = -6.0f;
 
+	/// <summary>
+	/// 雪玉が地面に当たった時のエフェクト
+	/// </summary>
+	[SerializeField]
+	GameObject BulletEffect;
+
+	/// <summary>
+	/// 地面と当たったかどうか
+	/// </summary>
+	bool isCollide;
+
 	void Start ()
 	{
 		this.UpdateAsObservable().Where(x => transform.position.y < Kill_Zone)
@@ -28,12 +39,14 @@ public class Bullet : MonoBehaviour
 		if (collision.gameObject.tag != "Ground") {
 			return;
 		}
-		//		Destroy(GetComponent<Rigidbody2D>());
-		//var rb = GetComponent<Rigidbody2D>();
-		//rb.velocity = Vector2.zero;
-		//tag = "Ground";
-		Instantiate(GroundBullet, transform.position, Quaternion.identity);
+		if (!!isCollide) {
+			return;
+		}
+		isCollide = true;
 		Destroy(gameObject);
+		Instantiate(GroundBullet, transform.position, Quaternion.identity);
+		var obj = Instantiate(BulletEffect, transform.position, Quaternion.identity);
+		Destroy(obj, 0.5f * 2);
 	}
 }
 
