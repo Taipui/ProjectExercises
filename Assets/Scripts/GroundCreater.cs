@@ -46,14 +46,11 @@ public class GroundCreater : MonoBehaviour
 		//	wPos = First_WPos;
 		//}
 
-		var elapse = 0.0f;
-
 		for (var w = 0; w < Width_Num; ++w) {
 			for (var h = 0; h < Mathf.Lerp(0.0f, Height_Num, (Mathf.Sin(w * .1f) + 2.0f) / 3); ++h) {
 				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
 				obj.transform.SetParent(transform);
 				hPos += GroundChip.transform.localScale.y / 100;
-				elapse += Time.deltaTime;
 			}
 			wPos += GroundChip.transform.localScale.x / 100;
 			hPos = First_HPos;

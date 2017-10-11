@@ -21,8 +21,8 @@ GameObject:
   - component: {fileID: 4251926397706980}
   - component: {fileID: 212125039470701396}
   - component: {fileID: 114560932766416296}
-  - component: {fileID: 54486199562122894}
   - component: {fileID: 135185581740828834}
+  - component: {fileID: 54272251618169446}
   m_Layer: 9
   m_Name: Bullet
   m_TagString: Untagged
@@ -43,7 +43,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &54486199562122894
+--- !u!54 &54272251618169446
 Rigidbody:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}

@@ -21,11 +21,16 @@ public class Enemy : Character
 
 		MyBulletTag = "EnemyBullet";
 
-		Observable.Interval(System.TimeSpan.FromSeconds(1.0f)).Where(x => Gm.CurrentGameState == GameManager.GameState.Play)
+		Observable.Interval(System.TimeSpan.FromSeconds(1.0f)).Where(x => !!isPlay())
 			.Subscribe(_ => {
 			if (Random.Range(0, 2) == 0) {
 					onErased();
 			}
+		})
+		.AddTo(this);
+
+		this.UpdateAsObservable().Subscribe(_ => {
+
 		})
 		.AddTo(this);
 	}
@@ -35,7 +40,7 @@ public class Enemy : Character
 	/// </summary>
 	protected override void launch()
 	{
-		ShootFixedAngle(PlayerTfm.position, Random.Range(30.0f, 80.0f));
+		ShootFixedAngle(PlayerTfm.position, 60.0f);
 	}
 
 	Vector3 ConvertVectorToVector3(float i_v0, float angle, Vector3 targetPos_)
@@ -68,7 +73,7 @@ public class Enemy : Character
 			throw new System.NullReferenceException("m_shootPoint");
 		}
 
-		var obj = Instantiate<GameObject>(Bullet, LaunchTfm.position, Quaternion.identity);
+		var obj = Instantiate(Bullet, LaunchTfm.position, Quaternion.identity);
 		var rb = obj.GetComponent<Rigidbody>();
 		obj.transform.SetParent(BulletParentTfm);
 		obj.tag = MyBulletTag;
@@ -139,8 +144,8 @@ public class Enemy : Character
 		Destroy(gameObject);
 	}
 
-	void OnCollisionEnter(Collision collision)
+	void OnCollisionEnter(Collision col)
 	{
-		chechBullet(collision.gameObject);
+		chechBullet(col.gameObject);
 	}
 }
