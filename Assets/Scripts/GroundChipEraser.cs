@@ -23,10 +23,17 @@ public class GroundChipEraser : MonoBehaviour
 	[SerializeField]
 	Character Character;
 
+	/// <summary>
+	/// 地面のチップを消す用のCollider
+	/// </summary>
+	MeshCollider groundChipEraserCollider;
+
 	void Start ()
 	{
 		defaultYPos = transform.localPosition.y;
 		rb = GetComponent<Rigidbody>();
+		groundChipEraserCollider = GetComponent<MeshCollider>();
+		groundChipEraserCollider.enabled = false;
 	}
 
 	/// <summary>
@@ -34,6 +41,7 @@ public class GroundChipEraser : MonoBehaviour
 	/// </summary>
 	public void checkGroundChip()
 	{
+		groundChipEraserCollider.enabled = true;
 		rb.isKinematic = false;
 	}
 
@@ -42,8 +50,10 @@ public class GroundChipEraser : MonoBehaviour
 		if (!!rb.isKinematic) {
 			return;
 		}
+
 		Destroy(collision.gameObject);
 		rb.isKinematic= true;
+		groundChipEraserCollider.enabled = false;
 		transform.localPosition = new Vector3(transform.localPosition.x, defaultYPos);
 		Character.onErased();
 	}

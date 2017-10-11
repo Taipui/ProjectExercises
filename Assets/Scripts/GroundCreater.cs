@@ -49,7 +49,7 @@ public class GroundCreater : MonoBehaviour
 		var elapse = 0.0f;
 
 		for (var w = 0; w < Width_Num; ++w) {
-			for (var h = 0; h < Mathf.Lerp(0.0f, Height_Num, (Mathf.Sin(w * .1f) + 1.0f) / 2); ++h) {
+			for (var h = 0; h < Mathf.Lerp(0.0f, Height_Num, (Mathf.Sin(w * .1f) + 2.0f) / 3); ++h) {
 				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
 				obj.transform.SetParent(transform);
 				hPos += GroundChip.transform.localScale.y / 100;

@@ -53,6 +53,11 @@ namespace UnityChan
 		static int jumpState = Animator.StringToHash("Base Layer.Jump");
 		static int restState = Animator.StringToHash("Base Layer.Rest");
 
+		/// <summary>
+		/// プレイヤーの向いている方向
+		/// </summary>
+		readonly ReactiveProperty<string> dir = new ReactiveProperty<string>("D");
+
 		#region 弾関連
 		/// <summary>
 		/// 弾のストック数
@@ -125,8 +130,8 @@ namespace UnityChan
 			this.FixedUpdateAsObservable().Subscribe(_ => {
 				float h = Input.GetAxis("Horizontal");              // 入力デバイスの水平軸をhで定義
 				float v = Input.GetAxis("Vertical");                // 入力デバイスの垂直軸をvで定義
-				anim.SetFloat("Speed", h);                          // Animator側で設定している"Speed"パラメタにvを渡す
-				anim.SetFloat("Direction", h);                      // Animator側で設定している"Direction"パラメタにhを渡す
+				anim.SetFloat("Speed", Mathf.Abs(h));                          // Animator側で設定している"Speed"パラメタにvを渡す
+//				anim.SetFloat("Direction", h);                      // Animator側で設定している"Direction"パラメタにhを渡す
 				anim.speed = animSpeed;                             // Animatorのモーション再生速度に animSpeedを設定する
 				currentBaseState = anim.GetCurrentAnimatorStateInfo(0); // 参照用のステート変数にBase Layer (0)の現在のステートを設定する
 				rb.useGravity = true;//ジャンプ中に重力を切るので、それ以外は重力の影響を受けるようにする
@@ -137,10 +142,8 @@ namespace UnityChan
 				velocity = new Vector3(h, 0, 0);        // 上下のキー入力からZ軸方向の移動量を取得
 
 				//以下のvの閾値は、Mecanim側のトランジションと一緒に調整する
-				if (h > 0.1) {
+				if (Mathf.Abs(h) > 0.1) {
 					velocity *= forwardSpeed;       // 移動速度を掛ける
-				} else if (h < -0.1) {
-					velocity *= backwardSpeed;  // 移動速度を掛ける
 				}
 
 				if (Input.GetButtonDown("Jump")) {  // スペースキーを入力したら
@@ -166,14 +169,14 @@ namespace UnityChan
 
 				}
 
-
-				// 上下のキー入力でキャラクターを移動させる
 				transform.localPosition += velocity * Time.fixedDeltaTime;
 
-				// 左右のキー入力でキャラクタをY軸で旋回させる
-	//			transform.Rotate(0, h * rotateSpeed, 0);
-
-
+				if (h > 0) {
+					dir.Value = "D";
+				} else if (h < 0) {
+					dir.Value = "A";
+				}
+				
 				// 以下、Animatorの各ステート中での処理
 				// Locomotion中
 				// 現在のベースレイヤーがlocoStateの時
@@ -237,6 +240,19 @@ namespace UnityChan
 				}
 			})
 			.AddTo(this);
+
+			dir.AsObservable().Where(dir_ => dir_ == "A")
+				.Subscribe(dir_ => {
+					transform.Rotate(0, 180.0f, 0);
+				})
+				.AddTo(this);
+
+			dir.SkipLatestValueOnSubscribe().AsObservable()
+				.Where(dir_ => dir_ == "D")
+				.Subscribe(dir_ => {
+					transform.Rotate(0, 180.0f, 0);
+				})
+				.AddTo(this);
 
 			this.UpdateAsObservable().Where(x => Gm.CurrentGameState == GameManager.GameState.Play && !!Input.GetMouseButtonDown(1) && stock.Value < Max_Stock && currentBaseState.nameHash != jumpState)
 				.Subscribe(_ => {
@@ -331,7 +347,9 @@ namespace UnityChan
 
 		void OnCollisionEnter(Collision collision)
 		{
+
 			chechBullet(collision.gameObject);
+
 		}
 
 		/// <summary>

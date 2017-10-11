@@ -100,7 +100,7 @@ public class Enemy : Character
 		var distance = Vector2.Distance(targetPos, startPos);
 
 		var x = distance;
-		var g = Physics2D.gravity.y;
+		var g = Physics.gravity.y;
 		var y0 = PlayerTfm.position.y;
 		var y = targetPos_.y;
 
