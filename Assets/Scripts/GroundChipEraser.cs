@@ -42,8 +42,8 @@ public class GroundChipEraser : MonoBehaviour
 		if (!!rb.isKinematic) {
 			return;
 		}
-		rb.isKinematic= true;
 		Destroy(collision.gameObject);
+		rb.isKinematic= true;
 		transform.localPosition = new Vector3(transform.localPosition.x, defaultYPos);
 		Character.onErased();
 	}

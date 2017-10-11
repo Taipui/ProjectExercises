@@ -34,7 +34,7 @@ public class Bullet : MonoBehaviour
 			.AddTo(this);
 	}
 
-	void OnCollisionEnter2D(Collision2D collision)
+	void OnCollisionEnter(Collision collision)
 	{
 		var obj = Instantiate(BulletEffect, transform.position, Quaternion.identity);
 		Destroy(obj, 0.5f * 2);
