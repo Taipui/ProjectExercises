@@ -36,6 +36,10 @@ public class Character : MonoBehaviour
 	/// </summary>
 	[SerializeField]
 	protected Transform BulletParentTfm;
+	/// <summary>
+	/// 自分が発射する弾に設定するタグの名前
+	/// </summary>
+	public string MyBulletTag { protected set; get; }
 	#endregion
 	/// <summary>
 	/// 消す地面のチップを判断するためのレイの長さ

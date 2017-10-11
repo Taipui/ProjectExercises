@@ -15,12 +15,15 @@ public class CharacterCollider : MonoBehaviour
 
 	void Start ()
 	{
-
+		Debug.Log(Character.MyBulletTag);
 	}
 
 	void OnCollisionEnter2D(Collision2D collision)
 	{
-		if (collision.gameObject.tag != "Bullet") {
+		if (LayerMask.LayerToName(collision.gameObject.layer) != "Bullet") {
+			return;
+		}
+		if (collision.gameObject.tag == Character.MyBulletTag) {
 			return;
 		}
 

@@ -131,6 +131,8 @@ public class Player : Character
 
 		setHp(Default_Hp);
 
+		MyBulletTag = "PlayerBullet";
+
 		this.FixedUpdateAsObservable().Subscribe(_ => {
 			anim.SetFloat("Speed", Mathf.Abs(currentSpeed));
 			if (!isJumping) {
@@ -291,6 +293,7 @@ public class Player : Character
 		var direction = mousePos - LaunchTfm.position;
 		obj.GetComponent<Rigidbody2D>().velocity = direction.normalized * 40.0f;
 		obj.transform.SetParent(BulletParentTfm);
+		obj.tag = MyBulletTag;
 	}
 
 	/// <summary>
