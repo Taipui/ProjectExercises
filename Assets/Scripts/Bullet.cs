@@ -36,6 +36,8 @@ public class Bullet : MonoBehaviour
 
 	void OnCollisionEnter2D(Collision2D collision)
 	{
+		var obj = Instantiate(BulletEffect, transform.position, Quaternion.identity);
+		Destroy(obj, 0.5f * 2);
 		if (collision.gameObject.tag != "Ground") {
 			return;
 		}
@@ -45,8 +47,6 @@ public class Bullet : MonoBehaviour
 		isCollide = true;
 		Destroy(gameObject);
 		Instantiate(GroundBullet, transform.position, Quaternion.identity);
-		var obj = Instantiate(BulletEffect, transform.position, Quaternion.identity);
-		Destroy(obj, 0.5f * 2);
 	}
 }
 
