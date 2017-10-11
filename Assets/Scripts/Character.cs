@@ -4,6 +4,9 @@ using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 
+/// <summary>
+/// 登場人物すべてに共通するクラス
+/// </summary>
 public class Character : MonoBehaviour
 {
 	/// <summary>
@@ -44,6 +47,20 @@ public class Character : MonoBehaviour
 	/// </summary>
 	[SerializeField]
 	protected GroundChipEraser Gce;
+
+	/// <summary>
+	/// 体力
+	/// </summary>
+	readonly ReactiveProperty<int> hp = new ReactiveProperty<int>(0);
+
+	/// <summary>
+	/// 体力をセット
+	/// </summary>
+	/// <param name="val">セットする体力</param>
+	protected void setHp(int val)
+	{
+		hp.Value = val;
+	}
 
 	protected virtual void Start ()
 	{

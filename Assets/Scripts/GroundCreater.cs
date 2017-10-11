@@ -1,12 +1,10 @@
-﻿//
-//GroundCreater.cs
-//地面を生成するスクリプト
-//2017/10/4 Taipui
-//
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 地面の生成に関するクラス
+/// </summary>
 public class GroundCreater : MonoBehaviour
 {
 	/// <summary>
@@ -18,7 +16,7 @@ public class GroundCreater : MonoBehaviour
 	/// <summary>
 	/// 横に並べる個数
 	/// </summary>
-	const int Width_Num = 80;
+	const int Width_Num = 160;
 	/// <summary>
 	/// 縦に並べる個数
 	/// </summary>

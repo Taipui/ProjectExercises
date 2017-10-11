@@ -105,6 +105,11 @@ public class Player : Character
 	/// </summary>
 	readonly ReactiveProperty<bool> isSp = new ReactiveProperty<bool>(false);
 
+	/// <summary>
+	/// デフォルトの体力
+	/// </summary>
+	const int Default_Hp = 3;
+
 	protected override void Start ()
 	{
 		base.Start();
@@ -122,6 +127,8 @@ public class Player : Character
 		prevStock = 0;
 
 		List<GameObject> StockBullets = new List<GameObject>();
+
+		setHp(Default_Hp);
 
 		this.FixedUpdateAsObservable().Subscribe(_ => {
 			anim.SetFloat("Speed", Mathf.Abs(currentSpeed));
