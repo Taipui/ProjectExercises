@@ -30,7 +30,7 @@ public class Enemy : Character
 		.AddTo(this);
 
 		this.UpdateAsObservable().Subscribe(_ => {
-
+			move();
 		})
 		.AddTo(this);
 	}
@@ -136,5 +136,18 @@ public class Enemy : Character
 	void OnCollisionEnter(Collision col)
 	{
 		chechBullet(col.gameObject);
+	}
+
+	void move()
+	{
+		var bias = 1.0f;
+		var moveSpeed = 0.1f;
+		var diff = PlayerTfm.position.y - transform.position.y;
+		if (diff < -bias) {
+			transform.Translate(new Vector3(0.0f, -moveSpeed));
+		} else if (diff > bias) {
+			transform.Translate(new Vector3(0.0f, moveSpeed));
+
+		}
 	}
 }

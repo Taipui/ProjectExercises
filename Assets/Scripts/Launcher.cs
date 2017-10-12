@@ -13,7 +13,7 @@ public class Launcher : MonoBehaviour
 
 	public void launch(GameObject bullet, Vector3 targetPos, int layerNo, Transform parent, Vector3 vec)
 	{
-		var obj = Instantiate(bullet, transform.position, Quaternion.identity);
+		var obj = Instantiate(bullet, new Vector3(transform.position.x, transform.position.y), Quaternion.identity);
 		var rb = obj.GetComponent<Rigidbody>();
 		obj.transform.SetParent(parent);
 		if (layerNo == 13) {
