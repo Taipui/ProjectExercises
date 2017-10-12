@@ -138,16 +138,18 @@ public class Enemy : Character
 		chechBullet(col.gameObject);
 	}
 
+	/// <summary>
+	/// キャラクターを動かす
+	/// </summary>
 	void move()
 	{
 		var bias = 1.0f;
-		var moveSpeed = 0.1f;
+		var moveSpeed = 0.05f;
 		var diff = PlayerTfm.position.y - transform.position.y;
 		if (diff < -bias) {
 			transform.Translate(new Vector3(0.0f, -moveSpeed));
 		} else if (diff > bias) {
 			transform.Translate(new Vector3(0.0f, moveSpeed));
-
 		}
 	}
 }

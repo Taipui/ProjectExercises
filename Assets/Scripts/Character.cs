@@ -5,7 +5,7 @@ using UniRx;
 using UniRx.Triggers;
 
 /// <summary>
-/// 登場人物すべてに共通するクラス
+/// キャラクターすべてに共通するクラス
 /// </summary>
 public class Character : MonoBehaviour
 {

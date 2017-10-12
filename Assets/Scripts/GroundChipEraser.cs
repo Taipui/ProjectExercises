@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 
+/// 地面のチップを消すためのクラス
 /// </summary>
 public class GroundChipEraser : MonoBehaviour
 {

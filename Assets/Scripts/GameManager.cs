@@ -28,6 +28,9 @@ public class GameManager : MonoBehaviour
 		GameOver
 	}
 
+	/// <summary>
+	/// 現在のゲームの状態
+	/// </summary>
 	public GameState CurrentGameState { private set; get; }
 
 	/// <summary>
@@ -44,4 +47,3 @@ public class GameManager : MonoBehaviour
 		CurrentGameState = GameState.Play;
 	}
 }
-

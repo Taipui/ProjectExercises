@@ -25,28 +25,34 @@ public class Bullet : MonoBehaviour
 	/// </summary>
 	bool isCollide;
 
+	/// <summary>
+	/// コライダ
+	/// </summary>
+	SphereCollider col;
+
 	void Start ()
 	{
+		col = GetComponent<SphereCollider>();
+
 		this.UpdateAsObservable().Where(x => transform.position.y < Kill_Zone)
 			.Subscribe(_ => {
 				Destroy(gameObject);
 			})
 			.AddTo(this);
-	}
 
-	void OnCollisionEnter(Collision collision)
-	{
-		var obj = Instantiate(BulletEffect, transform.position, Quaternion.identity);
-		Destroy(obj, 0.5f * 2);
-		if (collision.gameObject.tag != "Ground") {
-			return;
-		}
-		if (!!isCollide) {
-			return;
-		}
-		isCollide = true;
-		Destroy(gameObject);
-		Instantiate(GroundBullet, transform.position, Quaternion.identity);
+		col.OnCollisionEnterAsObservable().Subscribe(colObj => {
+			var obj = Instantiate(BulletEffect, transform.position, Quaternion.identity);
+			Destroy(obj, 0.5f * 2);
+			if (colObj.gameObject.tag != "Ground") {
+				return;
+			}
+			if (!!isCollide) {
+				return;
+			}
+			isCollide = true;
+			Destroy(gameObject);
+			Instantiate(GroundBullet, transform.position, Quaternion.identity);
+		})
+		.AddTo(this);
 	}
 }
-

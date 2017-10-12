@@ -31,4 +31,3 @@ public class TargetRotator : MonoBehaviour
 		.AddTo(this);
 	}
 }
-

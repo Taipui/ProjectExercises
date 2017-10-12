@@ -35,7 +35,7 @@ public class Player : Character
 	/// </summary>
 	const float Jump_Power = 3.0f;
 	/// <summary>
-	/// プレイヤーのコライダ
+	/// キャラクターのコライダ
 	/// </summary>
 	CapsuleCollider col;
 	/// <summary>
@@ -221,16 +221,6 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		h.AsObservable().Where(val => val == 0)
-			.Subscribe(_ => {
-			})
-			.AddTo(this);
-
-		h.AsObservable().Where(val => val != 0)
-			.Subscribe(_ => {
-			})
-			.AddTo(this);
-
 		dir.AsObservable().Where(dir_ => dir_ == "A")
 			.Subscribe(dir_ => {
 				transform.Rotate(0, 180.0f, 0);
@@ -286,6 +276,11 @@ public class Player : Character
 				Time.timeScale = 1.0f;
 			})
 			.AddTo(this);
+
+		col.OnCollisionEnterAsObservable().Subscribe(colObj => {
+			chechBullet(colObj.gameObject);
+		})
+		.AddTo(this);
 	}
 
 	/// <summary>
@@ -424,11 +419,6 @@ public class Player : Character
 	public override void onErased()
 	{
 		++stock.Value;
-	}
-
-	void OnCollisionEnter(Collision col)
-	{
-		chechBullet(col.gameObject);
 	}
 
 	/// <summary>
