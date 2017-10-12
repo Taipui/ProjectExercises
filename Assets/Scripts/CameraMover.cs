@@ -17,11 +17,13 @@ public class CameraMover : MonoBehaviour
 
 	void Start ()
 	{
+		var maxX = PlayerTfm.position.x;
+
 		PlayerTfm.UpdateAsObservable()
 			.Subscribe(_ => {
-				transform.position = new Vector3(PlayerTfm.position.x, transform.position.y, transform.position.z);
-		})
-		.AddTo(this);
+				transform.position = new Vector3(Mathf.Max(maxX, PlayerTfm.position.x), transform.position.y, transform.position.z);
+				maxX = transform.position.x;
+			})
+			.AddTo(this);
 	}
 }
-
