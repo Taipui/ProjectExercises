@@ -21,7 +21,7 @@ public class Enemy : Character
 
 		MyBulletLayer = "EnemyBullet";
 
-		Observable.Interval(System.TimeSpan.FromSeconds(1.0f)).Where(x => !!isPlay())
+		Observable.Interval(System.TimeSpan.FromSeconds(0.2f)).Where(x => !!isPlay())
 			.Subscribe(_ => {
 			if (Random.Range(0, 2) == 0) {
 					onErased();
@@ -66,6 +66,9 @@ public class Enemy : Character
 	void InstantiateShootObject(Vector3 i_shootVector)
 	{
 		foreach (Transform child in LauncherParent) {
+			if (Random.Range(0, 2) == 0) {
+				continue;
+			}
 			child.GetComponent<Launcher>().launch(Bullet, PlayerTfm.position, 14, BulletParentTfm, i_shootVector);
 		}
 	}

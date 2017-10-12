@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 23893078141514958}
   - component: {fileID: 114142828479637012}
   - component: {fileID: 114217928286025876}
+  - component: {fileID: 114168580020842112}
   m_Layer: 12
   m_Name: Assist
   m_TagString: Untagged
@@ -91,6 +92,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 702daf3309a837f46a1506c6c82d2b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114168580020842112
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1085017486791742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c1ffef7405550443b92d68870a49a99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114217928286025876

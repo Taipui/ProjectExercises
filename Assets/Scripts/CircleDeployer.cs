@@ -19,16 +19,18 @@ public class CircleDeployer : MonoBehaviour
 			childList.Add(child.gameObject);
 		}
 
-		var angleDiff = 360.0f / (float)childList.Count;
+		var angleDiff = 360.0f / childList.Count;
 
 		for (var i = 0; i < childList.Count; ++i) {
 			var childPos = transform.position;
 
 			var angle = (90.0f - angleDiff * i) * Mathf.Deg2Rad;
 			childPos.x += Radius * Mathf.Cos(angle);
-			childPos.y += Radius * Mathf.Sin(angle);
+			childPos.z += Radius * Mathf.Sin(angle);
 
 			childList[i].transform.position = childPos;
+
+			childList[i].gameObject.GetComponent<FloatMover>().setIndex(i);
 		}
 	}
 }
