@@ -116,7 +116,7 @@ public class Character : MonoBehaviour
 		if (obj.tag != "Bullet") {
 			return;
 		}
-		if (obj.tag == MyBulletLayer) {
+		if (LayerMask.LayerToName(obj.layer) == MyBulletLayer) {
 			return;
 		}
 
