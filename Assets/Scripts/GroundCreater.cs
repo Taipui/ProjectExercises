@@ -46,8 +46,26 @@ public class GroundCreater : MonoBehaviour
 		//	wPos = First_WPos;
 		//}
 
+		//for (var w = 0; w < Width_Num; ++w) {
+		//	for (var h = 0; h < Mathf.Lerp(0.0f, Height_Num, (Mathf.Sin(w * .1f) + 2.0f) / 3); ++h) {
+		//		var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
+		//		obj.transform.SetParent(transform);
+		//		hPos += GroundChip.transform.localScale.y / 100;
+		//	}
+		//	wPos += GroundChip.transform.localScale.x / 100;
+		//	hPos = First_HPos;
+		//}
+
+		stage1(wPos, hPos);
+//		stage2(wPos, hPos);
+//		stage3(wPos, hPos);
+
+	}
+
+	void stage1(float wPos, float hPos)
+	{
 		for (var w = 0; w < Width_Num; ++w) {
-			for (var h = 0; h < Mathf.Lerp(0.0f, Height_Num, (Mathf.Sin(w * .1f) + 2.0f) / 3); ++h) {
+			for (var h = 0; h < Height_Num; ++h) {
 				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
 				obj.transform.SetParent(transform);
 				hPos += GroundChip.transform.localScale.y / 100;
@@ -55,5 +73,41 @@ public class GroundCreater : MonoBehaviour
 			wPos += GroundChip.transform.localScale.x / 100;
 			hPos = First_HPos;
 		}
+	}
+
+	void stage2(float wPos, float hPos)
+	{
+		for (var w = 0; w < Width_Num; ++w) {
+			for (var h = 0; h < Height_Num; ++h) {
+				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
+				obj.transform.SetParent(transform);
+				hPos += GroundChip.transform.localScale.y / 100;
+			}
+			wPos += GroundChip.transform.localScale.x / 100;
+			hPos = First_HPos;
+		}
+	}
+
+	void stage3(float wPos, float hPos)
+	{
+		for (var w = 0; w < Width_Num; ++w) {
+			for (var h = 0; h < Height_Num; ++h) {
+				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
+				obj.transform.SetParent(transform);
+				hPos += GroundChip.transform.localScale.y / 100;
+			}
+			wPos += GroundChip.transform.localScale.x / 100;
+			hPos = First_HPos;
+		}
+	}
+
+	void stage4()
+	{
+
+	}
+
+	void stage5()
+	{
+
 	}
 }

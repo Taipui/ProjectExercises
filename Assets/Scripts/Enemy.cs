@@ -40,81 +40,12 @@ public class Enemy : Character
 	/// </summary>
 	protected override void launch()
 	{
-		ShootFixedAngle(PlayerTfm.position, 60.0f);
-	}
-
-	Vector3 ConvertVectorToVector3(float i_v0, float angle, Vector3 targetPos_)
-	{
-		var startPos = LaunchTfm.position;
-		var targetPos = targetPos_;
-		startPos.y = 0.0f;
-		targetPos.y = 0.0f;
-
-		var dir = (targetPos - startPos).normalized;
-		var yawRot = Quaternion.FromToRotation(Vector3.right, dir);
-		var vec = i_v0 * Vector3.right;
-
-		vec = yawRot * Quaternion.AngleAxis(angle, Vector3.forward) * vec;
-
-		return vec;
-	}
-
-	/// <summary>
-	/// 発射する弾を作成
-	/// </summary>
-	/// <param name="i_shootVector"></param>
-	void InstantiateShootObject(Vector3 i_shootVector)
-	{
 		foreach (Transform child in LauncherParent) {
 			if (Random.Range(0, 2) == 0) {
 				continue;
 			}
-			child.GetComponent<Launcher>().launch(Bullet, PlayerTfm.position, 14, BulletParentTfm, i_shootVector);
+			AI.ShootFixedAngle(child.position, PlayerTfm.position, 60.0f, child.gameObject.GetComponent<Launcher>(), Bullet, BulletParentTfm);
 		}
-	}
-
-	void ShootFixedAngle(Vector3 targetPos_, float angle)
-	{
-		var speedVec = ComputeVectorFromAngle(targetPos_, angle);
-		if (speedVec <= 0.0f) {
-			// その位置に着地させることは不可能
-			Debug.LogWarning("!!");
-			return;
-		}
-
-		var vec = ConvertVectorToVector3(speedVec, angle, targetPos_);
-		InstantiateShootObject(vec);
-	}
-
-	float ComputeVectorFromAngle(Vector3 targetPos_, float angle)
-	{
-		// xz平面の距離を計算
-		Vector2 startPos = LaunchTfm.position;
-		Vector2 targetPos = PlayerTfm.position;
-		var distance = Vector2.Distance(targetPos, startPos);
-
-		var x = distance;
-		var g = Physics.gravity.y;
-		var y0 = PlayerTfm.position.y;
-		var y = targetPos_.y;
-
-		// Mathf.Cos()、Mathf.Tan()に渡す値の単位はラジアンなので変換
-		var rad = angle * Mathf.Deg2Rad;
-
-		var cos = Mathf.Cos(rad);
-		var tan = Mathf.Tan(rad);
-
-		var v0Square = g * x * x / (2 * cos * cos * (y - y0 - x * tan));
-
-		// 負数を平方根計算すると虚数になってしまう。
-		// 虚数はfloatでは表現できない。
-		// こういう場合はこれ以上の計算は打ち切ろう。
-		if (v0Square <= 0.0f) {
-			return 0.0f;
-		}
-
-		var v0 = Mathf.Sqrt(v0Square);
-		return v0;
 	}
 
 	/// <summary>
