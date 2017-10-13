@@ -36,11 +36,23 @@ public class GroundCreater : MonoBehaviour
 	/// </summary>
 	float wPos;
 
+	/// <summary>
+	/// 1回のcreateで生成する列数
+	/// </summary>
 	int wNum;
+	/// <summary>
+	/// 現在まで生成した列数
+	/// </summary>
 	int currentWNum;
 
+	/// <summary>
+	/// ゲーム開始時に生成する列数
+	/// </summary>
 	const int Pre_Create_Num = 100;
 
+	/// <summary>
+	/// 現在のステージ
+	/// </summary>
 	int stage;
 
 	void Start ()
@@ -50,55 +62,128 @@ public class GroundCreater : MonoBehaviour
 		currentWNum = 0;
 		stage = 1;
 
-		//for (var h = 0; h < Height_Num; ++h) {
-		//	for (var w = 0; w < Width_Num; ++w) {
-		//		var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
-		//		obj.transform.SetParent(transform);
-		//		wPos += GroundChip.transform.localScale.x / 100;
-		//	}
-		//	hPos += GroundChip.transform.localScale.y / 100;
-		//	wPos = First_WPos;
-		//}
-
-		//for (var w = 0; w < Width_Num; ++w) {
-		//	for (var h = 0; h < Mathf.Lerp(0.0f, Height_Num, (Mathf.Sin(w * .1f) + 2.0f) / 3); ++h) {
-		//		var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
-		//		obj.transform.SetParent(transform);
-		//		hPos += GroundChip.transform.localScale.y / 100;
-		//	}
-		//	wPos += GroundChip.transform.localScale.x / 100;
-		//	hPos = First_HPos;
-		//}
-
 		preCreate();
-
-//		stage_2();
 	}
 
+	/// <summary>
+	/// 事前に生成する
+	/// </summary>
 	void preCreate()
 	{
 		stage1();
 	}
 
+	/// <summary>
+	/// ステージを生成する
+	/// </summary>
 	public void create()
 	{
 		wNum += 2;
 		stage1();
 		stage2();
-
-		//		stage_2();
+		stage3();
+		stage4();
+		stage5();
 	}
 
+	/// <summary>
+	/// ステージ1(少し平坦なマップ)
+	/// </summary>
 	void stage1()
 	{
-		if (stage >= 2) {
+		if (stage != 1) {
+			return;
+		}
+		normalStage();
+	}
+
+	/// <summary>
+	/// ステージ2(坂を上ったり下がったり反応を楽しむステージ)
+	/// </summary>
+	void stage2()
+	{
+		if (stage != 2) {
+			return;
+		}
+		normalStage();
+	}
+
+	/// <summary>
+	/// ステージ3(風の能力が使いやすいステージ)
+	/// </summary>
+	void stage3()
+	{
+		if (stage != 3) {
+			return;
+		}
+		normalStage();
+	}
+
+	/// <summary>
+	/// ステージ4(凹凸の激しいマップ)
+	/// </summary>
+	void stage4()
+	{
+		if (stage != 4) {
 			return;
 		}
 		for (; currentWNum < wNum; ++currentWNum) {
 			if (wNum >= Width_Num) {
-				++stage;
-				wNum = 0;
-				currentWNum = 0;
+				stageTransition();
+				return;
+			}
+			var hPos = First_HPos;
+			for (var h = 0; h < Mathf.Lerp(0.0f, Height_Num, (Mathf.Sin(currentWNum * 3) + 1.0f) / 2); ++h) {
+				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
+				obj.transform.SetParent(transform);
+				hPos += GroundChip.transform.localScale.y / 100;
+			}
+			wPos += GroundChip.transform.localScale.x / 100;
+		}
+	}
+
+	/// <summary>
+	/// ステージ5(すべての力を使ってぐれちゃんを倒すマップ)
+	/// </summary>
+	void stage5()
+	{
+		if (stage != 5) {
+			return;
+		}
+		for (; currentWNum < wNum; ++currentWNum) {
+			if (wNum >= Width_Num) {
+				stageTransition();
+				return;
+			}
+			var hPos = First_HPos;
+			for (var h = 0; h < Mathf.Lerp(0.0f, Height_Num, (Mathf.Sin(currentWNum * .1f) + 2.0f) / 3); ++h) {
+				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
+				obj.transform.SetParent(transform);
+				hPos += GroundChip.transform.localScale.y / 100;
+			}
+			wPos += GroundChip.transform.localScale.x / 100;
+			hPos = First_HPos;
+		}
+	}
+
+	/// <summary>
+	/// ステージ遷移に必要な処理
+	/// </summary>
+	void stageTransition()
+	{
+		++stage;
+		wNum = 0;
+		currentWNum = 0;
+	}
+
+	/// <summary>
+	/// ただ平坦なステージ
+	/// </summary>
+	void normalStage()
+	{
+		for (; currentWNum < wNum; ++currentWNum) {
+			if (wNum >= Width_Num) {
+				stageTransition();
 				return;
 			}
 			var hPos = First_HPos;
@@ -111,30 +196,9 @@ public class GroundCreater : MonoBehaviour
 		}
 	}
 
-	void stage2()
-	{
-		if (stage <= 1) {
-			return;
-		}
-		//		stage1();
-		sinStage();
-	}
-
-	void stage3()
-	{
-		stage1();
-	}
-
-	void stage4()
-	{
-
-	}
-
-	void stage5()
-	{
-
-	}
-
+	/// <summary>
+	/// サイン波のテストステージ
+	/// </summary>
 	void sinStage()
 	{
 		var hPos = First_HPos;
@@ -146,20 +210,6 @@ public class GroundCreater : MonoBehaviour
 			}
 			wPos += GroundChip.transform.localScale.x / 100;
 			hPos = First_HPos;
-		}
-	}
-
-	void stage_2()
-	{
-		var hPos = First_HPos;
-		for (var h = 0; h < Height_Num; ++h) {
-			for (var w = 0; w < Width_Num; ++w) {
-				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
-				obj.transform.SetParent(transform);
-				wPos += GroundChip.transform.localScale.x / 100;
-			}
-			hPos += GroundChip.transform.localScale.y / 100;
-			wPos = First_WPos;
 		}
 	}
 }

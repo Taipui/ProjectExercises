@@ -25,6 +25,9 @@ public class CameraMover : MonoBehaviour
 	/// </summary>
 	const float Erase_Threshold = 0.1f;
 
+	/// <summary>
+	/// GroundCreater
+	/// </summary>
 	[SerializeField]
 	GroundCreater Gc;
 
