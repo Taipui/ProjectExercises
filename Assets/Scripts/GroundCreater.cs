@@ -31,10 +31,24 @@ public class GroundCreater : MonoBehaviour
 	/// </summary>
 	const float First_HPos = -4.985f;
 
+	/// <summary>
+	/// ステージ毎の地面のチップを置き始めるX座標
+	/// </summary>
+	float wPos;
+
+	int wNum;
+	int currentWNum;
+
+	const int Pre_Create_Num = 100;
+
+	int stage;
+
 	void Start ()
 	{
-		var wPos = First_WPos;
-		var hPos = First_HPos;
+		wPos = First_WPos;
+		wNum = Pre_Create_Num;
+		currentWNum = 0;
+		stage = 1;
 
 		//for (var h = 0; h < Height_Num; ++h) {
 		//	for (var w = 0; w < Width_Num; ++w) {
@@ -56,49 +70,59 @@ public class GroundCreater : MonoBehaviour
 		//	hPos = First_HPos;
 		//}
 
-		stage1(wPos, hPos);
-//		stage2(wPos, hPos);
-//		stage3(wPos, hPos);
+		//		preCreate();
 
+		stage_2();
 	}
 
-	void stage1(float wPos, float hPos)
+	void preCreate()
 	{
-		for (var w = 0; w < Width_Num; ++w) {
+		stage1();
+	}
+
+	public void create()
+	{
+		//++wNum;
+		//stage1();
+		//stage2();
+
+		stage_2();
+	}
+
+	void stage1()
+	{
+		if (stage >= 2) {
+			return;
+		}
+		for (; currentWNum < wNum; ++currentWNum) {
+			if (wNum >= Width_Num) {
+				++stage;
+				wNum = 0;
+				currentWNum = 0;
+				return;
+			}
+			var hPos = First_HPos;
 			for (var h = 0; h < Height_Num; ++h) {
 				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
 				obj.transform.SetParent(transform);
 				hPos += GroundChip.transform.localScale.y / 100;
 			}
 			wPos += GroundChip.transform.localScale.x / 100;
-			hPos = First_HPos;
 		}
 	}
 
-	void stage2(float wPos, float hPos)
+	void stage2()
 	{
-		for (var w = 0; w < Width_Num; ++w) {
-			for (var h = 0; h < Height_Num; ++h) {
-				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
-				obj.transform.SetParent(transform);
-				hPos += GroundChip.transform.localScale.y / 100;
-			}
-			wPos += GroundChip.transform.localScale.x / 100;
-			hPos = First_HPos;
+		if (stage <= 1) {
+			return;
 		}
+		//		stage1();
+		sinStage();
 	}
 
-	void stage3(float wPos, float hPos)
+	void stage3()
 	{
-		for (var w = 0; w < Width_Num; ++w) {
-			for (var h = 0; h < Height_Num; ++h) {
-				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
-				obj.transform.SetParent(transform);
-				hPos += GroundChip.transform.localScale.y / 100;
-			}
-			wPos += GroundChip.transform.localScale.x / 100;
-			hPos = First_HPos;
-		}
+		stage1();
 	}
 
 	void stage4()
@@ -109,5 +133,33 @@ public class GroundCreater : MonoBehaviour
 	void stage5()
 	{
 
+	}
+
+	void sinStage()
+	{
+		var hPos = First_HPos;
+		for (; currentWNum < wNum; ++currentWNum) {
+			for (var h = 0; h < Mathf.Lerp(0.0f, Height_Num, (Mathf.Sin(currentWNum * .1f) + 2.0f) / 3); ++h) {
+				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
+				obj.transform.SetParent(transform);
+				hPos += GroundChip.transform.localScale.y / 100;
+			}
+			wPos += GroundChip.transform.localScale.x / 100;
+			hPos = First_HPos;
+		}
+	}
+
+	void stage_2()
+	{
+		var hPos = First_HPos;
+		for (var h = 0; h < Height_Num; ++h) {
+			for (var w = 0; w < Width_Num; ++w) {
+				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
+				obj.transform.SetParent(transform);
+				wPos += GroundChip.transform.localScale.x / 100;
+			}
+			hPos += GroundChip.transform.localScale.y / 100;
+			wPos = First_WPos;
+		}
 	}
 }
