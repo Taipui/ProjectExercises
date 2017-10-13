@@ -92,9 +92,9 @@ public class GroundCreater : MonoBehaviour
 	{
 		wNum += 2;
 		stage1();
-//		stage2();
-//		stage3();
-//		stage4();
+		stage2();
+		stage3();
+		stage4();
 		stage5();
 	}
 
