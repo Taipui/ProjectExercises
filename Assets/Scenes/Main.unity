@@ -4155,7 +4155,7 @@ GameObject:
   - component: {fileID: 247891882}
   - component: {fileID: 247891884}
   m_Layer: 11
-  m_Name: Cylinder
+  m_Name: GroundChipEraser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
