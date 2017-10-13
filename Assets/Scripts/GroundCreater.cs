@@ -55,12 +55,15 @@ public class GroundCreater : MonoBehaviour
 	/// </summary>
 	int stage;
 
-	float cnt = 0.1f;
-	int hoge = 0;
-
-	int prevSign = 1;
-
-	bool flg = false;
+	/// <summary>
+	/// 前フレームのSinの符号
+	/// </summary>
+	int prevSign;
+	/// <summary>
+	/// 波を細かくしていく度合い
+	/// </summary>
+	const float Wave_Fineness_Add_Val = 0.005f;
+	float waveFineness;
 
 	void Start ()
 	{
@@ -68,6 +71,8 @@ public class GroundCreater : MonoBehaviour
 		wNum = Pre_Create_Num;
 		currentWNum = 0;
 		stage = 1;
+		prevSign = 1;
+		waveFineness = 0.1f;
 
 		preCreate();
 	}
@@ -154,36 +159,22 @@ public class GroundCreater : MonoBehaviour
 	/// </summary>
 	void stage5()
 	{
-		//if (stage != 5) {
-		//	return;
-		//}
+		if (stage != 5) {
+			return;
+		}
 		for (; currentWNum < wNum; ++currentWNum) {
-			//if (wNum >= Width_Num) {
-			//	stageTransition();
-			//	return;
-			//}
+			if (wNum >= Width_Num) {
+				stageTransition();
+				return;
+			}
 			var hPos = First_HPos;
-			for (var h = 0; h < Mathf.Lerp(0.0f, Height_Num, (Mathf.Sin(currentWNum * cnt) + 2.0f) / 3); ++h) {
+			for (var h = 0; h < Mathf.Lerp(0.0f, Height_Num, (Mathf.Sin(currentWNum * waveFineness) + 2.0f) / 3); ++h) {
 				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
 				obj.transform.SetParent(transform);
 				hPos += GroundChip.transform.localScale.y / 100;
-				//				Debug.Log(Mathf.Sin(currentWNum * cnt) % 360);
 			}
-//			hoge += System.Convert.ToInt32(Mathf.Approximately(Mathf.Sin(currentWNum * cnt), 0));
-			
-			Debug.Log((int)Mathf.Sign(Mathf.Sin(currentWNum * cnt)));
 			if (prevSign == -1 && prevSign != (int)Mathf.Sign(Mathf.Sin(currentWNum))) {
-//				Debug.Log("hoge");
-				flg = true;
-				prevSign = (int)Mathf.Sign(Mathf.Sin(currentWNum));
-			}
-			if (flg) {
-				if (prevSign == 1 && prevSign != (int)Mathf.Sign(Mathf.Sin(currentWNum))) {
-//					cnt += 0.1f;
-//					Debug.Log("fuga");
-					flg = false;
-					prevSign = (int)Mathf.Sign(Mathf.Sin(currentWNum));
-				}
+				waveFineness += 0.005f;
 			}
 			prevSign = (int)Mathf.Sign(Mathf.Sin(currentWNum));
 			wPos += GroundChip.transform.localScale.x / 100;
