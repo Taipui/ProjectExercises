@@ -58,6 +58,10 @@ public class GroundCreater : MonoBehaviour
 	float cnt = 0.1f;
 	int hoge = 0;
 
+	int prevSign = 1;
+
+	bool flg = false;
+
 	void Start ()
 	{
 		wPos = First_WPos;
@@ -154,10 +158,10 @@ public class GroundCreater : MonoBehaviour
 		//	return;
 		//}
 		for (; currentWNum < wNum; ++currentWNum) {
-			if (wNum >= Width_Num) {
-				stageTransition();
-				return;
-			}
+			//if (wNum >= Width_Num) {
+			//	stageTransition();
+			//	return;
+			//}
 			var hPos = First_HPos;
 			for (var h = 0; h < Mathf.Lerp(0.0f, Height_Num, (Mathf.Sin(currentWNum * cnt) + 2.0f) / 3); ++h) {
 				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
@@ -165,11 +169,23 @@ public class GroundCreater : MonoBehaviour
 				hPos += GroundChip.transform.localScale.y / 100;
 				//				Debug.Log(Mathf.Sin(currentWNum * cnt) % 360);
 			}
-			hoge += System.Convert.ToInt32(Mathf.Approximately(Mathf.Sin(currentWNum * cnt), 0));
-			if (hoge >= 2) {
-				cnt += 0.1f;
-				hoge = 0;
+//			hoge += System.Convert.ToInt32(Mathf.Approximately(Mathf.Sin(currentWNum * cnt), 0));
+			
+			Debug.Log((int)Mathf.Sign(Mathf.Sin(currentWNum * cnt)));
+			if (prevSign == -1 && prevSign != (int)Mathf.Sign(Mathf.Sin(currentWNum))) {
+//				Debug.Log("hoge");
+				flg = true;
+				prevSign = (int)Mathf.Sign(Mathf.Sin(currentWNum));
 			}
+			if (flg) {
+				if (prevSign == 1 && prevSign != (int)Mathf.Sign(Mathf.Sin(currentWNum))) {
+//					cnt += 0.1f;
+//					Debug.Log("fuga");
+					flg = false;
+					prevSign = (int)Mathf.Sign(Mathf.Sin(currentWNum));
+				}
+			}
+			prevSign = (int)Mathf.Sign(Mathf.Sin(currentWNum));
 			wPos += GroundChip.transform.localScale.x / 100;
 			hPos = First_HPos;
 		}
