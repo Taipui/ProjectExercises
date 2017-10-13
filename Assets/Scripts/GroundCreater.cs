@@ -55,6 +55,9 @@ public class GroundCreater : MonoBehaviour
 	/// </summary>
 	int stage;
 
+	float cnt = 0.1f;
+	int hoge = 0;
+
 	void Start ()
 	{
 		wPos = First_WPos;
@@ -80,9 +83,9 @@ public class GroundCreater : MonoBehaviour
 	{
 		wNum += 2;
 		stage1();
-		stage2();
-		stage3();
-		stage4();
+//		stage2();
+//		stage3();
+//		stage4();
 		stage5();
 	}
 
@@ -147,19 +150,25 @@ public class GroundCreater : MonoBehaviour
 	/// </summary>
 	void stage5()
 	{
-		if (stage != 5) {
-			return;
-		}
+		//if (stage != 5) {
+		//	return;
+		//}
 		for (; currentWNum < wNum; ++currentWNum) {
 			if (wNum >= Width_Num) {
 				stageTransition();
 				return;
 			}
 			var hPos = First_HPos;
-			for (var h = 0; h < Mathf.Lerp(0.0f, Height_Num, (Mathf.Sin(currentWNum * .1f) + 2.0f) / 3); ++h) {
+			for (var h = 0; h < Mathf.Lerp(0.0f, Height_Num, (Mathf.Sin(currentWNum * cnt) + 2.0f) / 3); ++h) {
 				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
 				obj.transform.SetParent(transform);
 				hPos += GroundChip.transform.localScale.y / 100;
+				//				Debug.Log(Mathf.Sin(currentWNum * cnt) % 360);
+			}
+			hoge += System.Convert.ToInt32(Mathf.Approximately(Mathf.Sin(currentWNum * cnt), 0));
+			if (hoge >= 2) {
+				cnt += 0.1f;
+				hoge = 0;
 			}
 			wPos += GroundChip.transform.localScale.x / 100;
 			hPos = First_HPos;
