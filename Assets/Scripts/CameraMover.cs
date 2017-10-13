@@ -23,7 +23,7 @@ public class CameraMover : MonoBehaviour
 	/// <summary>
 	/// 地面のチップを消すまで移動する量
 	/// </summary>
-	const float Erase_Threshold = 20;
+	const float Erase_Threshold = 0.1f;
 
 	[SerializeField]
 	GroundCreater Gc;

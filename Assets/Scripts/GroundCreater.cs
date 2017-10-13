@@ -70,9 +70,9 @@ public class GroundCreater : MonoBehaviour
 		//	hPos = First_HPos;
 		//}
 
-		//		preCreate();
+		preCreate();
 
-		stage_2();
+//		stage_2();
 	}
 
 	void preCreate()
@@ -82,11 +82,11 @@ public class GroundCreater : MonoBehaviour
 
 	public void create()
 	{
-		//++wNum;
-		//stage1();
-		//stage2();
+		wNum += 2;
+		stage1();
+		stage2();
 
-		stage_2();
+		//		stage_2();
 	}
 
 	void stage1()
