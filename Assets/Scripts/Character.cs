@@ -21,11 +21,6 @@ public class Character : MonoBehaviour
 	[SerializeField]
 	protected GameObject Bullet;
 	/// <summary>
-	/// 弾の発射位置
-	/// </summary>
-	[SerializeField]
-	protected Transform LaunchTfm;
-	/// <summary>
 	/// 発射した弾をまとめるGameObjectのTransform
 	/// </summary>
 	[SerializeField]

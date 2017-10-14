@@ -100,6 +100,11 @@ public class Player : Character
 	/// </summary>
 	[SerializeField]
 	Transform StockTfm;
+	/// <summary>
+	/// 弾の発射位置
+	/// </summary>
+	[SerializeField]
+	Transform LaunchTfm;
 	#endregion
 
 	/// <summary>
