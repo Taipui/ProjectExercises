@@ -5,7 +5,7 @@ using UniRx;
 using UniRx.Triggers;
 
 /// <summary>
-/// 敵に関するクラス
+/// ザコ敵に関するクラス
 /// </summary>
 public class Enemy : Character
 {
@@ -20,6 +20,11 @@ public class Enemy : Character
 	/// </summary>
 	bool enableLaunch;
 
+	/// <summary>
+	/// 自身のコライダ
+	/// </summary>
+	BoxCollider col;
+
 	protected override void Start ()
 	{
 		base.Start();
@@ -28,17 +33,19 @@ public class Enemy : Character
 
 		enableLaunch = false;
 
-		Observable.Interval(System.TimeSpan.FromSeconds(0.2f)).Where(x => !!isPlay() && !!enableLaunch)
-			.Subscribe(_ => {
-			if (Random.Range(0, 2) == 0) {
-					onErased();
-			}
+		col = GetComponent<BoxCollider>();
+
+		col.OnTriggerEnterAsObservable().Subscribe(colObj => {
+			chechBullet(colObj.gameObject);
 		})
 		.AddTo(this);
 
-		this.UpdateAsObservable().Subscribe(_ => {
-			move();
-		})
+		Observable.Interval(System.TimeSpan.FromSeconds(0.2f)).Where(x => !!isPlay() && !!enableLaunch)
+			.Subscribe(_ => {
+				if (Random.Range(0, 2) == 0) {
+					onErased();
+				}
+			})
 		.AddTo(this);
 	}
 
@@ -47,12 +54,7 @@ public class Enemy : Character
 	/// </summary>
 	protected override void launch()
 	{
-		foreach (Transform child in LauncherParent) {
-			if (Random.Range(0, 2) == 0) {
-				continue;
-			}
-			AI.ShootFixedAngle(child.position, PlayerTfm.position, 60.0f, child.gameObject.GetComponent<Launcher>(), Bullet, BulletParentTfm);
-		}
+		AI.ShootFixedAngle(transform.position, PlayerTfm.position, 60.0f, GetComponent<Launcher>(), Bullet, BulletParentTfm);
 	}
 
 	/// <summary>
@@ -74,21 +76,6 @@ public class Enemy : Character
 	void OnCollisionEnter(Collision col)
 	{
 		chechBullet(col.gameObject);
-	}
-
-	/// <summary>
-	/// キャラクターを動かす
-	/// </summary>
-	void move()
-	{
-		var bias = 1.0f;
-		var moveSpeed = 0.05f;
-		var diff = PlayerTfm.position.y - transform.position.y;
-		if (diff < -bias) {
-			transform.Translate(new Vector3(0.0f, -moveSpeed));
-		} else if (diff > bias) {
-			transform.Translate(new Vector3(0.0f, moveSpeed));
-		}
 	}
 
 	/// <summary>

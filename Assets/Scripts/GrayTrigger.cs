@@ -13,7 +13,7 @@ public class GrayTrigger : MonoBehaviour
 	/// Grayちゃんのスクリプト
 	/// </summary>
 	[SerializeField]
-	Enemy GrayChan;
+	Boss GrayChan;
 
 	/// <summary>
 	/// 自身のコライダ
