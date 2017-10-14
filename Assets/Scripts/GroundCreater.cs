@@ -106,7 +106,7 @@ public class GroundCreater : MonoBehaviour
 		if (stage != 1) {
 			return;
 		}
-		normalStage();
+		normalStage(new Color32(117, 91, 165, 255));
 	}
 
 	/// <summary>
@@ -117,7 +117,7 @@ public class GroundCreater : MonoBehaviour
 		if (stage != 2) {
 			return;
 		}
-		normalStage();
+		normalStage(new Color32(224, 84, 128, 255));
 	}
 
 	/// <summary>
@@ -128,7 +128,7 @@ public class GroundCreater : MonoBehaviour
 		if (stage != 3) {
 			return;
 		}
-		normalStage();
+		normalStage(new Color32(243, 154, 28, 255));
 	}
 
 	/// <summary>
@@ -149,6 +149,8 @@ public class GroundCreater : MonoBehaviour
 				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
 				obj.transform.SetParent(transform);
 				hPos += GroundChip.transform.localScale.y / 100;
+
+				obj.GetComponent<SpriteRenderer>().color = new Color32(103, 183, 52, 255);
 			}
 			wPos += GroundChip.transform.localScale.x / 100;
 		}
@@ -172,6 +174,8 @@ public class GroundCreater : MonoBehaviour
 				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
 				obj.transform.SetParent(transform);
 				hPos += GroundChip.transform.localScale.y / 100;
+
+				obj.GetComponent<SpriteRenderer>().color = new Color32(19, 152, 214, 255);
 			}
 			if (prevSign == -1 && prevSign != (int)Mathf.Sign(Mathf.Sin(currentWNum))) {
 				waveFineness += 0.005f;
@@ -195,7 +199,7 @@ public class GroundCreater : MonoBehaviour
 	/// <summary>
 	/// ただ平坦なステージ
 	/// </summary>
-	void normalStage()
+	void normalStage(Color32 col)
 	{
 		for (; currentWNum < wNum; ++currentWNum) {
 			if (wNum >= Width_Num) {
@@ -207,6 +211,8 @@ public class GroundCreater : MonoBehaviour
 				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
 				obj.transform.SetParent(transform);
 				hPos += GroundChip.transform.localScale.y / 100;
+
+				obj.GetComponent<SpriteRenderer>().color = col;
 			}
 			wPos += GroundChip.transform.localScale.x / 100;
 		}
