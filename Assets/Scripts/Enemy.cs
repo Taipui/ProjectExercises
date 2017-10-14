@@ -13,17 +13,17 @@ public class Enemy : Character
 	/// プレイヤーのTransform
 	/// </summary>
 	[SerializeField]
-	Transform PlayerTfm;
+	protected Transform PlayerTfm;
 
 	/// <summary>
 	/// 発射可能かどうか
 	/// </summary>
-	bool enableLaunch;
+	protected bool enableLaunch;
 
 	/// <summary>
-	/// 自身のコライダ
+	/// デフォルトの体力
 	/// </summary>
-	BoxCollider col;
+	const int Default_Hp = 1;
 
 	protected override void Start ()
 	{
@@ -33,17 +33,12 @@ public class Enemy : Character
 
 		enableLaunch = false;
 
-		col = GetComponent<BoxCollider>();
-
-		col.OnTriggerEnterAsObservable().Subscribe(colObj => {
-			chechBullet(colObj.gameObject);
-		})
-		.AddTo(this);
+		setHp(Default_Hp);
 
 		Observable.Interval(System.TimeSpan.FromSeconds(0.2f)).Where(x => !!isPlay() && !!enableLaunch)
 			.Subscribe(_ => {
 				if (Random.Range(0, 2) == 0) {
-					onErased();
+					launch();
 				}
 			})
 		.AddTo(this);
@@ -54,15 +49,7 @@ public class Enemy : Character
 	/// </summary>
 	protected override void launch()
 	{
-		AI.ShootFixedAngle(transform.position, PlayerTfm.position, 60.0f, GetComponent<Launcher>(), Bullet, BulletParentTfm);
-	}
-
-	/// <summary>
-	/// 地面のチップが消されたら呼ばれる
-	/// </summary>
-	public override void onErased()
-	{
-		launch();
+		// 派生クラスで実装
 	}
 
 	/// <summary>
@@ -71,11 +58,6 @@ public class Enemy : Character
 	protected override void dead()
 	{
 		Destroy(gameObject);
-	}
-
-	void OnCollisionEnter(Collision col)
-	{
-		chechBullet(col.gameObject);
 	}
 
 	/// <summary>

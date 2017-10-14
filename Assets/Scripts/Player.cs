@@ -281,11 +281,6 @@ public class Player : Character
 				Time.timeScale = 1.0f;
 			})
 			.AddTo(this);
-
-		col.OnCollisionEnterAsObservable().Subscribe(colObj => {
-			chechBullet(colObj.gameObject);
-		})
-		.AddTo(this);
 	}
 
 	/// <summary>
@@ -421,7 +416,7 @@ public class Player : Character
 	/// <summary>
 	/// 地面のチップが消されたら呼ばれる
 	/// </summary>
-	public override void onErased()
+	public void onErased()
 	{
 		++stock.Value;
 	}

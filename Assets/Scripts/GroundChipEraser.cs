@@ -18,10 +18,10 @@ public class GroundChipEraser : MonoBehaviour
 	Rigidbody rb;
 
 	/// <summary>
-	/// Character
+	/// Player
 	/// </summary>
 	[SerializeField]
-	Character Character;
+	Player Player;
 
 	/// <summary>
 	/// 地面のチップを消す用のCollider
@@ -55,6 +55,6 @@ public class GroundChipEraser : MonoBehaviour
 		rb.isKinematic= true;
 		groundChipEraserCollider.enabled = false;
 		transform.localPosition = new Vector3(transform.localPosition.x, defaultYPos);
-		Character.onErased();
+		Player.onErased();
 	}
 }

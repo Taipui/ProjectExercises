@@ -9,11 +9,6 @@ using UniRx.Triggers;
 /// </summary>
 public class Character : MonoBehaviour
 {
-	/// <summary>
-	/// ジャンプ中かどうか
-	/// </summary>
-	protected bool isJumping;
-
 	#region 弾関連
 	/// <summary>
 	/// 発射する弾
@@ -30,10 +25,6 @@ public class Character : MonoBehaviour
 	/// </summary>
 	public string MyBulletLayer { protected set; get; }
 	#endregion
-	/// <summary>
-	/// 消す地面のチップを判断するためのレイの長さ
-	/// </summary>
-	const float Erase_GroundChip_Ray_Dist = -0.05f;
 
 	/// <summary>
 	/// 体力
@@ -68,14 +59,6 @@ public class Character : MonoBehaviour
 				dead();
 			})
 			.AddTo(this);
-	}
-
-	/// <summary>
-	/// 地面のチップが消されたら呼ばれる
-	/// </summary>
-	public virtual void onErased()
-	{
-		launch();
 	}
 
 	/// <summary>
@@ -125,5 +108,10 @@ public class Character : MonoBehaviour
 	protected bool isPlay()
 	{
 		return Gm.CurrentGameState == GameManager.GameState.Play;
+	}
+
+	void OnCollisionEnter(Collision col)
+	{
+		chechBullet(col.gameObject);
 	}
 }

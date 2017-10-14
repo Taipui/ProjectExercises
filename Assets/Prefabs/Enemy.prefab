@@ -132,9 +132,9 @@ GameObject:
   - component: {fileID: 4189524451895946}
   - component: {fileID: 95732663758847808}
   - component: {fileID: 114119721441244912}
-  - component: {fileID: 114002261507119122}
   - component: {fileID: 65680415829949196}
   - component: {fileID: 54821908467341574}
+  - component: {fileID: 114445350602727562}
   m_Layer: 12
   m_Name: Enemy
   m_TagString: Untagged
@@ -532,7 +532,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1727246627283458}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.02, y: 0.03, z: 0.02}
@@ -554,22 +554,6 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114002261507119122
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1727246627283458}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 347492d1aeaee0b438d93b2112b9f742, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Bullet: {fileID: 1643971426085178, guid: 325224f187246bc44bf76f696688b0d5, type: 2}
-  BulletParentTfm: {fileID: 0}
-  Gm: {fileID: 0}
-  LauncherParent: {fileID: 0}
-  PlayerTfm: {fileID: 0}
 --- !u!114 &114119721441244912
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -581,3 +565,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad40bc011ba4625449723a6aefd3ac6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114445350602727562
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1727246627283458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b90535a75df94274e8a8723dfb281c52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Bullet: {fileID: 1643971426085178, guid: 325224f187246bc44bf76f696688b0d5, type: 2}
+  BulletParentTfm: {fileID: 0}
+  Gm: {fileID: 0}
+  LauncherParent: {fileID: 0}
+  PlayerTfm: {fileID: 0}
