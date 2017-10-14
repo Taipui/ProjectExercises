@@ -15,13 +15,20 @@ public class Enemy : Character
 	[SerializeField]
 	Transform PlayerTfm;
 
+	/// <summary>
+	/// 発射可能かどうか
+	/// </summary>
+	bool enableLaunch;
+
 	protected override void Start ()
 	{
 		base.Start();
 
 		MyBulletLayer = "EnemyBullet";
 
-		Observable.Interval(System.TimeSpan.FromSeconds(0.2f)).Where(x => !!isPlay())
+		enableLaunch = false;
+
+		Observable.Interval(System.TimeSpan.FromSeconds(0.2f)).Where(x => !!isPlay() && !!enableLaunch)
 			.Subscribe(_ => {
 			if (Random.Range(0, 2) == 0) {
 					onErased();
@@ -82,5 +89,13 @@ public class Enemy : Character
 		} else if (diff > bias) {
 			transform.Translate(new Vector3(0.0f, moveSpeed));
 		}
+	}
+
+	/// <summary>
+	/// 発射の許可をする
+	/// </summary>
+	public void permitLaunch()
+	{
+		enableLaunch = true;
 	}
 }
