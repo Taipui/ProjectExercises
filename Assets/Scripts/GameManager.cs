@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
 		GameOverObj.SetActive(false);
 		ClrObj.SetActive(false);
 
-		this.UpdateAsObservable().Where(x => (CurrentGameState == GameState.GameOver && CurrentGameState == GameState.Clr) && !!Input.anyKeyDown)
+		this.UpdateAsObservable().Where(x => (CurrentGameState == GameState.GameOver || CurrentGameState == GameState.Clr) && !!Input.anyKeyDown)
 			.Subscribe(_ => {
 				SceneManager.LoadScene(Common.Title);
 			})
