@@ -11089,6 +11089,12 @@ Prefab:
       propertyPath: Gm
       value: 
       objectReference: {fileID: 1375938367}
+    - target: {fileID: 114847447254561632, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: Smoke
+      value: 
+      objectReference: {fileID: 1894098624854406, guid: 5541fee140821b347bd254f36d314520,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 39252dcfb402ba24191e7dc644c1e107, type: 2}
   m_IsPrefabParent: 0
