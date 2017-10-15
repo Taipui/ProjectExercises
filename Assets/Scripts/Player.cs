@@ -23,7 +23,7 @@ public class Player : Character
 	/// <summary>
 	/// カーブ補正の有効高さ(地面をすり抜けやすい時には大きくする)
 	/// </summary>
-	const float Use_Curve_Height = 0.5f;
+	const float Use_Curve_Height = 0.25f;
 
 	// 以下キャラクターコントローラ用パラメタ
 	/// <summary>
@@ -47,13 +47,21 @@ public class Player : Character
 	/// </summary>
 	Vector3 velocity;
 	/// <summary>
-	/// CapsuleColliderで設定されているコライダのHeightの初期値を収める変数
+	/// CapsuleColliderで設定されているコライダのHeightの初期値を収める変数(Normal)
 	/// </summary>
-	float orgColHight;
+	float orgColHightNormal;
 	/// <summary>
-	/// CapsuleColliderで設定されているコライダのCenterの初期値を収める変数
+	/// CapsuleColliderで設定されているコライダのCenterの初期値を収める変数(Normal)
 	/// </summary>
-	Vector3 orgVectColCenter;
+	Vector3 orgVectColCenterNormal;
+	/// <summary>
+	/// CapsuleColliderで設定されているコライダのHeightの初期値を収める変数(Normal)
+	/// </summary>
+	float orgColHightSD;
+	/// <summary>
+	/// CapsuleColliderで設定されているコライダのCenterの初期値を収める変数(Normal)
+	/// </summary>
+	Vector3 orgVectColCenterSD;
 	/// <summary>
 	/// アニメーター
 	/// </summary>
@@ -134,12 +142,30 @@ public class Player : Character
 	/// </summary>
 	[SerializeField]
 	GameObject WindObj;
-	
+
+	#region 変身関連
+	/// <summary>
+	/// Avatar
+	/// </summary>
+	[SerializeField]
+	Avatar[] Avatars;
+	/// <summary>
+	/// モデル
+	/// </summary>
+	[SerializeField]
+	GameObject[] Models;
+	/// <summary>
+	/// 現在のAvatar
+	/// </summary>
+	int currentAvatar = 1;
+	#endregion
+
 	protected override void Start()
 	{
 		base.Start();
 		init();
 		var stockBullets = new List<GameObject>();
+		changeAvatar();
 
 		this.FixedUpdateAsObservable().Subscribe(_ => {
 			h.Value = Input.GetAxis("Horizontal");
@@ -190,8 +216,11 @@ public class Player : Character
 						// 高さが useCurvesHeight 以上ある時のみ、コライダーの高さと中心をJUMP00アニメーションについているカーブで調整する
 						if (!!Physics.Raycast(ray, out hitInfo)) {
 							if (hitInfo.distance > Use_Curve_Height) {
+								Debug.Log("hoge");
+								var orgColHight = currentAvatar == 0 ? orgColHightNormal : orgColHightSD;
+								var orgColCenter = currentAvatar == 0 ? orgVectColCenterNormal : orgVectColCenterSD;
 								col.height = orgColHight - jumpHeight;          // 調整されたコライダーの高さ
-								var adjCenterY = orgVectColCenter.y + jumpHeight;
+								var adjCenterY = orgColCenter.y + jumpHeight;
 								col.center = new Vector3(0.0f, adjCenterY, 0.0f); // 調整されたコライダーのセンター
 							} else {
 								// 閾値よりも低い時には初期値に戻す（念のため）
@@ -308,6 +337,12 @@ public class Player : Character
 				Instantiate(WindObj, new Vector3(mousePos.x, mousePos.y), Quaternion.identity);
 			})
 			.AddTo(this);
+
+		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.S))
+			.Subscribe(_ => {
+				changeAvatar();
+			})
+			.AddTo(this);
 	}
 
 	/// <summary>
@@ -318,8 +353,10 @@ public class Player : Character
 		anim = GetComponent<Animator>();
 		col = GetComponent<CapsuleCollider>();
 		rb = GetComponent<Rigidbody>();
-		orgColHight = col.height;
-		orgVectColCenter = col.center;
+		orgColHightNormal = col.height;
+		orgVectColCenterNormal = col.center;
+		orgColHightSD = col.height * 0.7f;
+		orgVectColCenterSD = new Vector3(col.center.x, orgVectColCenterNormal.y - orgColHightSD / 4, col.center.z);
 
 		prevStock = 0;
 
@@ -373,8 +410,8 @@ public class Player : Character
 	void resetCollider()
 	{
 		// コンポーネントのHeight、Centerの初期値を戻す
-		col.height = orgColHight;
-		col.center = orgVectColCenter;
+		col.height = currentAvatar == 0 ? orgColHightNormal : orgColHightSD;
+		col.center = currentAvatar == 0 ? orgVectColCenterNormal : orgVectColCenterSD;
 	}
 
 	void OnJumpStart()
@@ -455,5 +492,25 @@ public class Player : Character
 	{
 		Gm.gameOver();
 		Destroy(gameObject);
+	}
+
+	/// <summary>
+	/// Avatarを変更する
+	/// </summary>
+	void changeAvatar()
+	{
+		currentAvatar = (currentAvatar + 1) % Avatars.Length;
+		foreach (GameObject obj in Models) {
+			obj.SetActive(false);
+		}
+		Models[currentAvatar].SetActive(true);
+		anim.avatar = Avatars[currentAvatar];
+		if (currentAvatar == 0) {
+			col.height = orgColHightNormal;
+			col.center = orgVectColCenterNormal;
+		} else {
+			col.height /= 2;
+			col.center = new Vector3(col.center.x, col.center.y - col.height / 2, col.center.z);
+		}
 	}
 }
