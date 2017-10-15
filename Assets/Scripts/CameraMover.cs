@@ -31,14 +31,24 @@ public class CameraMover : MonoBehaviour
 	[SerializeField]
 	GroundCreater Gc;
 
+	/// <summary>
+	/// X方向にカメラをオフセットする量
+	/// </summary>
+	const float X_Offset = 5.0f;
+
+	/// <summary>
+	/// カメラが動く制限
+	/// </summary>
+	const float X_Limit = 142.0f;
+
 	void Start ()
 	{
-		var maxX = PlayerTfm.position.x;
+		var maxX = PlayerTfm.position.x + X_Offset;
 		var prevX = transform.position.x;
 
 		PlayerTfm.UpdateAsObservable()
 			.Subscribe(_ => {
-				transform.position = new Vector3(Mathf.Max(maxX, PlayerTfm.position.x), transform.position.y, transform.position.z);
+				transform.position = new Vector3(Mathf.Min(Mathf.Max(maxX, PlayerTfm.position.x + X_Offset), X_Limit), transform.position.y, transform.position.z);
 				maxX = transform.position.x;
 				diff.Value = transform.position.x - prevX;
 			})
