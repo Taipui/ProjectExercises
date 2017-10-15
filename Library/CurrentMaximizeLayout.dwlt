@@ -20,10 +20,10 @@ MonoBehaviour:
     y: 30
     width: 1536
     height: 731
-  m_MinSize: {x: 681, y: 471}
-  m_MaxSize: {x: 14000, y: 14021}
+  m_MinSize: {x: 681, y: 492}
+  m_MaxSize: {x: 14004, y: 14042}
   vertical: 0
-  controlID: 6616
+  controlID: 7449
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -120,10 +120,10 @@ MonoBehaviour:
     y: 0
     width: 1259
     height: 731
-  m_MinSize: {x: 406, y: 471}
-  m_MaxSize: {x: 10000, y: 14021}
+  m_MinSize: {x: 404, y: 492}
+  m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
-  controlID: 6617
+  controlID: 7450
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -144,10 +144,10 @@ MonoBehaviour:
     y: 0
     width: 1259
     height: 459
-  m_MinSize: {x: 406, y: 221}
-  m_MaxSize: {x: 8006, y: 4021}
+  m_MinSize: {x: 404, y: 221}
+  m_MaxSize: {x: 8004, y: 4021}
   vertical: 0
-  controlID: 6591
+  controlID: 7451
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -166,8 +166,8 @@ MonoBehaviour:
     y: 0
     width: 451
     height: 459
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 6}
   m_Panes:
   - {fileID: 6}
@@ -201,8 +201,8 @@ MonoBehaviour:
     height: 438
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: f8310000
-    m_LastClickedID: 0
+    m_SelectedIDs: cec6a3ff
+    m_LastClickedID: -6043954
     m_ExpandedIDs: ac32a4ff5802c4ffc4c0c4ff5cc2c4ff10b6c9ffca96cdffe400d8ff7cb9daff02e5daff3cfadaff466fdbffd470e0ff0c74e0ff6ab3e1ff3afee2ff2836e9ffc037e9ff18fcffff0000000064490500b8e705000cec0500ae630800da630800768b0800c48b0800d08c0800368e0800a68f0800
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -286,9 +286,9 @@ MonoBehaviour:
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -2.143553, y: -1.9065809, z: 0}
+    m_Target: {x: -4.799971, y: -4.122603, z: 0.1751518}
     speed: 2
-    m_Value: {x: -2.143553, y: -1.9065809, z: 0}
+    m_Value: {x: -4.799971, y: -4.122603, z: 0.1751518}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -420,8 +420,8 @@ MonoBehaviour:
     y: 459
     width: 1259
     height: 272
-  m_MinSize: {x: 230, y: 250}
-  m_MaxSize: {x: 10000, y: 10000}
+  m_MinSize: {x: 232, y: 271}
+  m_MaxSize: {x: 10002, y: 10021}
   m_ActualView: {fileID: 12}
   m_Panes:
   - {fileID: 12}
@@ -467,18 +467,18 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Prefabs
+    - Assets/Scripts
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Prefabs
+  - Assets/Scripts
   m_LastFoldersGridSize: 16
   m_LastProjectPath: D:\Creats\Documents\Unity Projects\ProjectExercises
   m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 95}
-    m_SelectedIDs: 762f0000
-    m_LastClickedID: 12150
+    scrollPos: {x: 0, y: 118}
+    m_SelectedIDs: a6290000
+    m_LastClickedID: 10662
     m_ExpandedIDs: 0000000086290000a6290000842c0000e02d0000a4300000163100007446000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -532,9 +532,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: f8310000
-    m_LastClickedInstanceID: 12792
-    m_HadKeyboardFocusLastEvent: 1
+    m_SelectedInstanceIDs: cec6a3ff
+    m_LastClickedInstanceID: -6043954
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: 48280000b8280000544700005c470000000000000c2c0000f22e00009a27000032270000522700004e2700007a270000982700002a290000022a0000822a0000422a00008a2e00008c2a00000a2b0000442a0000902a00004a2b0000482a0000602a0000f02c0000ac2800006e2e0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -559,7 +559,7 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 10}
+    m_ScrollPosition: {x: 0, y: 170}
     m_GridSize: 16
   m_DirectoriesAreaWidth: 115
 --- !u!114 &13
@@ -634,8 +634,8 @@ MonoBehaviour:
     y: 0
     width: 277
     height: 731
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 277, y: 71}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 16}

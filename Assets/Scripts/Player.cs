@@ -122,6 +122,12 @@ public class Player : Character
 	/// </summary>
 	[SerializeField]
 	GroundChipEraser Gce;
+
+	/// <summary>
+	/// 看板の近くにいる時に表示されるメッセージのGameObject
+	/// </summary>
+	[SerializeField]
+	GameObject Mes;
 	
 	protected override void Start()
 	{
@@ -229,6 +235,7 @@ public class Player : Character
 		dir.AsObservable().Where(dir_ => dir_ == "A")
 			.Subscribe(dir_ => {
 				transform.Rotate(0, 180.0f, 0);
+				Mes.transform.localScale = new Vector3(-Mes.transform.localScale.x, Mes.transform.localScale.y, Mes.transform.localScale.z);
 			})
 			.AddTo(this);
 
@@ -236,6 +243,7 @@ public class Player : Character
 			.Where(dir_ => dir_ == "D")
 			.Subscribe(dir_ => {
 				transform.Rotate(0, 180.0f, 0);
+				Mes.transform.localScale = new Vector3(-Mes.transform.localScale.x, Mes.transform.localScale.y, Mes.transform.localScale.z);
 			})
 			.AddTo(this);
 
