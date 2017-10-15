@@ -39,6 +39,9 @@ public class Tutorial : MonoBehaviour
 	/// </summary>
 	bool isOpen;
 
+	/// <summary>
+	/// 現在のメッセージ
+	/// </summary>
 	int currentMes;
 
 	void Start ()
@@ -61,7 +64,7 @@ public class Tutorial : MonoBehaviour
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!PlayerMes.activeSelf && !!Input.GetKeyDown(KeyCode.Return))
+		this.UpdateAsObservable().Where(x => PlayerMes != null && !!PlayerMes.activeSelf && !!Input.GetKeyDown(KeyCode.Return))
 			.Subscribe(_ => {
 				if (popTween != null) {
 					popTween.Kill();
@@ -103,6 +106,9 @@ public class Tutorial : MonoBehaviour
 			});
 	}
 
+	/// <summary>
+	/// チュートリアル用のメッセージの内容を変える
+	/// </summary>
 	void selectMes()
 	{
 		foreach (GameObject obj in Messages) {

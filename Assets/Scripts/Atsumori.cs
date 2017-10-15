@@ -4,10 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
+/// <summary>
+/// 熱盛と出てしまうスクリプト
+/// </summary>
 public class Atsumori : MonoBehaviour
 {
+	/// <summary>
+	/// 熱盛の画像のTransform
+	/// </summary>
 	[SerializeField]
 	Transform ImgTfm;
+	/// <summary>
+	/// 熱盛の音声を再生するコンポーネント
+	/// </summary>
 	[SerializeField]
 	AudioSource AudioSource;
 
@@ -18,6 +27,10 @@ public class Atsumori : MonoBehaviour
 		StartCoroutine("atsumoriLoop");
 	}
 
+	/// <summary>
+	/// 不定期に熱盛を出す
+	/// </summary>
+	/// <returns></returns>
 	IEnumerator atsumoriLoop()
 	{
 		while (true) {
@@ -35,4 +48,3 @@ public class Atsumori : MonoBehaviour
 		}
 	}
 }
-
