@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
+using UniRx.Triggers;
 
 /// <summary>
 /// 地面のチップを消すためのクラス
@@ -13,11 +15,6 @@ public class GroundChipEraser : MonoBehaviour
 	float defaultYPos;
 
 	/// <summary>
-	/// Rigidbody
-	/// </summary>
-	Rigidbody rb;
-
-	/// <summary>
 	/// Player
 	/// </summary>
 	[SerializeField]
@@ -28,12 +25,28 @@ public class GroundChipEraser : MonoBehaviour
 	/// </summary>
 	MeshCollider groundChipEraserCollider;
 
+	/// <summary>
+	/// 移動中かどうか
+	/// </summary>
+	bool isMove;
+
+	/// <summary>
+	/// 移動速度
+	/// </summary>
+	const float Move_Speed = 2.0f;
+
 	void Start ()
 	{
 		defaultYPos = transform.localPosition.y;
-		rb = GetComponent<Rigidbody>();
 		groundChipEraserCollider = GetComponent<MeshCollider>();
 		groundChipEraserCollider.enabled = false;
+		isMove = false;
+
+		this.UpdateAsObservable().Where(x => !!isMove)
+			.Subscribe(_ => {
+				transform.Translate(new Vector3(0.0f, 0.0f, Move_Speed * Time.deltaTime));
+			})
+			.AddTo(this);
 	}
 
 	/// <summary>
@@ -42,17 +55,13 @@ public class GroundChipEraser : MonoBehaviour
 	public void checkGroundChip()
 	{
 		groundChipEraserCollider.enabled = true;
-		rb.isKinematic = false;
+		isMove = true;
 	}
 
-	void OnCollisionEnter(Collision collision)
+	void OnTriggerEnter(Collider collision)
 	{
-		if (!!rb.isKinematic) {
-			return;
-		}
-
 		Destroy(collision.gameObject);
-		rb.isKinematic= true;
+		isMove = false;
 		groundChipEraserCollider.enabled = false;
 		transform.localPosition = new Vector3(transform.localPosition.x, defaultYPos);
 		Player.onErased();
