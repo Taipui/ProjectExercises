@@ -34,7 +34,7 @@ public class Atsumori : MonoBehaviour
 	IEnumerator atsumoriLoop()
 	{
 		while (true) {
-			yield return new WaitForSeconds(Random.Range(5.0f, 10.0f));
+			yield return new WaitForSeconds(Random.Range(30.0f, 60.0f));
 
 			AudioSource.Play();
 
