@@ -158,10 +158,23 @@ public class Player : Character
 	/// 現在のAvatar
 	/// </summary>
 	int currentAvatar = 0;
+	/// <summary>
+	/// 変身可能かどうか
+	/// </summary>
+	public bool EnableChange { private set; get; }
 	#endregion
 
 	[SerializeField]
 	GameObject Smoke;
+
+	/// <summary>
+	/// 変身可能かどうかのフラグをセット
+	/// </summary>
+	/// <param name="val">セットする値</param>
+	public void setEnableChange(bool val)
+	{
+		EnableChange = val;
+	}
 
 	protected override void Start()
 	{
@@ -501,6 +514,9 @@ public class Player : Character
 	/// </summary>
 	void changeAvatar()
 	{
+		if (!EnableChange) {
+			return;
+		}
 		currentAvatar = (currentAvatar + 1) % Avatars.Length;
 		foreach (GameObject obj in Models) {
 			obj.SetActive(false);

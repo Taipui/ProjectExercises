@@ -65,6 +65,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4c9151900fb8024a92a8d3cf70a64a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerMes: {fileID: 0}
+  TutorialMesPop: {fileID: 0}
+  Messages:
+  - {fileID: 0}
+  Player: {fileID: 0}
 --- !u!212 &212697864886210916
 SpriteRenderer:
   m_ObjectHideFlags: 1

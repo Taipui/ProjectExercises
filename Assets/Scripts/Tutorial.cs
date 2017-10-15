@@ -44,6 +44,12 @@ public class Tutorial : MonoBehaviour
 	/// </summary>
 	int currentMes;
 
+	/// <summary>
+	/// Player
+	/// </summary>
+	[SerializeField]
+	Player Player;
+
 	void Start ()
 	{
 		col = GetComponent<BoxCollider>();
@@ -55,12 +61,14 @@ public class Tutorial : MonoBehaviour
 		col.OnTriggerEnterAsObservable().Where(colObj => colObj.gameObject.tag == "Player")
 			.Subscribe(_ => {
 				PlayerMes.SetActive(true);
+				Player.setEnableChange(true);
 			})
 			.AddTo(this);
 
 		col.OnTriggerExitAsObservable().Where(colObj => colObj.gameObject.tag == "Player")
 			.Subscribe(_ => {
 				PlayerMes.SetActive(false);
+				Player.setEnableChange(false);
 			})
 			.AddTo(this);
 
