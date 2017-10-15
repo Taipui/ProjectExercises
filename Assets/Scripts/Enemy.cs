@@ -5,7 +5,7 @@ using UniRx;
 using UniRx.Triggers;
 
 /// <summary>
-/// ザコ敵に関するクラス
+/// 敵全般に関するクラス
 /// </summary>
 public class Enemy : Character
 {

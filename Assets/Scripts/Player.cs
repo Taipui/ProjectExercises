@@ -281,6 +281,12 @@ public class Player : Character
 				Time.timeScale = 1.0f;
 			})
 			.AddTo(this);
+
+		transform.UpdateAsObservable().Where(x => transform.position.y <= -10.0f)
+			.Subscribe(_ => {
+				dead();
+			})
+			.AddTo(this);
 	}
 
 	/// <summary>
@@ -427,5 +433,6 @@ public class Player : Character
 	protected override void dead()
 	{
 		Gm.gameOver();
+		Destroy(gameObject);
 	}
 }

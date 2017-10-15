@@ -37,6 +37,9 @@ public class Boss : Enemy
 	/// </summary>
 	void move()
 	{
+		if (PlayerTfm == null) {
+			return;
+		}
 		var bias = 1.0f;
 		var moveSpeed = 0.05f;
 		var diff = PlayerTfm.position.y - transform.position.y;
