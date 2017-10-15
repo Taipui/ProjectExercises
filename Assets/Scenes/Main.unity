@@ -351,7 +351,7 @@ RectTransform:
   m_GameObject: {fileID: 28815563}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1272919052}
   m_Father: {fileID: 1495790033}
@@ -21388,6 +21388,11 @@ Prefab:
       propertyPath: PlayerMes
       value: 
       objectReference: {fileID: 215086618}
+    - target: {fileID: 114880390615700310, guid: 3e860de71b06acc4db76d4675604ec94,
+        type: 2}
+      propertyPath: TutorialMesPop
+      value: 
+      objectReference: {fileID: 28815564}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3e860de71b06acc4db76d4675604ec94, type: 2}
   m_IsPrefabParent: 0
