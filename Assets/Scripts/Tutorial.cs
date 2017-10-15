@@ -26,11 +26,8 @@ public class Tutorial : MonoBehaviour
 	/// </summary>
 	[SerializeField]
 	Transform TutorialMesPop;
-
-	/// <summary>
-	/// チュートリアル用のメッセージのポップアップを表示する前のimeScale
-	/// </summary>
-	float prevTimeScale;
+	[SerializeField]
+	GameObject[] Messages;
 
 	/// <summary>
 	/// チュートリアル用のメッセージのポップアップを拡大/縮小させるTween
@@ -42,12 +39,15 @@ public class Tutorial : MonoBehaviour
 	/// </summary>
 	bool isOpen;
 
+	int currentMes;
+
 	void Start ()
 	{
 		col = GetComponent<BoxCollider>();
 		PlayerMes.SetActive(false);
 		TutorialMesPop.localScale = Vector3.zero;
 		isOpen = false;
+		currentMes = 0;
 
 		col.OnTriggerEnterAsObservable().Where(colObj => colObj.gameObject.tag == "Player")
 			.Subscribe(_ => {
@@ -63,6 +63,9 @@ public class Tutorial : MonoBehaviour
 
 		this.UpdateAsObservable().Where(x => !!PlayerMes.activeSelf && !!Input.GetKeyDown(KeyCode.Return))
 			.Subscribe(_ => {
+				if (popTween != null) {
+					popTween.Kill();
+				}
 				if (!isOpen) {
 					openPop();
 				} else {
@@ -78,9 +81,9 @@ public class Tutorial : MonoBehaviour
 	/// </summary>
 	void openPop()
 	{
-		prevTimeScale = Time.timeScale;
+		selectMes();
 		Time.timeScale = 0.0f;
-		TutorialMesPop.DOScale(
+		popTween = TutorialMesPop.DOScale(
 			Vector3.one,
 			0.5f
 			).SetUpdate(true);
@@ -91,12 +94,21 @@ public class Tutorial : MonoBehaviour
 	/// </summary>
 	void closePop()
 	{
-		TutorialMesPop.DOScale(
+		popTween = TutorialMesPop.DOScale(
 			Vector3.zero,
 			0.5f
 			).SetUpdate(true)
 			.OnComplete(() => {
-				Time.timeScale = prevTimeScale;
+				Time.timeScale = 1.0f;
 			});
+	}
+
+	void selectMes()
+	{
+		foreach (GameObject obj in Messages) {
+			obj.SetActive(false);
+		}
+		Messages[currentMes].SetActive(true);
+		currentMes = (currentMes + 1) % Messages.Length;
 	}
 }
