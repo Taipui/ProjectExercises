@@ -157,15 +157,17 @@ public class Player : Character
 	/// <summary>
 	/// 現在のAvatar
 	/// </summary>
-	int currentAvatar = 1;
+	int currentAvatar = 0;
 	#endregion
+
+	[SerializeField]
+	GameObject Smoke;
 
 	protected override void Start()
 	{
 		base.Start();
 		init();
 		var stockBullets = new List<GameObject>();
-		changeAvatar();
 
 		this.FixedUpdateAsObservable().Subscribe(_ => {
 			h.Value = Input.GetAxis("Horizontal");
@@ -512,5 +514,7 @@ public class Player : Character
 			col.height /= 2;
 			col.center = new Vector3(col.center.x, col.center.y - col.height / 2, col.center.z);
 		}
+		var smoke = Instantiate(Smoke, new Vector3(transform.position.x, transform.position.y + 1.0f, -1.0f), Quaternion.identity);
+		Destroy(smoke, 5.0f);
 	}
 }

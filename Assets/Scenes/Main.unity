@@ -9846,7 +9846,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &531334926
 Transform:
   m_ObjectHideFlags: 0
@@ -20550,7 +20550,7 @@ Animator:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1067696756}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: dd6ec75974b69a3409711f8110698bbb, type: 3}
+  m_Avatar: {fileID: 9000000, guid: 8f0565f23a2b58541a475bd3c1393052, type: 3}
   m_Controller: {fileID: 9100000, guid: 8d5a0e0d58f4e4176a844a1a03976c19, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
@@ -26814,6 +26814,7 @@ MonoBehaviour:
   Models:
   - {fileID: 1619048668}
   - {fileID: 531334925}
+  Smoke: {fileID: 1478074789341276, guid: 00a26884931606b44a73850c9c74a5b4, type: 2}
 --- !u!1 &1438637955
 GameObject:
   m_ObjectHideFlags: 0
@@ -30686,7 +30687,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1619048669
 Transform:
   m_ObjectHideFlags: 0
