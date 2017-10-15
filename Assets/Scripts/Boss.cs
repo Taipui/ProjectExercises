@@ -49,4 +49,13 @@ public class Boss : Enemy
 			transform.Translate(new Vector3(0.0f, moveSpeed));
 		}
 	}
+
+	/// <summary>
+	/// 死亡処理
+	/// </summary>
+	protected override void dead()
+	{
+		base.dead();
+		Gm.clr();
+	}
 }
