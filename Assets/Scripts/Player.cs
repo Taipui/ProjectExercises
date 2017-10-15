@@ -128,6 +128,12 @@ public class Player : Character
 	/// </summary>
 	[SerializeField]
 	GameObject Mes;
+
+	/// <summary>
+	/// 風のGameObject
+	/// </summary>
+	[SerializeField]
+	GameObject WindObj;
 	
 	protected override void Start()
 	{
@@ -293,6 +299,13 @@ public class Player : Character
 		transform.UpdateAsObservable().Where(x => transform.position.y <= -10.0f)
 			.Subscribe(_ => {
 				dead();
+			})
+			.AddTo(this);
+
+		this.UpdateAsObservable().Where(x => !!isSp.Value && !!Input.GetKeyDown(KeyCode.LeftShift))
+			.Subscribe(_ => {
+				var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+				Instantiate(WindObj, new Vector3(mousePos.x, mousePos.y), Quaternion.identity);
 			})
 			.AddTo(this);
 	}

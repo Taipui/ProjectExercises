@@ -21342,6 +21342,12 @@ Prefab:
       propertyPath: Gm
       value: 
       objectReference: {fileID: 1375938367}
+    - target: {fileID: 114847447254561632, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: WindObj
+      value: 
+      objectReference: {fileID: 1743796636310644, guid: 84532b889bbdc7048a9c298f7327e4e9,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 39252dcfb402ba24191e7dc644c1e107, type: 2}
   m_IsPrefabParent: 0
