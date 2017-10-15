@@ -67,6 +67,7 @@ public class GroundCreater : MonoBehaviour
 
 	void Start ()
 	{
+		Debug.Log("Loading");
 		wPos = First_WPos;
 		wNum = Pre_Create_Num;
 		currentWNum = 0;
@@ -75,6 +76,7 @@ public class GroundCreater : MonoBehaviour
 		waveFineness = 0.1f;
 
 		preCreate();
+		Debug.Log("Loaded");
 	}
 
 	/// <summary>
