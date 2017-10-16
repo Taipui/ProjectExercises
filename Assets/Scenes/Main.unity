@@ -743,6 +743,10 @@ Prefab:
       propertyPath: m_Name
       value: Stage4Signboard
       objectReference: {fileID: 0}
+    - target: {fileID: 1867800608838284, guid: 3e860de71b06acc4db76d4675604ec94, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3e860de71b06acc4db76d4675604ec94, type: 2}
   m_IsPrefabParent: 0
@@ -2122,6 +2126,10 @@ Prefab:
     - target: {fileID: 1867800608838284, guid: 3e860de71b06acc4db76d4675604ec94, type: 2}
       propertyPath: m_Name
       value: Stage2Signboard
+      objectReference: {fileID: 0}
+    - target: {fileID: 1867800608838284, guid: 3e860de71b06acc4db76d4675604ec94, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3e860de71b06acc4db76d4675604ec94, type: 2}
@@ -5859,6 +5867,10 @@ Prefab:
       propertyPath: Messages.Array.data[2]
       value: 
       objectReference: {fileID: 2145457466}
+    - target: {fileID: 1867800608838284, guid: 3e860de71b06acc4db76d4675604ec94, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3e860de71b06acc4db76d4675604ec94, type: 2}
   m_IsPrefabParent: 0
@@ -7181,6 +7193,10 @@ Prefab:
     - target: {fileID: 1867800608838284, guid: 3e860de71b06acc4db76d4675604ec94, type: 2}
       propertyPath: m_Name
       value: Stage3Signboard
+      objectReference: {fileID: 0}
+    - target: {fileID: 1867800608838284, guid: 3e860de71b06acc4db76d4675604ec94, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3e860de71b06acc4db76d4675604ec94, type: 2}
@@ -22589,6 +22605,10 @@ Prefab:
       propertyPath: Messages.Array.data[1]
       value: 
       objectReference: {fileID: 1819108843}
+    - target: {fileID: 1867800608838284, guid: 3e860de71b06acc4db76d4675604ec94, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3e860de71b06acc4db76d4675604ec94, type: 2}
   m_IsPrefabParent: 0
@@ -25462,7 +25482,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1890483678
 Transform:
