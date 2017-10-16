@@ -4,6 +4,7 @@ using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 using DG.Tweening;
+using TMPro;
 
 /// <summary>
 /// チュートリアルに関するクラス
@@ -16,10 +17,10 @@ public class Tutorial : MonoBehaviour
 	BoxCollider col;
 
 	/// <summary>
-	/// プレイヤーの頭上に表示されるメッセージのGameObject
+	/// プレイヤーの頭上に表示されるメッセージ
 	/// </summary>
 	[SerializeField]
-	GameObject PlayerMes;
+	TextMeshPro PlayerMes;
 
 	/// <summary>
 	/// チュートリアル用のメッセージのポップアップのTransform
@@ -53,26 +54,26 @@ public class Tutorial : MonoBehaviour
 	void Start ()
 	{
 		col = GetComponent<BoxCollider>();
-		PlayerMes.SetActive(false);
+		PlayerMes.text = "";
 		TutorialMesPop.localScale = Vector3.zero;
 		isOpen = false;
 		currentMes = 0;
 
 		col.OnTriggerEnterAsObservable().Where(colObj => colObj.gameObject.tag == "Player")
 			.Subscribe(_ => {
-				PlayerMes.SetActive(true);
+				PlayerMes.text = "Push Enter";
 				Player.setEnableChange(true);
 			})
 			.AddTo(this);
 
 		col.OnTriggerExitAsObservable().Where(colObj => colObj.gameObject.tag == "Player")
 			.Subscribe(_ => {
-				PlayerMes.SetActive(false);
+				PlayerMes.text = "";
 				Player.setEnableChange(false);
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => PlayerMes != null && !!PlayerMes.activeSelf && !!Input.GetKeyDown(KeyCode.Return))
+		this.UpdateAsObservable().Where(x => PlayerMes != null && PlayerMes.text != "" && !!Input.GetKeyDown(KeyCode.Return))
 			.Subscribe(_ => {
 				if (popTween != null) {
 					popTween.Kill();

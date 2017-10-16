@@ -38,7 +38,7 @@ public class Enemy : Character
 		Observable.Interval(System.TimeSpan.FromSeconds(0.2f)).Where(x => !!isPlay() && !!enableLaunch)
 			.Subscribe(_ => {
 				if (Random.Range(0, 2) == 0) {
-					launch();
+//					launch();
 				}
 			})
 		.AddTo(this);

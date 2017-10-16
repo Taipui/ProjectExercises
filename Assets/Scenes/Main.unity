@@ -2741,11 +2741,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ef2b87818a56064b926871454f01541, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &215086618 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1217862795296952, guid: 39252dcfb402ba24191e7dc644c1e107,
+--- !u!114 &215086621 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114779151305053784, guid: 39252dcfb402ba24191e7dc644c1e107,
     type: 2}
   m_PrefabInternal: {fileID: 865750474}
+  m_Script: {fileID: -806885394, guid: 89f0137620f6af44b9ba852b4190e64e, type: 3}
 --- !u!1 &216027654
 GameObject:
   m_ObjectHideFlags: 0
@@ -11107,7 +11108,27 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 33071116609590050, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1217862795296952, guid: 39252dcfb402ba24191e7dc644c1e107, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224563424123569504, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 0.54
+      objectReference: {fileID: 0}
+    - target: {fileID: 224563424123569504, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 2.96
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114457983518362254, guid: 39252dcfb402ba24191e7dc644c1e107, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 39252dcfb402ba24191e7dc644c1e107, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &871129720 stripped
@@ -21541,7 +21562,7 @@ Prefab:
         type: 2}
       propertyPath: PlayerMes
       value: 
-      objectReference: {fileID: 215086618}
+      objectReference: {fileID: 215086621}
     - target: {fileID: 114880390615700310, guid: 3e860de71b06acc4db76d4675604ec94,
         type: 2}
       propertyPath: TutorialMesPop
