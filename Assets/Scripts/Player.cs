@@ -177,6 +177,9 @@ public class Player : Character
 	/// </summary>
 	Tutorial contactSignboard;
 
+	[SerializeField]
+	DestroyCollider Dc;
+
 	/// <summary>
 	/// 変身可能かどうかのフラグをセット
 	/// </summary>
@@ -241,7 +244,6 @@ public class Player : Character
 						// 高さが useCurvesHeight 以上ある時のみ、コライダーの高さと中心をJUMP00アニメーションについているカーブで調整する
 						if (!!Physics.Raycast(ray, out hitInfo)) {
 							if (hitInfo.distance > Use_Curve_Height) {
-								Debug.Log("hoge");
 								var orgColHight = currentAvatar == 0 ? orgColHightNormal : orgColHightSD;
 								var orgColCenter = currentAvatar == 0 ? orgVectColCenterNormal : orgVectColCenterSD;
 								col.height = orgColHight - jumpHeight;          // 調整されたコライダーの高さ
@@ -560,5 +562,8 @@ public class Player : Character
 		}
 		var smoke = Instantiate(Smoke, new Vector3(transform.position.x, transform.position.y + 1.0f, -1.0f), Quaternion.identity);
 		Destroy(smoke, 5.0f);
+
+		Dc.destroy();
+		EnableChange = false;
 	}
 }

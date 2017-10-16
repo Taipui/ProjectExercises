@@ -171,4 +171,9 @@ public class Tutorial : MonoBehaviour
 			obj.SetActive(false);
 		}
 	}
+
+	void OnDestroy()
+	{
+		PlayerMes.text = "";
+	}
 }
