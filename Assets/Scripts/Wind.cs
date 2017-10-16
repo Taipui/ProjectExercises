@@ -27,7 +27,7 @@ public class Wind : MonoBehaviour
 	/// <summary>
 	/// 吸引力
 	/// </summary>
-	const float Turbulence = 50.0f;
+	const float Turbulence = 100.0f;
 
 	void Start ()
 	{
