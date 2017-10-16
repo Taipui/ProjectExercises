@@ -146,8 +146,8 @@ public class GroundCreater : MonoBehaviour
 			}
 			var hPos = First_HPos;
 			for (var h = 0; h < Mathf.Lerp(0.0f, Height_Num, (Mathf.Sin(currentWNum * 3) + 1.0f) / 2); ++h) {
-				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
-				obj.transform.SetParent(transform);
+				var obj = Instantiate(GroundChip, transform);
+				obj.transform.position = new Vector3(wPos, hPos);
 				hPos += GroundChip.transform.localScale.y / 100;
 
 				obj.GetComponent<SpriteRenderer>().color = new Color32(103, 183, 52, 255);
@@ -171,8 +171,8 @@ public class GroundCreater : MonoBehaviour
 			}
 			var hPos = First_HPos;
 			for (var h = 0; h < Mathf.Lerp(0.0f, Height_Num, (Mathf.Sin(currentWNum * waveFineness) + 2.0f) / 3); ++h) {
-				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
-				obj.transform.SetParent(transform);
+				var obj = Instantiate(GroundChip, transform);
+				obj.transform.position = new Vector3(wPos, hPos);
 				hPos += GroundChip.transform.localScale.y / 100;
 
 				obj.GetComponent<SpriteRenderer>().color = new Color32(19, 152, 214, 255);
@@ -208,8 +208,8 @@ public class GroundCreater : MonoBehaviour
 			}
 			var hPos = First_HPos;
 			for (var h = 0; h < Height_Num; ++h) {
-				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
-				obj.transform.SetParent(transform);
+				var obj = Instantiate(GroundChip, transform);
+				obj.transform.position = new Vector3(wPos, hPos);
 				hPos += GroundChip.transform.localScale.y / 100;
 
 				obj.GetComponent<SpriteRenderer>().color = col;
@@ -226,8 +226,8 @@ public class GroundCreater : MonoBehaviour
 		var hPos = First_HPos;
 		for (; currentWNum < wNum; ++currentWNum) {
 			for (var h = 0; h < Mathf.Lerp(0.0f, Height_Num, (Mathf.Sin(currentWNum * .1f) + 2.0f) / 3); ++h) {
-				var obj = Instantiate(GroundChip, new Vector3(wPos, hPos), Quaternion.identity);
-				obj.transform.SetParent(transform);
+				var obj = Instantiate(GroundChip, transform);
+				obj.transform.position = new Vector3(wPos, hPos);
 				hPos += GroundChip.transform.localScale.y / 100;
 			}
 			wPos += GroundChip.transform.localScale.x / 100;

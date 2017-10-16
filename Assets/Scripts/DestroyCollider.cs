@@ -86,7 +86,7 @@ public class DestroyCollider : MonoBehaviour
 				isDestroy = false;
 
 				for (var i = 0; i < 10; ++i) {
-					Launcher.launch(Bullet, randomVec(), 13,BulletParent, randomVec());
+					Launcher.launch(Bullet, randomVec(), 13, BulletParent, randomVec());
 				}
 			})
 			.AddTo(this);
@@ -104,10 +104,12 @@ public class DestroyCollider : MonoBehaviour
 	/// <summary>
 	/// ランダムなベクトルを返す
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>ランダムなベクトル</returns>
 	Vector3 randomVec()
 	{		
-		var vec = new Vector3(Random.Range(transform.localPosition.x - Pos_Range, transform.localPosition.x + Pos_Range), Random.Range(transform.localPosition.y, transform.localPosition.y + Pos_Range), transform.localPosition.z);
+		var vec = new Vector3(Random.Range(transform.localPosition.x - Pos_Range, transform.localPosition.x + Pos_Range), 
+			Random.Range(transform.localPosition.y, transform.localPosition.y + Pos_Range), 
+			transform.localPosition.z);
 		return vec;
 	}
 }

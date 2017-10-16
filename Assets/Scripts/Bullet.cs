@@ -12,6 +12,9 @@ public class Bullet : MonoBehaviour
 	[SerializeField]
 	GameObject GroundBullet;
 
+	/// <summary>
+	/// オブジェクトを消すY座標
+	/// </summary>
 	const float Kill_Zone = -6.0f;
 
 	/// <summary>
@@ -26,7 +29,7 @@ public class Bullet : MonoBehaviour
 	bool isCollide;
 
 	/// <summary>
-	/// コライダ
+	/// 自身のコライダ
 	/// </summary>
 	SphereCollider col;
 

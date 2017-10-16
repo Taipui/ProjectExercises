@@ -9,8 +9,12 @@ using UniRx.Triggers;
 [RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(Rigidbody))]
 
+/// <summary>
+/// プレイヤー関連のクラス
+/// </summary>
 public class Player : Character
 {
+	#region アニメーション関連
 	/// <summary>
 	/// アニメーションの再生速度
 	/// </summary>
@@ -19,13 +23,32 @@ public class Player : Character
 	/// Mecanimでカーブ調整を使うかどうか
 	/// </summary>
 	const bool Use_Curve = true;
-
 	/// <summary>
 	/// カーブ補正の有効高さ(地面をすり抜けやすい時には大きくする)
 	/// </summary>
 	const float Use_Curve_Height = 0.25f;
+	/// <summary>
+	/// アニメーター
+	/// </summary>
+	Animator anim;
+	#endregion
 
-	// 以下キャラクターコントローラ用パラメタ
+	#region 各ステートの参照
+	/// <summary>
+	/// Idleステートの参照
+	/// </summary>
+	static int idleState = Animator.StringToHash("Base Layer.Idle");
+	/// <summary>
+	/// Locomotionステートの参照
+	/// </summary>
+	static int locoState = Animator.StringToHash("Base Layer.Locomotion");
+	/// <summary>
+	/// jumpステートの参照
+	/// </summary>
+	static int jumpState = Animator.StringToHash("Base Layer.Jump");
+	#endregion
+
+	#region プレイヤーのアクション関連
 	/// <summary>
 	/// 前進速度
 	/// </summary>
@@ -34,6 +57,8 @@ public class Player : Character
 	/// ジャンプ力
 	/// </summary>
 	const float Jump_Power = 4.0f;
+	#endregion
+
 	/// <summary>
 	/// キャラクターのコライダ
 	/// </summary>
@@ -42,10 +67,6 @@ public class Player : Character
 	/// プレイヤーのRidigbody
 	/// </summary>
 	Rigidbody rb;
-	/// <summary>
-	/// プレイヤーの移動量
-	/// </summary>
-	Vector3 velocity;
 	/// <summary>
 	/// CapsuleColliderで設定されているコライダのHeightの初期値を収める変数(Normal)
 	/// </summary>
@@ -63,22 +84,9 @@ public class Player : Character
 	/// </summary>
 	Vector3 orgVectColCenterSD;
 	/// <summary>
-	/// アニメーター
-	/// </summary>
-	Animator anim;
-	/// <summary>
-	/// base layerで使われる、アニメーターの現在の状態の参照
-	/// </summary>
-	AnimatorStateInfo currentBaseState;
-	/// <summary>
 	/// 横の移動量
 	/// </summary>
 	readonly ReactiveProperty<float> h = new ReactiveProperty<float>(0.0f);
-
-	// アニメーター各ステートへの参照
-	static int idleState = Animator.StringToHash("Base Layer.Idle");
-	static int locoState = Animator.StringToHash("Base Layer.Locomotion");
-	static int jumpState = Animator.StringToHash("Base Layer.Jump");
 
 	/// <summary>
 	/// プレイヤーの向いている方向
@@ -137,11 +145,17 @@ public class Player : Character
 	[SerializeField]
 	GameObject Mes;
 
+	#region 風関連
 	/// <summary>
 	/// 風のGameObject
 	/// </summary>
 	[SerializeField]
 	GameObject WindObj;
+	/// <summary>
+	/// 生成した風のGameObjec(風を一度に一つしか生成できないようにするため)
+	/// </summary>
+	GameObject instanceWindObj;
+	#endregion
 
 	#region 変身関連
 	/// <summary>
@@ -164,19 +178,20 @@ public class Player : Character
 	public bool EnableChange { private set; get; }
 	#endregion
 
+	/// <summary>
+	/// 煙のPrefab
+	/// </summary>
 	[SerializeField]
 	GameObject Smoke;
-
-	/// <summary>
-	/// 生成した風のGameObjec(風を一度に一つしか生成できないようにするため)
-	/// </summary>
-	GameObject instanceWindObj;
 
 	/// <summary>
 	/// 現在接している看板のスクリプト
 	/// </summary>
 	Tutorial contactSignboard;
 
+	/// <summary>
+	/// DestroyCollider
+	/// </summary>
 	[SerializeField]
 	DestroyCollider Dc;
 
@@ -193,6 +208,8 @@ public class Player : Character
 	{
 		base.Start();
 		init();
+		var currentBaseState = anim.GetCurrentAnimatorStateInfo(0);
+		var velocity = Vector3.zero;
 		var stockBullets = new List<GameObject>();
 
 		this.FixedUpdateAsObservable().Subscribe(_ => {
@@ -276,7 +293,7 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => (!!isJump() || !!isSpJump()) && !!enableJump())
+		this.UpdateAsObservable().Where(x => (!!isJump() || !!isSpJump()) && !!enableJump(currentBaseState))
 			.Subscribe(_ => {
 				jump();
 			})
@@ -309,7 +326,7 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isPlay() && !!isRClk() && !isMaxStock() && !!enableJump())
+		this.UpdateAsObservable().Where(x => !!isPlay() && !!isRClk() && !isMaxStock() && !!enableJump(currentBaseState))
 			.Subscribe(_ => {
 				Gce.checkGroundChip();
 			})
@@ -432,9 +449,9 @@ public class Player : Character
 	/// ジャンプ可能かどうか
 	/// </summary>
 	/// <returns>可能ならtrue</returns>
-	bool enableJump()
+	bool enableJump(AnimatorStateInfo animStateInfo)
 	{
-		return currentBaseState.fullPathHash != jumpState;
+		return animStateInfo.fullPathHash != jumpState;
 	}
 
 	/// <summary>

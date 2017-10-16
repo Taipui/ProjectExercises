@@ -22,9 +22,9 @@ public class Launcher : MonoBehaviour
 	/// <param name="vec">弾に力を加えるベクトル</param>
 	public void launch(GameObject bullet, Vector3 targetPos, int layerNo, Transform bulletParent, Vector3 vec)
 	{
-		var obj = Instantiate(bullet, new Vector3(transform.position.x, transform.position.y), Quaternion.identity);
+		var obj = Instantiate(bullet, bulletParent);
 		var rb = obj.GetComponent<Rigidbody>();
-		obj.transform.SetParent(bulletParent);
+		obj.transform.position = transform.position;
 		if (layerNo == 13) {
 			rb.velocity = vec;
 		} else {
