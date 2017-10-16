@@ -36,11 +36,6 @@ public class Tutorial : MonoBehaviour
 	Tweener popTween;
 
 	/// <summary>
-	/// チュートリアル用のメッセージのポップアップが開いているかどうか
-	/// </summary>
-	bool isOpen;
-
-	/// <summary>
 	/// 現在のメッセージ
 	/// </summary>
 	int currentMes;
@@ -51,13 +46,24 @@ public class Tutorial : MonoBehaviour
 	[SerializeField]
 	Player Player;
 
+	/// <summary>
+	/// ページ送りをするかどうか
+	/// </summary>
+	[SerializeField]
+	bool isFeedPage;
+
+	/// <summary>
+	/// メッセージを開いているかどうか(ページ送りをしない看板の設定)
+	/// </summary>
+	bool isOpen;
+
 	void Start ()
 	{
 		col = GetComponent<BoxCollider>();
 		PlayerMes.text = "";
 		TutorialMesPop.localScale = Vector3.zero;
-		isOpen = false;
 		currentMes = 0;
+		isOpen = false;
 
 		col.OnTriggerEnterAsObservable().Where(colObj => colObj.gameObject.tag == "Player")
 			.Subscribe(_ => {
@@ -75,17 +81,39 @@ public class Tutorial : MonoBehaviour
 
 		this.UpdateAsObservable().Where(x => PlayerMes != null && PlayerMes.text != "" && !!Input.GetKeyDown(KeyCode.Return))
 			.Subscribe(_ => {
-				if (popTween != null) {
-					popTween.Kill();
-				}
-				if (!isOpen) {
-					openPop();
-				} else {
-					closePop();
-				}
-				isOpen = !isOpen;
 			})
 			.AddTo(this);
+	}
+
+	/// <summary>
+	/// メッセージ表示/非表示の処理
+	/// </summary>
+	public void execPop()
+	{
+		if (popTween != null) {
+			popTween.Kill();
+		}
+
+		if (!!isFeedPage) {
+			if (currentMes == 0) {
+				openPop();
+			} else if (currentMes == Messages.Length) {
+				closePop();
+				currentMes = 0;
+			} else {
+				selectMes();
+			}
+		} else {
+			if (!isOpen) {
+				openPop();
+				currentMes %= Messages.Length;
+				isOpen = true;
+			} else {
+				closePop();
+				isOpen = false;
+			}
+		}
+
 	}
 
 	/// <summary>
@@ -102,6 +130,14 @@ public class Tutorial : MonoBehaviour
 	}
 
 	/// <summary>
+	/// 次のメッセージへ切り替える
+	/// </summary>
+	void nextPop()
+	{
+		selectMes();
+	}
+
+	/// <summary>
 	/// チュートリアル用のメッセージのポップアップの非表示
 	/// </summary>
 	void closePop()
@@ -113,6 +149,7 @@ public class Tutorial : MonoBehaviour
 			.OnComplete(() => {
 				Time.timeScale = 1.0f;
 			});
+		clrMes();
 	}
 
 	/// <summary>
@@ -120,10 +157,18 @@ public class Tutorial : MonoBehaviour
 	/// </summary>
 	void selectMes()
 	{
+		clrMes();
+		Messages[currentMes].SetActive(true);
+		++currentMes;
+	}
+
+	/// <summary>
+	/// メッセージを消去する
+	/// </summary>
+	void clrMes()
+	{
 		foreach (GameObject obj in Messages) {
 			obj.SetActive(false);
 		}
-		Messages[currentMes].SetActive(true);
-		currentMes = (currentMes + 1) % Messages.Length;
 	}
 }

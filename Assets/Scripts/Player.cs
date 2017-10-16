@@ -168,6 +168,16 @@ public class Player : Character
 	GameObject Smoke;
 
 	/// <summary>
+	/// 生成した風のGameObjec(風を一度に一つしか生成できないようにするため)
+	/// </summary>
+	GameObject instanceWindObj;
+
+	/// <summary>
+	/// 現在接している看板のスクリプト
+	/// </summary>
+	Tutorial contactSignboard;
+
+	/// <summary>
 	/// 変身可能かどうかのフラグをセット
 	/// </summary>
 	/// <param name="val">セットする値</param>
@@ -346,16 +356,34 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isSp.Value && !!Input.GetKeyDown(KeyCode.LeftShift))
+		this.UpdateAsObservable().Where(x => !!isSp.Value && !!Input.GetKeyDown(KeyCode.LeftShift) && instanceWindObj == null)
 			.Subscribe(_ => {
 				var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-				Instantiate(WindObj, new Vector3(mousePos.x, mousePos.y), Quaternion.identity);
+				instanceWindObj = Instantiate(WindObj, new Vector3(mousePos.x, mousePos.y), Quaternion.identity);
 			})
 			.AddTo(this);
 
 		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.S))
 			.Subscribe(_ => {
 				changeAvatar();
+			})
+			.AddTo(this);
+
+		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.Return) && contactSignboard != null)
+			.Subscribe(_ => {
+				contactSignboard.execPop();
+			})
+			.AddTo(this);
+
+		col.OnTriggerEnterAsObservable().Where(colObj => colObj.tag == "Signboard")
+			.Subscribe(colObj => {
+				contactSignboard = colObj.GetComponent<Tutorial>();
+			})
+			.AddTo(this);
+
+		col.OnTriggerExitAsObservable().Where(colObj => colObj.tag == "Signboard")
+			.Subscribe(colObj => {
+				contactSignboard = null;
 			})
 			.AddTo(this);
 	}
