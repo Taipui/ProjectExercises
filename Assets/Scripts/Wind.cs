@@ -24,6 +24,11 @@ public class Wind : MonoBehaviour
 	/// </summary>
 	const float Destroy_Time = 10.0f;
 
+	/// <summary>
+	/// 吸引力
+	/// </summary>
+	const float Turbulence = 10.0f;
+
 	void Start ()
 	{
 		col = GetComponent<SphereCollider>();
@@ -36,7 +41,7 @@ public class Wind : MonoBehaviour
 
 		col.OnTriggerStayAsObservable().Where(colObj => colObj.tag == "Bullet")
 			.Subscribe(colObj => {
-				colObj.gameObject.GetComponent<Rigidbody>().AddForce(transform.position - colObj.transform.position);
+				colObj.gameObject.GetComponent<Rigidbody>().AddForce((transform.position - colObj.transform.position) * Turbulence);
 			})
 			.AddTo(this);
 	}
