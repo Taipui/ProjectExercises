@@ -50,6 +50,11 @@ public class DestroyCollider : MonoBehaviour
 	/// </summary>
 	[SerializeField]
 	GameObject Bullet;
+	/// <summary>
+	/// 発射した弾を格納するGameObjectのTransform
+	/// </summary>
+	[SerializeField]
+	Transform BulletParent;
 
 	/// <summary>
 	/// ランダムな座標を作る時の範囲
@@ -81,7 +86,7 @@ public class DestroyCollider : MonoBehaviour
 				isDestroy = false;
 
 				for (var i = 0; i < 10; ++i) {
-					Launcher.launch(Bullet, randomVec(), 13, transform, randomVec());
+					Launcher.launch(Bullet, randomVec(), 13,BulletParent, randomVec());
 				}
 			})
 			.AddTo(this);
@@ -101,7 +106,8 @@ public class DestroyCollider : MonoBehaviour
 	/// </summary>
 	/// <returns></returns>
 	Vector3 randomVec()
-	{
-		return new Vector3(Random.Range(transform.position.x - Pos_Range, transform.position.x + Pos_Range), Random.Range(transform.position.y, transform.position.y + Pos_Range), transform.position.z);
+	{		
+		var vec = new Vector3(Random.Range(transform.localPosition.x - Pos_Range, transform.localPosition.x + Pos_Range), Random.Range(transform.localPosition.y, transform.localPosition.y + Pos_Range), transform.localPosition.z);
+		return vec;
 	}
 }

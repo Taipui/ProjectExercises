@@ -33,7 +33,7 @@ public class Player : Character
 	/// <summary>
 	/// ジャンプ力
 	/// </summary>
-	const float Jump_Power = 3.0f;
+	const float Jump_Power = 4.0f;
 	/// <summary>
 	/// キャラクターのコライダ
 	/// </summary>
