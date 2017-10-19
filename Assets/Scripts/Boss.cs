@@ -15,7 +15,10 @@ public class Boss : Enemy
 		setHp(3);
 		Debug.Log(hp);
 
-		this.UpdateAsObservable().Subscribe(_ => {
+		if (PlayerTfm == null) {
+			return;
+		}
+		PlayerTfm.UpdateAsObservable().Subscribe(_ => {
 			move();
 		})
 		.AddTo(this);
