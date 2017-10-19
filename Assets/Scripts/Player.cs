@@ -211,6 +211,7 @@ public class Player : Character
 		var currentBaseState = anim.GetCurrentAnimatorStateInfo(0);
 		var velocity = Vector3.zero;
 		var stockBullets = new List<GameObject>();
+		setHp(1000000);
 
 		this.FixedUpdateAsObservable().Subscribe(_ => {
 			h.Value = Input.GetAxis("Horizontal");

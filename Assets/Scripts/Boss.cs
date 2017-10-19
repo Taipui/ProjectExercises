@@ -12,6 +12,8 @@ public class Boss : Enemy
 	protected override void Start ()
 	{
 		base.Start();
+		setHp(3);
+		Debug.Log(hp);
 
 		this.UpdateAsObservable().Subscribe(_ => {
 			move();

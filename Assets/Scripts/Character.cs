@@ -29,7 +29,7 @@ public class Character : MonoBehaviour
 	/// <summary>
 	/// 体力
 	/// </summary>
-	readonly ReactiveProperty<int> hp = new ReactiveProperty<int>(1);
+	readonly protected ReactiveProperty<int> hp = new ReactiveProperty<int>(1);
 
 	/// <summary>
 	/// GameManager
@@ -44,6 +44,21 @@ public class Character : MonoBehaviour
 	protected Transform LauncherParent;
 
 	/// <summary>
+	/// デカール
+	/// </summary>
+	[SerializeField]
+	GameObject[] Decals;
+
+	/// <summary>
+	/// 無敵時間
+	/// </summary>
+	const float Invincible_Time = 0.1f;
+	/// <summary>
+	/// 無敵かどうか
+	/// </summary>
+	bool isInvinsible;
+
+	/// <summary>
 	/// 体力をセット
 	/// </summary>
 	/// <param name="val">セットする体力</param>
@@ -54,6 +69,11 @@ public class Character : MonoBehaviour
 
 	protected virtual void Start ()
 	{
+		isInvinsible = false;
+		foreach (var obj in Decals) {
+			obj.SetActive(false);
+		}
+
 		hp.AsObservable().Where(val => val <= 0)
 			.Subscribe(_ => {
 				dead();
@@ -72,7 +92,7 @@ public class Character : MonoBehaviour
 	/// <summary>
 	/// ダメージ処理
 	/// </summary>
-	void damage()
+	protected virtual void damage()
 	{
 		--hp.Value;
 	}
@@ -89,16 +109,25 @@ public class Character : MonoBehaviour
 	/// 当たったものが相手の弾かどうかを調べる
 	/// </summary>
 	/// <param name="obj">当たったもの</param>
-	protected void chechBullet(GameObject obj)
+	protected IEnumerator chechBullet(GameObject obj)
 	{
-		if (obj.tag != "Bullet") {
-			return;
+		if (!!isInvinsible) {
+			yield break;
 		}
+		if (obj.tag != "Bullet") {
+			yield break;
+		}
+		Debug.Log(MyBulletLayer);
 		if (LayerMask.LayerToName(obj.layer) == MyBulletLayer) {
-			return;
+			yield break;
 		}
 
 		damage();
+		Destroy(obj);
+		activeDecal(obj.transform.localPosition.y);
+		isInvinsible = true;
+		yield return new WaitForSeconds(Invincible_Time);
+		isInvinsible = false;
 	}
 
 	/// <summary>
@@ -112,6 +141,24 @@ public class Character : MonoBehaviour
 
 	void OnCollisionEnter(Collision col)
 	{
-		chechBullet(col.gameObject);
+		StartCoroutine(chechBullet(col.gameObject));
+	}
+
+	/// <summary>
+	/// デカールを表示する
+	/// </summary>
+	/// <param name="posY">当たった弾のY座標(ローカル)</param>
+	void activeDecal(float posY)
+	{
+		if (Decals.Length < 3) {
+			return;
+		}
+		if (posY >= 1.0f) {
+			Decals[0].SetActive(true);
+		} else if (posY >= 0.7f) {
+			Decals[1].SetActive(true);
+		} else {
+			Decals[2].SetActive(true);
+		}
 	}
 }
