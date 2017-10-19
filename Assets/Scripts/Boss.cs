@@ -30,7 +30,7 @@ public class Boss : Enemy
 			if (Random.Range(0, 2) == 0) {
 				continue;
 			}
-			AI.ShootFixedAngle(child.position, PlayerTfm.position, 60.0f, child.gameObject.GetComponent<Launcher>(), Bullet, BulletParentTfm);
+			AI.ShootFixedAngle(new Vector3(child.position.x, child.position.y), PlayerTfm.position, 60.0f, child.gameObject.GetComponent<Launcher>(), Bullet, BulletParentTfm);
 		}
 	}
 
