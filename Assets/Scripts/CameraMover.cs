@@ -43,12 +43,12 @@ public class CameraMover : MonoBehaviour
 
 	void Start ()
 	{
-		var maxX = PlayerTfm.position.x + X_Offset;
+		var maxX = 0.4f;
 		var prevX = transform.position.x;
 
 		PlayerTfm.UpdateAsObservable()
 			.Subscribe(_ => {
-				transform.position = new Vector3(Mathf.Min(Mathf.Max(maxX, PlayerTfm.position.x + X_Offset), X_Limit), transform.position.y, transform.position.z);
+				transform.position = new Vector3(Mathf.Clamp(PlayerTfm.position.x + X_Offset, maxX, X_Limit), transform.position.y, transform.position.z);
 				maxX = transform.position.x;
 				diff.Value = transform.position.x - prevX;
 			})

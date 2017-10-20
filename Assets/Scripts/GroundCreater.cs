@@ -82,6 +82,7 @@ public class GroundCreater : MonoBehaviour
 	/// </summary>
 	void preCreate()
 	{
+		stage0();
 		stage1();
 	}
 
@@ -99,6 +100,24 @@ public class GroundCreater : MonoBehaviour
 	}
 
 	/// <summary>
+	/// 最初の足場
+	/// </summary>
+	void stage0()
+	{
+		for (var i = 0; i < 20; ++i) {
+			var hPos = First_HPos;
+			for (var h = 0; h < Height_Num; ++h) {
+				var obj = Instantiate(GroundChip, transform);
+				obj.transform.position = new Vector3(wPos, hPos);
+				hPos += GroundChip.transform.localScale.y / 100;
+
+				obj.GetComponent<SpriteRenderer>().color = Color.white;
+			}
+			wPos += GroundChip.transform.localScale.x / 100;
+		}
+	}
+
+	/// <summary>
 	/// ステージ1(少し平坦なマップ)
 	/// </summary>
 	void stage1()
@@ -106,7 +125,8 @@ public class GroundCreater : MonoBehaviour
 		if (stage != 1) {
 			return;
 		}
-		normalStage(new Color32(117, 91, 165, 255));
+		Debug.Log("hoge");
+		normalStage(Color.white);
 	}
 
 	/// <summary>
@@ -117,7 +137,7 @@ public class GroundCreater : MonoBehaviour
 		if (stage != 2) {
 			return;
 		}
-		normalStage(new Color32(224, 84, 128, 255));
+		normalStage(Color.white);
 	}
 
 	/// <summary>
@@ -128,7 +148,7 @@ public class GroundCreater : MonoBehaviour
 		if (stage != 3) {
 			return;
 		}
-		normalStage(new Color32(243, 154, 28, 255));
+		normalStage(Color.white);
 	}
 
 	/// <summary>
@@ -150,7 +170,7 @@ public class GroundCreater : MonoBehaviour
 				obj.transform.position = new Vector3(wPos, hPos);
 				hPos += GroundChip.transform.localScale.y / 100;
 
-				obj.GetComponent<SpriteRenderer>().color = new Color32(103, 183, 52, 255);
+				obj.GetComponent<SpriteRenderer>().color = Color.white;
 			}
 			wPos += GroundChip.transform.localScale.x / 100;
 		}
@@ -175,7 +195,7 @@ public class GroundCreater : MonoBehaviour
 				obj.transform.position = new Vector3(wPos, hPos);
 				hPos += GroundChip.transform.localScale.y / 100;
 
-				obj.GetComponent<SpriteRenderer>().color = new Color32(19, 152, 214, 255);
+				obj.GetComponent<SpriteRenderer>().color = Color.white;
 			}
 			if (prevSign == -1 && prevSign != (int)Mathf.Sign(Mathf.Sin(currentWNum))) {
 				waveFineness += 0.005f;
