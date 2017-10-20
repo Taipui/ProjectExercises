@@ -13,7 +13,6 @@ public class Boss : Enemy
 	{
 		base.Start();
 		setHp(3);
-		Debug.Log(hp);
 
 		if (PlayerTfm == null) {
 			return;

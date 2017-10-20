@@ -9,6 +9,7 @@ TagManager:
   - EnemyBullet
   - Bullet
   - Signboard
+  - Obstacle
   layers:
   - Default
   - TransparentFX

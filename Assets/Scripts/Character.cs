@@ -117,7 +117,6 @@ public class Character : MonoBehaviour
 		if (obj.tag != "Bullet") {
 			yield break;
 		}
-		Debug.Log(MyBulletLayer);
 		if (LayerMask.LayerToName(obj.layer) == MyBulletLayer) {
 			yield break;
 		}

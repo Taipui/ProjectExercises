@@ -110,10 +110,10 @@
     <Compile Include="Assets\Scripts\Common.cs" />
     <Compile Include="Assets\Scripts\DestroyCollider.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
+    <Compile Include="Assets\Scripts\Eraser.cs" />
     <Compile Include="Assets\Scripts\FloatMover.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\GrayTrigger.cs" />
-    <Compile Include="Assets\Scripts\GroundChipChecker.cs" />
     <Compile Include="Assets\Scripts\GroundChipEraser.cs" />
     <Compile Include="Assets\Scripts\GroundCreater.cs" />
     <Compile Include="Assets\Scripts\Hoge.cs" />
