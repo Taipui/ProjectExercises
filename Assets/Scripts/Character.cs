@@ -84,7 +84,7 @@ public class Character : MonoBehaviour
 	/// <summary>
 	/// ダメージ処理
 	/// </summary>
-	protected virtual void damage()
+	void damage()
 	{
 		--hp.Value;
 	}
@@ -101,7 +101,7 @@ public class Character : MonoBehaviour
 	/// 当たったものが相手の弾かどうかを調べる
 	/// </summary>
 	/// <param name="obj">当たったもの</param>
-	protected IEnumerator chechBullet(GameObject obj)
+	IEnumerator chechBullet(GameObject obj)
 	{
 		if (!!isInvinsible) {
 			yield break;
