@@ -24,7 +24,7 @@ public class Launcher : MonoBehaviour
 	{
 		var obj = Instantiate(bullet, bulletParent);
 		var rb = obj.GetComponent<Rigidbody>();
-		obj.transform.position = new Vector3(transform.position.x, transform.localPosition.y);
+		obj.transform.position = new Vector3(transform.position.x, transform.position.y);
 		if (layerNo == 13) {
 			rb.velocity = vec;
 		} else {
