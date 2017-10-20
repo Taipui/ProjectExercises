@@ -46,10 +46,12 @@ public class CameraMover : MonoBehaviour
 		var tfm = transform;
 		var maxX = 0.4f;
 		var prevX = tfm.localPosition.x;
+		var cachedLocalPos = Vector3.zero;
 
 		PlayerTfm.UpdateAsObservable()
 			.Subscribe(_ => {
-				tfm.localPosition = new Vector3(Mathf.Clamp(PlayerTfm.localPosition.x + X_Offset, maxX, X_Limit), tfm.localPosition.y, tfm.localPosition.z);
+				cachedLocalPos = new Vector3(Mathf.Clamp(PlayerTfm.localPosition.x + X_Offset, maxX, X_Limit), tfm.localPosition.y, tfm.localPosition.z);
+				tfm.localPosition = cachedLocalPos;
 				maxX = tfm.localPosition.x;
 				diff.Value = tfm.localPosition.x - prevX;
 			})
