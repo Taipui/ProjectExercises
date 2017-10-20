@@ -43,21 +43,22 @@ public class CameraMover : MonoBehaviour
 
 	void Start ()
 	{
+		var tfm = transform;
 		var maxX = 0.4f;
-		var prevX = transform.position.x;
+		var prevX = tfm.position.x;
 
 		PlayerTfm.UpdateAsObservable()
 			.Subscribe(_ => {
-				transform.position = new Vector3(Mathf.Clamp(PlayerTfm.position.x + X_Offset, maxX, X_Limit), transform.position.y, transform.position.z);
-				maxX = transform.position.x;
-				diff.Value = transform.position.x - prevX;
+				tfm.position = new Vector3(Mathf.Clamp(PlayerTfm.position.x + X_Offset, maxX, X_Limit), tfm.position.y, tfm.position.z);
+				maxX = tfm.position.x;
+				diff.Value = tfm.position.x - prevX;
 			})
 			.AddTo(this);
 
 		diff.AsObservable().Where(val => val >= Erase_Threshold)
 			.Subscribe(_ => {
 				Gc.create();
-				prevX = transform.position.x;
+				prevX = tfm.position.x;
 			})
 			.AddTo(this);
 	}
