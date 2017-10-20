@@ -531,7 +531,7 @@ public class Player : Character
 	/// <summary>
 	/// 弾を発射する
 	/// </summary>
-	protected override void launch()
+	void launch()
 	{
 		var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		var direction = mousePos - LaunchTfm.position;

@@ -47,7 +47,7 @@ public class Enemy : Character
 	/// <summary>
 	/// 弾を発射する
 	/// </summary>
-	protected override void launch()
+	protected virtual void launch()
 	{
 		// 派生クラスで実装
 	}

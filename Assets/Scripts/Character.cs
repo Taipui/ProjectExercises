@@ -29,7 +29,7 @@ public class Character : MonoBehaviour
 	/// <summary>
 	/// 体力
 	/// </summary>
-	readonly protected ReactiveProperty<int> hp = new ReactiveProperty<int>(1);
+	readonly ReactiveProperty<int> hp = new ReactiveProperty<int>(1);
 
 	/// <summary>
 	/// GameManager
@@ -79,14 +79,6 @@ public class Character : MonoBehaviour
 				dead();
 			})
 			.AddTo(this);
-	}
-
-	/// <summary>
-	/// 弾を発射する
-	/// </summary>
-	protected virtual void launch()
-	{
-		// 派生クラスで実装
 	}
 
 	/// <summary>
