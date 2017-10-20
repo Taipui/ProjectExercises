@@ -125,7 +125,6 @@ public class GroundCreater : MonoBehaviour
 		if (stage != 1) {
 			return;
 		}
-		Debug.Log("hoge");
 		normalStage(Color.white);
 	}
 

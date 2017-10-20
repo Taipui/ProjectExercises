@@ -49,7 +49,7 @@ public class CameraMover : MonoBehaviour
 
 		PlayerTfm.UpdateAsObservable()
 			.Subscribe(_ => {
-				tfm.localPosition = new Vector3(Mathf.Clamp(PlayerTfm.position.x + X_Offset, maxX, X_Limit), tfm.localPosition.y, tfm.localPosition.z);
+				tfm.localPosition = new Vector3(Mathf.Clamp(PlayerTfm.localPosition.x + X_Offset, maxX, X_Limit), tfm.localPosition.y, tfm.localPosition.z);
 				maxX = tfm.localPosition.x;
 				diff.Value = tfm.localPosition.x - prevX;
 			})
