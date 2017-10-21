@@ -48,7 +48,7 @@ public class GroundCreater : MonoBehaviour
 	/// <summary>
 	/// ゲーム開始時に生成する列数
 	/// </summary>
-	const int Pre_Create_Num = 100;
+	const int Pre_Create_Num = 65;
 
 	/// <summary>
 	/// 現在のステージ
@@ -236,6 +236,25 @@ public class GroundCreater : MonoBehaviour
 			wPos += GroundChip.transform.localScale.x / 100;
 		}
 	}
+
+	// この方法だと生成が追いつかない
+	//IEnumerator normalStage()
+	//{
+	//	for (; currentWNum < wNum; ++currentWNum) {
+	//		if (wNum >= Width_Num) {
+	//			stageTransition();
+	//			yield break;
+	//		}
+	//		var hPos = First_HPos;
+	//		for (var h = 0; h < Height_Num; ++h) {
+	//			var go = Instantiate(GroundChip, transform);
+	//			go.transform.position = new Vector3(wPos, hPos);
+	//			hPos += GroundChip.transform.localScale.y / 100;
+	//			yield return null;
+	//		}
+	//		wPos += GroundChip.transform.localScale.x / 100;
+	//	}
+	//}
 
 	/// <summary>
 	/// サイン波のテストステージ

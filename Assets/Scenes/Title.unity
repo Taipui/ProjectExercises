@@ -583,7 +583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 264fdfb7460a04140908c8a4509ed577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LoadingObj: {fileID: 150026694}
+  LoadingGo: {fileID: 150026694}
 --- !u!1 &1960337541
 GameObject:
   m_ObjectHideFlags: 0
