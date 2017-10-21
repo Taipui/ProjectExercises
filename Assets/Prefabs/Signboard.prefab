@@ -27,7 +27,7 @@ GameObject:
   m_TagString: Signboard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4925846867578686
 Transform:
@@ -52,8 +52,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4.9999995, y: 3.7499998, z: 0.19999999}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 4.9999995, y: 3.7499998, z: 0.1}
+  m_Center: {x: 0, y: 0, z: -0.1}
 --- !u!114 &114880390615700310
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -69,7 +69,9 @@ MonoBehaviour:
   TutorialMesPop: {fileID: 0}
   Messages:
   - {fileID: 0}
+  - {fileID: 0}
   Player: {fileID: 0}
+  isFeedPage: 1
 --- !u!212 &212697864886210916
 SpriteRenderer:
   m_ObjectHideFlags: 1

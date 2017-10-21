@@ -54,11 +54,8 @@ public class Tutorial : MonoBehaviour
 
 	void Start ()
 	{
+		init();
 		var col = GetComponent<BoxCollider>();
-		PlayerMes.text = "";
-		TutorialMesPop.localScale = Vector3.zero;
-		currentMes = 0;
-		isOpen = false;
 
 		col.OnTriggerEnterAsObservable().Where(colGo => !!isPlayer(colGo))
 			.Subscribe(_ => {
@@ -73,6 +70,20 @@ public class Tutorial : MonoBehaviour
 				Player.setEnableChange(false);
 			})
 			.AddTo(this);
+	}
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void init()
+	{
+		PlayerMes.text = "";
+		TutorialMesPop.localScale = Vector3.zero;
+		currentMes = 0;
+		isOpen = false;
+		foreach (var go in Messages) {
+			go.SetActive(false);
+		}
 	}
 
 	/// <summary>
@@ -138,8 +149,8 @@ public class Tutorial : MonoBehaviour
 			).SetUpdate(true)
 			.OnComplete(() => {
 				Time.timeScale = 1.0f;
+				clrMes();
 			});
-		clrMes();
 	}
 
 	/// <summary>
