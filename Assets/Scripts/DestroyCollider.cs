@@ -32,7 +32,7 @@ public class DestroyCollider : MonoBehaviour
 	/// <summary>
 	/// 最大破壊数
 	/// </summary>
-	const int Max_Contact = 250;
+	const int Max_Contact = 200;
 
 	/// <summary>
 	/// Launcher
