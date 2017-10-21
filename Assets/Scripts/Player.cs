@@ -412,7 +412,7 @@ public class Player : Character
 		orgColHightSD = col.height * 0.7f;
 		orgVectColCenterSD = new Vector3(col.center.x, orgVectColCenterNormal.y - orgColHightSD / 4, col.center.z);
 
-		MyBulletLayer = "PlayerBullet";
+		MyBulletLayer = Common.PlayerBulletLayer;
 
 		setHp(1000000);
 	}

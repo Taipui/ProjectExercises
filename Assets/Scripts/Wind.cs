@@ -37,6 +37,7 @@ public class Wind : MonoBehaviour
 		col.OnTriggerStayAsObservable().Where(colGo => !!isBullet(colGo))
 			.Subscribe(colGo => {
 				colGo.gameObject.GetComponent<Rigidbody>().AddForce((transform.position - colGo.transform.position) * Turbulence);
+				colGo.gameObject.layer = Common.BulletLayer;
 			})
 			.AddTo(this);
 	}

@@ -21,4 +21,19 @@ public static class Common
 	/// </summary>
 	public const string GameOver = "GameOver";
 	#endregion
+
+	#region レイヤー
+	/// <summary>
+	/// プレイヤーが発射した弾のレイヤー
+	/// </summary>
+	public const int PlayerBulletLayer = 13;
+	/// <summary>
+	/// 敵が発射した弾のレイヤー
+	/// </summary>
+	public const int EnemyBulletLayer = 14;
+	/// <summary>
+	/// どちらにも属さない弾のレイヤー
+	/// </summary>
+	public const int BulletLayer = 9;
+	#endregion
 }

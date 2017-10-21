@@ -25,7 +25,7 @@ public class Launcher : MonoBehaviour
 		var go = Instantiate(bullet, bulletParent);
 		var rb = go.GetComponent<Rigidbody>();
 		go.transform.position = new Vector3(transform.position.x, transform.position.y);
-		if (layerNo == 13) {
+		if (layerNo == Common.PlayerBulletLayer) {
 			rb.velocity = vec;
 		} else {
 			// 速さベクトルのままAddForce()を渡してはいけないぞ。力(速さ×重さ)に変換するんだ

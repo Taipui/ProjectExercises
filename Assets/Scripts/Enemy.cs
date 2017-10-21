@@ -29,7 +29,7 @@ public class Enemy : Character
 	{
 		base.Start();
 
-		MyBulletLayer = "EnemyBullet";
+		MyBulletLayer = Common.EnemyBulletLayer;
 
 		enableLaunch = false;
 

@@ -23,7 +23,7 @@ public class Character : MonoBehaviour
 	/// <summary>
 	/// 自分が発射する弾に設定するタグの名前
 	/// </summary>
-	public string MyBulletLayer { protected set; get; }
+	public int MyBulletLayer { protected set; get; }
 	#endregion
 
 	/// <summary>
@@ -100,22 +100,22 @@ public class Character : MonoBehaviour
 	/// <summary>
 	/// 当たったものが相手の弾かどうかを調べる
 	/// </summary>
-	/// <param name="obj">当たったもの</param>
-	IEnumerator chechBullet(GameObject obj)
+	/// <param name="go">当たったもの</param>
+	IEnumerator chechBullet(GameObject go)
 	{
 		if (!!isInvinsible) {
 			yield break;
 		}
-		if (obj.tag != "Bullet") {
+		if (go.tag != "Bullet") {
 			yield break;
 		}
-		if (LayerMask.LayerToName(obj.layer) == MyBulletLayer) {
+		if (go.layer == MyBulletLayer) {
 			yield break;
 		}
 
 		damage();
-		Destroy(obj);
-		activeDecal(obj.transform.localPosition.y);
+		Destroy(go);
+		activeDecal(go.transform.localPosition.y);
 		isInvinsible = true;
 		yield return new WaitForSeconds(Invincible_Time);
 		isInvinsible = false;
