@@ -12,11 +12,6 @@ using TMPro;
 public class Tutorial : MonoBehaviour
 {
 	/// <summary>
-	/// 自身のコライダ
-	/// </summary>
-	BoxCollider col;
-
-	/// <summary>
 	/// プレイヤーの頭上に表示されるメッセージ
 	/// </summary>
 	[SerializeField]
@@ -59,28 +54,23 @@ public class Tutorial : MonoBehaviour
 
 	void Start ()
 	{
-		col = GetComponent<BoxCollider>();
+		var col = GetComponent<BoxCollider>();
 		PlayerMes.text = "";
 		TutorialMesPop.localScale = Vector3.zero;
 		currentMes = 0;
 		isOpen = false;
 
-		col.OnTriggerEnterAsObservable().Where(colObj => colObj.gameObject.tag == "Player")
+		col.OnTriggerEnterAsObservable().Where(colGo => !!isPlayer(colGo))
 			.Subscribe(_ => {
 				PlayerMes.text = "Push Enter";
 				Player.setEnableChange(true);
 			})
 			.AddTo(this);
 
-		col.OnTriggerExitAsObservable().Where(colObj => colObj.gameObject.tag == "Player")
+		col.OnTriggerExitAsObservable().Where(colGo => !!isPlayer(colGo))
 			.Subscribe(_ => {
 				PlayerMes.text = "";
 				Player.setEnableChange(false);
-			})
-			.AddTo(this);
-
-		this.UpdateAsObservable().Where(x => PlayerMes != null && PlayerMes.text != "" && !!Input.GetKeyDown(KeyCode.Return))
-			.Subscribe(_ => {
 			})
 			.AddTo(this);
 	}
@@ -167,13 +157,23 @@ public class Tutorial : MonoBehaviour
 	/// </summary>
 	void clrMes()
 	{
-		foreach (GameObject obj in Messages) {
-			obj.SetActive(false);
+		foreach (GameObject go in Messages) {
+			go.SetActive(false);
 		}
 	}
 
 	void OnDestroy()
 	{
 		PlayerMes.text = "";
+	}
+
+	/// <summary>
+	/// 当たったものがプレイヤーかどうか
+	/// </summary>
+	/// <param name="col">当たったもの</param>
+	/// <returns>プレイヤーならtrue</returns>
+	bool isPlayer(Collider col)
+	{
+		return col.tag == "Player";
 	}
 }

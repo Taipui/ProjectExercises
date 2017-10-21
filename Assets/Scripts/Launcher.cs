@@ -22,9 +22,9 @@ public class Launcher : MonoBehaviour
 	/// <param name="vec">弾に力を加えるベクトル</param>
 	public void launch(GameObject bullet, Vector3 targetPos, int layerNo, Transform bulletParent, Vector3 vec)
 	{
-		var obj = Instantiate(bullet, bulletParent);
-		var rb = obj.GetComponent<Rigidbody>();
-		obj.transform.position = new Vector3(transform.position.x, transform.position.y);
+		var go = Instantiate(bullet, bulletParent);
+		var rb = go.GetComponent<Rigidbody>();
+		go.transform.position = new Vector3(transform.position.x, transform.position.y);
 		if (layerNo == 13) {
 			rb.velocity = vec;
 		} else {
@@ -32,6 +32,6 @@ public class Launcher : MonoBehaviour
 			var force = vec * rb.mass;
 			rb.AddForce(force, ForceMode.Impulse);
 		}
-		obj.layer = layerNo;
+		go.layer = layerNo;
 	}
 }

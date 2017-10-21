@@ -18,9 +18,9 @@ public class Eraser : MonoBehaviour
 	{
 		col = GetComponent<BoxCollider>();
 
-		col.OnTriggerExitAsObservable().Where(colObj => !!isErase(colObj.tag))
-			.Subscribe(colObj => {
-				Destroy(colObj.gameObject);
+		col.OnTriggerExitAsObservable().Where(colGo => !!isErase(colGo.tag))
+			.Subscribe(colGo => {
+				Destroy(colGo.gameObject);
 			})
 			.AddTo(this);
 	}

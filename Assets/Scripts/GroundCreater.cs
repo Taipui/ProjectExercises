@@ -107,11 +107,11 @@ public class GroundCreater : MonoBehaviour
 		for (var i = 0; i < 20; ++i) {
 			var hPos = First_HPos;
 			for (var h = 0; h < Height_Num; ++h) {
-				var obj = Instantiate(GroundChip, transform);
-				obj.transform.position = new Vector3(wPos, hPos);
+				var go = Instantiate(GroundChip, transform);
+				go.transform.position = new Vector3(wPos, hPos);
 				hPos += GroundChip.transform.localScale.y / 100;
 
-				obj.GetComponent<SpriteRenderer>().color = Color.white;
+				go.GetComponent<SpriteRenderer>().color = Color.white;
 			}
 			wPos += GroundChip.transform.localScale.x / 100;
 		}
@@ -165,11 +165,11 @@ public class GroundCreater : MonoBehaviour
 			}
 			var hPos = First_HPos;
 			for (var h = 0; h < Mathf.Lerp(0.0f, Height_Num, (Mathf.Sin(currentWNum * 3) + 1.0f) / 2); ++h) {
-				var obj = Instantiate(GroundChip, transform);
-				obj.transform.position = new Vector3(wPos, hPos);
+				var go = Instantiate(GroundChip, transform);
+				go.transform.position = new Vector3(wPos, hPos);
 				hPos += GroundChip.transform.localScale.y / 100;
 
-				obj.GetComponent<SpriteRenderer>().color = Color.white;
+				go.GetComponent<SpriteRenderer>().color = Color.white;
 			}
 			wPos += GroundChip.transform.localScale.x / 100;
 		}
@@ -190,11 +190,11 @@ public class GroundCreater : MonoBehaviour
 			}
 			var hPos = First_HPos;
 			for (var h = 0; h < Mathf.Lerp(0.0f, Height_Num, (Mathf.Sin(currentWNum * waveFineness) + 2.0f) / 3); ++h) {
-				var obj = Instantiate(GroundChip, transform);
-				obj.transform.position = new Vector3(wPos, hPos);
+				var go = Instantiate(GroundChip, transform);
+				go.transform.position = new Vector3(wPos, hPos);
 				hPos += GroundChip.transform.localScale.y / 100;
 
-				obj.GetComponent<SpriteRenderer>().color = Color.white;
+				go.GetComponent<SpriteRenderer>().color = Color.white;
 			}
 			if (prevSign == -1 && prevSign != (int)Mathf.Sign(Mathf.Sin(currentWNum))) {
 				waveFineness += 0.005f;
@@ -227,11 +227,11 @@ public class GroundCreater : MonoBehaviour
 			}
 			var hPos = First_HPos;
 			for (var h = 0; h < Height_Num; ++h) {
-				var obj = Instantiate(GroundChip, transform);
-				obj.transform.position = new Vector3(wPos, hPos);
+				var go = Instantiate(GroundChip, transform);
+				go.transform.position = new Vector3(wPos, hPos);
 				hPos += GroundChip.transform.localScale.y / 100;
 
-				obj.GetComponent<SpriteRenderer>().color = col;
+				go.GetComponent<SpriteRenderer>().color = col;
 			}
 			wPos += GroundChip.transform.localScale.x / 100;
 		}
@@ -245,8 +245,8 @@ public class GroundCreater : MonoBehaviour
 		var hPos = First_HPos;
 		for (; currentWNum < wNum; ++currentWNum) {
 			for (var h = 0; h < Mathf.Lerp(0.0f, Height_Num, (Mathf.Sin(currentWNum * .1f) + 2.0f) / 3); ++h) {
-				var obj = Instantiate(GroundChip, transform);
-				obj.transform.position = new Vector3(wPos, hPos);
+				var go = Instantiate(GroundChip, transform);
+				go.transform.position = new Vector3(wPos, hPos);
 				hPos += GroundChip.transform.localScale.y / 100;
 			}
 			wPos += GroundChip.transform.localScale.x / 100;

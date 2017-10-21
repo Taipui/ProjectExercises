@@ -113,10 +113,8 @@
     <Compile Include="Assets\Scripts\Eraser.cs" />
     <Compile Include="Assets\Scripts\FloatMover.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
-    <Compile Include="Assets\Scripts\GrayTrigger.cs" />
     <Compile Include="Assets\Scripts\GroundChipEraser.cs" />
     <Compile Include="Assets\Scripts\GroundCreater.cs" />
-    <Compile Include="Assets\Scripts\Hoge.cs" />
     <Compile Include="Assets\Scripts\Launcher.cs" />
     <Compile Include="Assets\Scripts\LaunchTrigger.cs" />
     <Compile Include="Assets\Scripts\Normal.cs" />

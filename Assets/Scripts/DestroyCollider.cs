@@ -61,7 +61,6 @@ public class DestroyCollider : MonoBehaviour
 	/// </summary>
 	const float Pos_Range = 10.0f;
 
-
 	void Start ()
 	{
 		col = GetComponent<SphereCollider>();
@@ -69,17 +68,17 @@ public class DestroyCollider : MonoBehaviour
 		col.enabled = false;
 		contactObjList = new List<GameObject>();
 
-		col.OnTriggerStayAsObservable().Where(colObj => !!isDestroy && contactCnt.Value <= Max_Contact)
-			.Subscribe(colObj => {
-				contactObjList.Add(colObj.gameObject);
+		col.OnTriggerStayAsObservable().Where(colGo => !!isDestroy && contactCnt.Value <= Max_Contact)
+			.Subscribe(colGo => {
+				contactObjList.Add(colGo.gameObject);
 				++contactCnt.Value;
 			})
 			.AddTo(this);
 
 		contactCnt.AsObservable().Where(val => val >= Max_Contact)
 			.Subscribe(_ => {
-				foreach (var obj in contactObjList) {
-					Destroy(obj);
+				foreach (var go in contactObjList) {
+					Destroy(go);
 				}
 				contactCnt.Value = 0;
 				col.enabled = false;

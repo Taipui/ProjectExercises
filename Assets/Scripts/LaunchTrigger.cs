@@ -15,14 +15,9 @@ public class LaunchTrigger : MonoBehaviour
 	[SerializeField]
 	Enemy[] Enemies;
 
-	/// <summary>
-	/// 自身のコライダ
-	/// </summary>
-	BoxCollider col;
-
 	void Start ()
 	{
-		col = GetComponent<BoxCollider>();
+		var col = GetComponent<BoxCollider>();
 
 		col.OnTriggerEnterAsObservable().Where(colObj => colObj.gameObject.tag == "Player")
 			.Subscribe(_ => {
@@ -33,4 +28,3 @@ public class LaunchTrigger : MonoBehaviour
 			.AddTo(this);
 	}
 }
-

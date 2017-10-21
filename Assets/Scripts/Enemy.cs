@@ -18,7 +18,7 @@ public class Enemy : Character
 	/// <summary>
 	/// 発射可能かどうか
 	/// </summary>
-	protected bool enableLaunch;
+	bool enableLaunch;
 
 	/// <summary>
 	/// デフォルトの体力

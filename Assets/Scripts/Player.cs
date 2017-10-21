@@ -99,10 +99,6 @@ public class Player : Character
 	/// </summary>
 	readonly ReactiveProperty<int> stock = new ReactiveProperty<int>(0);
 	/// <summary>
-	/// 前回のストック数
-	/// </summary>
-	int prevStock;
-	/// <summary>
 	/// 弾の最大ストック数
 	/// </summary>
 	const int Max_Stock = 10;
@@ -151,10 +147,6 @@ public class Player : Character
 	/// </summary>
 	[SerializeField]
 	GameObject WindObj;
-	/// <summary>
-	/// 生成した風のGameObjec(風を一度に一つしか生成できないようにするため)
-	/// </summary>
-	GameObject instanceWindObj;
 	#endregion
 
 	#region 変身関連
@@ -185,11 +177,6 @@ public class Player : Character
 	GameObject Smoke;
 
 	/// <summary>
-	/// 現在接している看板のスクリプト
-	/// </summary>
-	Tutorial contactSignboard;
-
-	/// <summary>
 	/// DestroyCollider
 	/// </summary>
 	[SerializeField]
@@ -210,8 +197,12 @@ public class Player : Character
 		init();
 		var currentBaseState = anim.GetCurrentAnimatorStateInfo(0);
 		var velocity = Vector3.zero;
+		var prevStock = 0;
 		var stockBullets = new List<GameObject>();
-		setHp(1000000);
+		GameObject instanceWindObj = null;
+		Tutorial contactSignboard = null;
+		var tfm = transform;
+		var cachedLocalPosition = tfm.localPosition;
 
 		this.FixedUpdateAsObservable().Subscribe(_ => {
 			h.Value = Input.GetAxis("Horizontal");
@@ -225,11 +216,18 @@ public class Player : Character
 
 			//以下のvの閾値は、Mecanim側のトランジションと一緒に調整する
 			if (Mathf.Abs(h.Value) > 0.1f) {
-				velocity *= Forward_Speed;
+				velocity.x *= Forward_Speed;
+				velocity.y *= Forward_Speed;
+				velocity.z *= Forward_Speed;
 			}
 
-			transform.localPosition += velocity * Time.fixedDeltaTime;
-				
+			tfm.localPosition += velocity * Time.fixedDeltaTime;
+			// 以下のようにするとおかしくなる
+			//cachedLocalPosition.x += velocity.x * Time.fixedDeltaTime;
+			//cachedLocalPosition.y += velocity.y * Time.fixedDeltaTime;
+			//cachedLocalPosition.z += velocity.z * Time.fixedDeltaTime;
+			//tfm.localPosition = cachedLocalPosition;
+
 			// 以下、Animatorの各ステート中での処理
 			// Locomotion中
 			// 現在のベースレイヤーがlocoStateの時
@@ -312,15 +310,8 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		dir.AsObservable().Where(dir_ => dir_ == "A")
-			.Subscribe(dir_ => {
-				transform.Rotate(0, 180.0f, 0);
-				Mes.transform.localScale = new Vector3(-Mes.transform.localScale.x, Mes.transform.localScale.y, Mes.transform.localScale.z);
-			})
-			.AddTo(this);
-
 		dir.SkipLatestValueOnSubscribe().AsObservable()
-			.Where(dir_ => dir_ == "D")
+			.Where(dir_ => dir_ == "D" || dir_ == "A")
 			.Subscribe(dir_ => {
 				transform.Rotate(0, 180.0f, 0);
 				Mes.transform.localScale = new Vector3(-Mes.transform.localScale.x, Mes.transform.localScale.y, Mes.transform.localScale.z);
@@ -341,18 +332,18 @@ public class Player : Character
 
 		stock.AsObservable().Where(val => val > prevStock)
 			.Subscribe(val => {
-				var obj = Instantiate(StockBullet, new Vector3(StockTfm.localPosition.x, StockTfm.localPosition.y + 0.03f * val), Quaternion.Euler(0.0f, 90.0f, 0.0f));
-				obj.transform.SetParent(StockTfm, false);
-				stockBullets.Add(obj);
+				var go = Instantiate(StockBullet, new Vector3(StockTfm.localPosition.x, StockTfm.localPosition.y + 0.03f * val), Quaternion.Euler(0.0f, 90.0f, 0.0f));
+				go.transform.SetParent(StockTfm, false);
+				stockBullets.Add(go);
 				prevStock = val;
 			})
 			.AddTo(this);
 
 		stock.AsObservable().Where(val => val < prevStock)
 			.Subscribe(val => {
-				var obj = stockBullets[stockBullets.Count - 1];
+				var go = stockBullets[stockBullets.Count - 1];
 				stockBullets.RemoveAt(stockBullets.Count - 1);
-				Destroy(obj);
+				Destroy(go);
 				launch();
 				prevStock = val;
 			})
@@ -370,39 +361,39 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		transform.UpdateAsObservable().Where(x => transform.position.y <= -10.0f)
+		tfm.UpdateAsObservable().Where(x => tfm.position.y <= -10.0f)
 			.Subscribe(_ => {
 				dead();
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isSp.Value && !!Input.GetKeyDown(KeyCode.LeftShift) && instanceWindObj == null)
+		this.UpdateAsObservable().Where(x => !!isSp.Value && !!isShift() && instanceWindObj == null)
 			.Subscribe(_ => {
 				var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 				instanceWindObj = Instantiate(WindObj, new Vector3(mousePos.x, mousePos.y), Quaternion.identity);
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.S))
+		this.UpdateAsObservable().Where(x => !!isChange())
 			.Subscribe(_ => {
 				changeAvatar();
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.Return) && contactSignboard != null)
+		this.UpdateAsObservable().Where(x => !!isEnter() && contactSignboard != null)
 			.Subscribe(_ => {
 				contactSignboard.execPop();
 			})
 			.AddTo(this);
 
-		col.OnTriggerEnterAsObservable().Where(colObj => colObj.tag == "Signboard")
-			.Subscribe(colObj => {
-				contactSignboard = colObj.GetComponent<Tutorial>();
+		col.OnTriggerEnterAsObservable().Where(colGo => !!isSignboard(colGo))
+			.Subscribe(colGo => {
+				contactSignboard = colGo.GetComponent<Tutorial>();
 			})
 			.AddTo(this);
 
-		col.OnTriggerExitAsObservable().Where(colObj => colObj.tag == "Signboard")
-			.Subscribe(colObj => {
+		col.OnTriggerExitAsObservable().Where(colGo => !!isSignboard(colGo))
+			.Subscribe(_ => {
 				contactSignboard = null;
 			})
 			.AddTo(this);
@@ -421,11 +412,9 @@ public class Player : Character
 		orgColHightSD = col.height * 0.7f;
 		orgVectColCenterSD = new Vector3(col.center.x, orgVectColCenterNormal.y - orgColHightSD / 4, col.center.z);
 
-		prevStock = 0;
-
 		MyBulletLayer = "PlayerBullet";
 
-		setHp(Default_Hp);
+		setHp(1000000);
 	}
 
 	/// <summary>
@@ -434,7 +423,7 @@ public class Player : Character
 	/// <returns>押したらtrue</returns>
 	bool isJump()
 	{
-		return Input.GetKeyDown(KeyCode.W);
+		return !!Input.GetKeyDown(KeyCode.W);
 	}
 
 	/// <summary>
@@ -443,7 +432,7 @@ public class Player : Character
 	/// <returns>押したらtrue</returns>
 	bool isSpJump()
 	{
-		return Input.GetButtonDown("Jump");
+		return !!Input.GetButtonDown("Jump");
 	}
 
 	/// <summary>
@@ -466,6 +455,33 @@ public class Player : Character
 		rb.AddForce(Vector3.up * Jump_Power, ForceMode.VelocityChange);
 		anim.SetBool("Jump", true);
 	}
+
+	/// <summary>
+	/// 左のShiftキーを押したかどうか
+	/// </summary>
+	/// <returns>押した瞬間true</returns>
+	bool isShift()
+	{
+		return !!Input.GetKeyDown(KeyCode.LeftShift);
+	}
+
+	/// <summary>
+	/// Sキーを押したかどうか
+	/// </summary>
+	/// <returns>押した瞬間true</returns>
+	bool isChange()
+	{
+		return !!Input.GetKeyDown(KeyCode.S);
+	}
+
+	/// <summary>
+	/// Enterキーを押したかどうか
+	/// </summary>
+	/// <returns>押した瞬間true</returns>
+	bool isEnter()
+	{
+		return !!Input.GetKeyDown(KeyCode.Return);
+	}
 	
 	/// <summary>
 	/// プレイヤーのコライダーサイズをリセットする
@@ -477,16 +493,25 @@ public class Player : Character
 		col.center = currentAvatar == 0 ? orgVectColCenterNormal : orgVectColCenterSD;
 	}
 
+	/// <summary>
+	/// ジャンプアニメーションのイベント(地面から足が離れる瞬間に呼ばれる)
+	/// </summary>
 	void OnJumpStart()
 	{
 
 	}
 
+	/// <summary>
+	/// ジャンプアニメーションのイベント(ジャンプの最高点に到達した瞬間に呼ばれる)
+	/// </summary>
 	void OnJumpTopPoint()
 	{
 
 	}
 
+	/// <summary>
+	/// ジャンプアニメーションのイベント(着地時に呼ばれる)
+	/// </summary>
 	void OnJumpEnd()
 	{
 		isSp.Value = false;
@@ -534,7 +559,10 @@ public class Player : Character
 	void launch()
 	{
 		var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-		var direction = mousePos - LaunchTfm.position;
+		var direction = Vector3.zero;
+		direction.x = mousePos.x - LaunchTfm.position.x;
+		direction.y = mousePos.y - LaunchTfm.position.y;
+		direction.z = mousePos.z - LaunchTfm.position.z;
 		foreach (Transform child in LauncherParent) {
 			child.GetComponent<Launcher>().launch(Bullet, mousePos, 13, BulletParentTfm, direction.normalized * 40.0f);
 		}
@@ -566,8 +594,8 @@ public class Player : Character
 			return;
 		}
 		currentAvatar = (currentAvatar + 1) % Avatars.Length;
-		foreach (GameObject obj in Models) {
-			obj.SetActive(false);
+		foreach (GameObject go in Models) {
+			go.SetActive(false);
 		}
 		Models[currentAvatar].SetActive(true);
 		anim.avatar = Avatars[currentAvatar];
@@ -583,5 +611,15 @@ public class Player : Character
 
 		Dc.destroy();
 		EnableChange = false;
+	}
+
+	/// <summary>
+	/// 当たったものが看板かどうか
+	/// </summary>
+	/// <param name="col">当たったもの</param>
+	/// <returns>看板ならtrue</returns>
+	bool isSignboard(Collider col)
+	{
+		return col.tag == "Signboard";
 	}
 }

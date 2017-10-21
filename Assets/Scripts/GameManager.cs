@@ -14,12 +14,12 @@ public class GameManager : MonoBehaviour
 	/// ゲームオーバー時に表示するGameObject
 	/// </summary>
 	[SerializeField]
-	GameObject GameOverObj;
+	GameObject GameOverGo;
 	/// <summary>
 	/// クリア時に表示するGameObject
 	/// </summary>
 	[SerializeField]
-	GameObject ClrObj;
+	GameObject ClrGo;
 
 
 	/// <summary>
@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
 	public void gameOver()
 	{
 		CurrentGameState = GameState.GameOver;
-		GameOverObj.SetActive(true);
+		GameOverGo.SetActive(true);
 	}
 
 	/// <summary>
@@ -61,14 +61,14 @@ public class GameManager : MonoBehaviour
 	public void clr()
 	{
 		CurrentGameState = GameState.Clr;
-		ClrObj.SetActive(true);
+		ClrGo.SetActive(true);
 	}
 
 	void Start ()
 	{
 		CurrentGameState = GameState.Play;
-		GameOverObj.SetActive(false);
-		ClrObj.SetActive(false);
+		GameOverGo.SetActive(false);
+		ClrGo.SetActive(false);
 
 		this.UpdateAsObservable().Where(x => (CurrentGameState == GameState.GameOver || CurrentGameState == GameState.Clr) && !!Input.anyKeyDown)
 			.Subscribe(_ => {

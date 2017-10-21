@@ -10,11 +10,6 @@ using UniRx.Triggers;
 public class Wind : MonoBehaviour
 {
 	/// <summary>
-	/// 自身のコライダ
-	/// </summary>
-	SphereCollider col;
-
-	/// <summary>
 	/// 絵を回転させる速度
 	/// </summary>
 	const float Rotate_Speed = 100.0f;
@@ -31,7 +26,7 @@ public class Wind : MonoBehaviour
 
 	void Start ()
 	{
-		col = GetComponent<SphereCollider>();
+		var col = GetComponent<SphereCollider>();
 		Destroy(gameObject, Destroy_Time);
 
 		this.UpdateAsObservable().Subscribe(_ => {
@@ -39,10 +34,20 @@ public class Wind : MonoBehaviour
 		})
 		.AddTo(this);
 
-		col.OnTriggerStayAsObservable().Where(colObj => colObj.tag == "Bullet")
-			.Subscribe(colObj => {
-				colObj.gameObject.GetComponent<Rigidbody>().AddForce((transform.position - colObj.transform.position) * Turbulence);
+		col.OnTriggerStayAsObservable().Where(colGo => !!isBullet(colGo))
+			.Subscribe(colGo => {
+				colGo.gameObject.GetComponent<Rigidbody>().AddForce((transform.position - colGo.transform.position) * Turbulence);
 			})
 			.AddTo(this);
+	}
+
+	/// <summary>
+	/// 当たったものが弾かどうか
+	/// </summary>
+	/// <param name="col">当たったもの</param>
+	/// <returns>弾ならtrue</returns>
+	bool isBullet(Collider col)
+	{
+		return col.tag == "Bullet";
 	}
 }

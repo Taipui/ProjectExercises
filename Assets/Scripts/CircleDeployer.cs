@@ -29,8 +29,6 @@ public class CircleDeployer : MonoBehaviour
 			childPos.z += Radius * Mathf.Sin(angle);
 
 			childList[i].transform.position = childPos;
-
-			childList[i].gameObject.GetComponent<FloatMover>().setIndex(i);
 		}
 	}
 }

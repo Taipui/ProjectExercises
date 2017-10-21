@@ -11,15 +11,15 @@ using UniRx.Triggers;
 public class Title : MonoBehaviour
 {
 	[SerializeField]
-	GameObject LoadingObj;
+	GameObject LoadingGo;
 
 	void Start()
 	{
-		LoadingObj.SetActive(false);
+		LoadingGo.SetActive(false);
 
 		this.UpdateAsObservable().Where(x => !!Input.anyKeyDown)
 			.Subscribe(_ => {
-				LoadingObj.SetActive(true);
+				LoadingGo.SetActive(true);
 				SceneManager.LoadScene(Common.Main);
 			}).
 			AddTo(this);

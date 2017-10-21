@@ -9,20 +9,6 @@ using UniRx.Triggers;
 /// </summary>
 public class FloatMover : MonoBehaviour
 {
-	/// <summary>
-	/// 通し番号
-	/// </summary>
-	public int Index { private set; get; }
-
-	/// <summary>
-	/// 通し番号をセット
-	/// </summary>
-	/// <param name="index">通し番号</param>
-	public void setIndex(int index)
-	{
-		Index = index;
-	}
-
 	void Start ()
 	{
 		transform.Translate(new Vector3(0.0f, -0.2f, 0.0f));
