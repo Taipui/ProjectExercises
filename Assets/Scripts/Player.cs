@@ -170,6 +170,18 @@ public class Player : Character
 	public bool EnableChange { private set; get; }
 	#endregion
 
+	#region 瞬間移動関連
+	/// <summary>
+	/// 残像のパーティクルの親
+	/// </summary>
+	[SerializeField]
+	Transform[] ParticleParents;
+	/// <summary>
+	/// 瞬間移動可能かどうか
+	/// </summary>
+	bool enableTeleportation;
+	#endregion
+
 	/// <summary>
 	/// 煙のPrefab
 	/// </summary>
@@ -380,6 +392,12 @@ public class Player : Character
 			})
 			.AddTo(this);
 
+		this.UpdateAsObservable().Where(x => !!isTeleportation())
+			.Subscribe(_ => {
+				StartCoroutine("playAfterimage");
+			})
+			.AddTo(this);
+
 		this.UpdateAsObservable().Where(x => !!isEnter() && contactSignboard != null)
 			.Subscribe(_ => {
 				contactSignboard.execPop();
@@ -415,6 +433,13 @@ public class Player : Character
 		MyBulletLayer = Common.PlayerBulletLayer;
 
 		setHp(1000000);
+
+		enableTeleportation = true;
+		foreach (Transform parentTfm in ParticleParents) {
+			foreach (Transform childTfm in parentTfm) {
+				childTfm.gameObject.SetActive(false);
+			}
+		}
 	}
 
 	/// <summary>
@@ -523,7 +548,7 @@ public class Player : Character
 	/// <returns>クリックしたらtrue</returns>
 	bool isLClk()
 	{
-		return Input.GetMouseButtonDown(0);
+		return !!Input.GetMouseButtonDown(0);
 	}
 
 	/// <summary>
@@ -532,7 +557,53 @@ public class Player : Character
 	/// <returns>クリックしたらtrue</returns>
 	bool isRClk()
 	{
-		return Input.GetMouseButtonDown(1);
+		return !!Input.GetMouseButtonDown(1);
+	}
+
+	/// <summary>
+	/// 瞬間移動のキーを押したかどうか
+	/// </summary>
+	/// <returns>押した瞬間true</returns>
+	bool isTeleportation()
+	{
+		return !!Input.GetMouseButtonDown(2);
+	}
+
+	/// <summary>
+	/// 残像を再生する
+	/// </summary>
+	/// <returns></returns>
+	IEnumerator playAfterimage()
+	{
+		if (!enableTeleportation) {
+			yield break;
+		}
+		enableTeleportation = false;
+		foreach (Transform tfm in ParticleParents[currentAvatar]) {
+			tfm.gameObject.SetActive(true);
+		}
+		StartCoroutine("teleportation");
+		yield return new WaitForSeconds(0.5f);
+		enableTeleportation = true;
+		foreach (Transform tfm in ParticleParents[currentAvatar]) {
+			tfm.gameObject.SetActive(false);
+		}
+	}
+
+	/// <summary>
+	/// 瞬間移動する
+	/// </summary>
+	/// <returns></returns>
+	IEnumerator teleportation()
+	{
+		var power = 200.0f;
+		if (dir.Value == "D") {
+			rb.AddForce(Vector3.right * power, ForceMode.Impulse);
+		} else if (dir.Value == "A") {
+			rb.AddForce(Vector3.left * power, ForceMode.Impulse);
+		}
+		yield return new WaitForSeconds(0.1f);
+		rb.velocity = Vector3.zero;
 	}
 
 	/// <summary>
