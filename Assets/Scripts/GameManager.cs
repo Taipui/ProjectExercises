@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
 	[SerializeField]
 	GameObject ClrGo;
 
-
 	/// <summary>
 	/// ゲームの状態
 	/// </summary>

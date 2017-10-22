@@ -58,9 +58,9 @@ public class GroundChipEraser : MonoBehaviour
 		isMove = true;
 	}
 
-	void OnTriggerEnter(Collider collision)
+	void OnTriggerEnter(Collider col)
 	{
-		Destroy(collision.gameObject);
+		Destroy(col.gameObject);
 		isMove = false;
 		groundChipEraserCollider.enabled = false;
 		transform.localPosition = new Vector3(transform.localPosition.x, defaultYPos);

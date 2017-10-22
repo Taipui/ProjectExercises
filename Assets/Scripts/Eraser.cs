@@ -9,16 +9,11 @@ using UniRx.Triggers;
 /// </summary>
 public class Eraser : MonoBehaviour
 {
-	/// <summary>
-	/// 自身のコライダ
-	/// </summary>
-	BoxCollider col;
-
 	void Start ()
 	{
-		col = GetComponent<BoxCollider>();
+		var col = GetComponent<BoxCollider>();
 
-		col.OnTriggerExitAsObservable().Where(colGo => !!isErase(colGo.tag))
+		col.OnTriggerExitAsObservable().Where(colGo => !!isErase(colGo))
 			.Subscribe(colGo => {
 				Destroy(colGo.gameObject);
 			})
@@ -28,10 +23,10 @@ public class Eraser : MonoBehaviour
 	/// <summary>
 	/// 削除する対象かどうか
 	/// </summary>
-	/// <param name="tag">当たったGamoObjectのtag</param>
+	/// <param name="col">当たったもの</param>
 	/// <returns>削除対象ならtrue</returns>
-	bool isErase(string tag)
+	bool isErase(Collider col)
 	{
-		return tag == "Ground" || tag == "Signboard" || tag == "Obstacle";
+		return col.tag == "Ground" || col.tag == "Signboard" || col.tag == "Obstacle";
 	}
 }
