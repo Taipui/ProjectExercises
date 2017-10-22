@@ -20,19 +20,14 @@ public class DestroyCollider : MonoBehaviour
 	bool isDestroy;
 
 	/// <summary>
-	/// コライダに接しているオブジェクトのリスト
-	/// </summary>
-	List<GameObject> contactObjList;
-
-	/// <summary>
 	/// 破壊するオブジェクトをチェックする回数
 	/// </summary>
 	readonly ReactiveProperty<int> contactCnt = new ReactiveProperty<int>(0);
 
 	/// <summary>
-	/// 最大破壊数
+	/// 最大破壊数(89が看板が安定して消える最低ライン)
 	/// </summary>
-	const int Max_Contact = 200;
+	const int Max_Contact = 89;
 
 	/// <summary>
 	/// Launcher
@@ -66,19 +61,18 @@ public class DestroyCollider : MonoBehaviour
 		col = GetComponent<SphereCollider>();
 		isDestroy = false;
 		col.enabled = false;
-		contactObjList = new List<GameObject>();
+		var contactGoArray = new GameObject[Max_Contact];
 
-		col.OnTriggerStayAsObservable().Where(colGo => !!isDestroy && contactCnt.Value <= Max_Contact)
+		col.OnTriggerStayAsObservable().Where(colGo => !!isDestroy && contactCnt.Value < Max_Contact)
 			.Subscribe(colGo => {
-				contactObjList.Add(colGo.gameObject);
-				++contactCnt.Value;
+				contactGoArray[contactCnt.Value++] = colGo.gameObject;
 			})
 			.AddTo(this);
 
 		contactCnt.AsObservable().Where(val => val >= Max_Contact)
 			.Subscribe(_ => {
-				foreach (var go in contactObjList) {
-					Destroy(go);
+				for (var i = 0; i < Max_Contact; ++i) {
+					Destroy(contactGoArray[i]);
 				}
 				contactCnt.Value = 0;
 				col.enabled = false;

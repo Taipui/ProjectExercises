@@ -149,7 +149,6 @@ public class Character : MonoBehaviour
 		if (Decals.Length < 3) {
 			return;
 		}
-		Debug.Log(posY);
 		if (posY >= 1.0f) {
 			Decals[0].SetActive(true);
 		} else if (posY >= 0.7f) {
