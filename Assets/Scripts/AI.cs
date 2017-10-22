@@ -17,7 +17,7 @@ public static class AI
 		}
 
 		var vec = ConvertVectorToVector3(launchPos, targetPos, angle, speedVec);
-		launcher.launch(bullet, targetPos, 14, bulletParent, vec);
+		launcher.launch(bullet, targetPos, Common.EnemyBulletLayer, bulletParent, vec);
 	}
 
 	public static float ComputeVectorFromAngle(Vector3 launchPos, Vector3 targetPos, float angle)

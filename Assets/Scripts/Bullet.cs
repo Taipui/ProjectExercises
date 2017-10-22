@@ -4,6 +4,9 @@ using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 
+/// <summary>
+/// キャラクターが発射した弾に関するクラス
+/// </summary>
 public class Bullet : MonoBehaviour
 {
 	/// <summary>
@@ -23,19 +26,10 @@ public class Bullet : MonoBehaviour
 	[SerializeField]
 	GameObject BulletEffect;
 
-	/// <summary>
-	/// 地面と当たったかどうか
-	/// </summary>
-	bool isCollide;
-
-	/// <summary>
-	/// 自身のコライダ
-	/// </summary>
-	SphereCollider col;
-
 	void Start ()
 	{
-		col = GetComponent<SphereCollider>();
+		var col = GetComponent<SphereCollider>();
+		var isCollide = false;
 
 		this.UpdateAsObservable().Where(x => transform.position.y < Kill_Zone)
 			.Subscribe(_ => {
@@ -43,10 +37,10 @@ public class Bullet : MonoBehaviour
 			})
 			.AddTo(this);
 
-		col.OnCollisionEnterAsObservable().Subscribe(colObj => {
-			var obj = Instantiate(BulletEffect, transform.position, Quaternion.identity);
-			Destroy(obj, 0.5f * 2);
-			if (colObj.gameObject.tag != "Ground") {
+		col.OnCollisionEnterAsObservable().Subscribe(colGo => {
+			var go = Instantiate(BulletEffect, transform.position, Quaternion.identity);
+			Destroy(go, 0.5f * 2);
+			if (colGo.gameObject.tag != "Ground") {
 				return;
 			}
 			if (!!isCollide) {

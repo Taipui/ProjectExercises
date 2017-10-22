@@ -54,7 +54,7 @@ public class Character : MonoBehaviour
 	/// </summary>
 	const float Invincible_Time = 0.1f;
 	/// <summary>
-	/// 無敵かどうか
+	/// 無敵かどうか(弾の当たり判定が連続で来ないように)
 	/// </summary>
 	bool isInvinsible;
 
@@ -70,9 +70,13 @@ public class Character : MonoBehaviour
 	protected virtual void Start ()
 	{
 		isInvinsible = false;
-		foreach (var obj in Decals) {
-			obj.SetActive(false);
+		//foreach (var obj in Decals) {
+		//	obj.SetActive(false);
+		//}
+		for (var i = 0; i < Decals.Length; ++i) {
+			Decals[i].SetActive(false);
 		}
+
 
 		hp.AsObservable().Where(val => val <= 0)
 			.Subscribe(_ => {
@@ -114,8 +118,9 @@ public class Character : MonoBehaviour
 		}
 
 		damage();
-		Destroy(go);
+		go.transform.SetParent(transform);
 		activeDecal(go.transform.localPosition.y);
+		Destroy(go);
 		isInvinsible = true;
 		yield return new WaitForSeconds(Invincible_Time);
 		isInvinsible = false;
@@ -144,6 +149,7 @@ public class Character : MonoBehaviour
 		if (Decals.Length < 3) {
 			return;
 		}
+		Debug.Log(posY);
 		if (posY >= 1.0f) {
 			Decals[0].SetActive(true);
 		} else if (posY >= 0.7f) {
