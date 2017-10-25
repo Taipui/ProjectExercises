@@ -12,7 +12,7 @@ public class Wind : MonoBehaviour
 	/// <summary>
 	/// 絵を回転させる速度
 	/// </summary>
-	const float Rotate_Speed = 100.0f;
+	const float Rotate_Speed = 200.0f;
 
 	/// <summary>
 	/// 消えるまでの時間

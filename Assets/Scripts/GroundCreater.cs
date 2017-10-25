@@ -25,7 +25,7 @@ public class GroundCreater : MonoBehaviour
 	/// <summary>
 	/// 初期の地面のチップのX座標
 	/// </summary>
-	const float First_WPos = -7.9f;
+	const float First_WPos = -8.4f;
 	/// <summary>
 	/// 初期の地面のチップのY座標
 	/// </summary>
@@ -48,7 +48,7 @@ public class GroundCreater : MonoBehaviour
 	/// <summary>
 	/// ゲーム開始時に生成する列数
 	/// </summary>
-	const int Pre_Create_Num = 65;
+	const int Pre_Create_Num = 70;
 
 	/// <summary>
 	/// 現在のステージ
