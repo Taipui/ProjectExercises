@@ -195,6 +195,12 @@ public class Player : Character
 	DestroyCollider Dc;
 
 	/// <summary>
+	/// タイトル用かどうか
+	/// </summary>
+	[SerializeField]
+	bool IsTitle;
+
+	/// <summary>
 	/// 変身可能かどうかのフラグをセット
 	/// </summary>
 	/// <param name="val">セットする値</param>
@@ -330,7 +336,7 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isPlay() && !!isRClk() && !isMaxStock() && !!enableJump(currentBaseState))
+		this.UpdateAsObservable().Where(x => !!isPlay() && !!isRClk() && !isMaxStock() && !!enableJump(currentBaseState) && !IsTitle)
 			.Subscribe(_ => {
 				Gce.checkGroundChip();
 			})
@@ -358,6 +364,12 @@ public class Player : Character
 				Destroy(go);
 				launch();
 				prevStock = val;
+			})
+			.AddTo(this);
+
+		this.UpdateAsObservable().Where(x => !!isLClk() && !!IsTitle)
+			.Subscribe(_ => {
+				launch();
 			})
 			.AddTo(this);
 

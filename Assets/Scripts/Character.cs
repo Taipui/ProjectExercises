@@ -132,6 +132,9 @@ public class Character : MonoBehaviour
 	/// <returns>ゲームプレイ中ならtrue</returns>
 	protected bool isPlay()
 	{
+		if (Gm == null) {
+			return true;
+		}
 		return Gm.CurrentGameState == GameManager.GameState.Play;
 	}
 

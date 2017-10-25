@@ -66,8 +66,12 @@ public class GameManager : MonoBehaviour
 	void Start ()
 	{
 		CurrentGameState = GameState.Play;
-		GameOverGo.SetActive(false);
-		ClrGo.SetActive(false);
+		if (GameOverGo != null) {
+			GameOverGo.SetActive(false);
+		}
+		if (ClrGo != null) {
+			ClrGo.SetActive(false);
+		}
 
 		this.UpdateAsObservable().Where(x => (CurrentGameState == GameState.GameOver || CurrentGameState == GameState.Clr) && !!Input.anyKeyDown)
 			.Subscribe(_ => {
