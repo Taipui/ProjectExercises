@@ -448,6 +448,9 @@ public class Player : Character
 
 		enableTeleportation = true;
 		foreach (Transform parentTfm in ParticleParents) {
+			if (parentTfm == null) {
+				return;
+			}
 			foreach (Transform childTfm in parentTfm) {
 				childTfm.gameObject.SetActive(false);
 			}

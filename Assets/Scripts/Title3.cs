@@ -1,42 +1,67 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using UniRx;
 using UniRx.Triggers;
-using DG.Tweening;
 
 /// <summary>
-/// Title2に関するクラス
+/// Title3に関するクラス
 /// </summary>
-
-public class Title2 : TitleBase
+public class Title3 : TitleBase
 {
-	#region 風関連
-	/// <summary>
-	/// 風のGameObject
-	/// </summary>
-	[SerializeField]
-	GameObject WindObj;
-	#endregion
-
 	/// <summary>
 	/// マウスオーバーしたGameObjectの情報
 	/// </summary>
 	RaycastHit hitInfo;
 
-	protected override void Start()
+	/// <summary>
+	/// UnityちゃんのTransform
+	/// </summary>
+	[SerializeField]
+	Transform UnityChanTfm;
+	/// <summary>
+	/// Unityちゃんのアニメーター
+	/// </summary>
+	[SerializeField]
+	Animator UnityChanAnim;
+	/// <summary>
+	/// Avatar
+	/// </summary>
+	[SerializeField]
+	Avatar[] Avatars;
+	/// <summary>
+	/// モデル
+	/// </summary>
+	[SerializeField]
+	GameObject[] Models;
+
+	/// <summary>
+	/// 通常のUnityちゃんのY座標
+	/// </summary>
+	const float Normal_Y_Pos = -1.45f;
+	/// <summary>
+	/// SDUnityちゃんのY座標
+	/// </summary>
+	const float SD_Y_Pos = -0.87f;
+
+	protected override void Start ()
 	{
 		base.Start();
-		GameObject instanceWindObj = null;
 
-		this.UpdateAsObservable().Where(x => !!isShift() && instanceWindObj == null)
-			.Subscribe(_ => {
-				var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-				instanceWindObj = Instantiate(WindObj, new Vector3(mousePos.x, mousePos.y), Quaternion.identity);
-			})
-			.AddTo(this);
+		for (var i = 0; i < Models.Length; ++i) {
+			Models[i].SetActive(false);
+		}
+		var r = Random.Range(0, 100);
+		//r = 0;
+		if (r == 0) {
+			Models[1].SetActive(true);
+			UnityChanAnim.avatar = Avatars[1];
+			UnityChanTfm.position = new Vector3(UnityChanTfm.position.x, SD_Y_Pos, UnityChanTfm.position.z);
+		} else {
+			Models[0].SetActive(true);
+			UnityChanAnim.avatar = Avatars[0];
+			UnityChanTfm.position = new Vector3(UnityChanTfm.position.x, Normal_Y_Pos, UnityChanTfm.position.z);
+		}
 
 		this.UpdateAsObservable().Where(x => !!checkMouseOverGo() && hitInfo.collider.tag == "Text")
 			.Subscribe(_ => {
@@ -57,7 +82,7 @@ public class Title2 : TitleBase
 	/// <returns>押された瞬間true</returns>
 	protected override bool isNext()
 	{
-		return !!Input.GetKeyDown(KeyCode.W);
+		return !!Input.GetKeyDown(KeyCode.A);
 	}
 
 	/// <summary>
@@ -66,16 +91,7 @@ public class Title2 : TitleBase
 	/// <returns>押された瞬間true</returns>
 	protected override bool isPrev()
 	{
-		return !!Input.GetKeyDown(KeyCode.S);
-	}
-
-	/// <summary>
-	/// 左のShiftキーを押したかどうか
-	/// </summary>
-	/// <returns>押した瞬間true</returns>
-	bool isShift()
-	{
-		return !!Input.GetKeyDown(KeyCode.LeftShift);
+		return !!Input.GetKeyDown(KeyCode.D);
 	}
 
 	/// <summary>

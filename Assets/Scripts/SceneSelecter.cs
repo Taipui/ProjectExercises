@@ -10,7 +10,7 @@ public class SceneSelecter : MonoBehaviour
 {
 	void Start ()
 	{
-		switch (Random.Range(0, 2)) {
+		switch (Random.Range(0, 3)) {
 			default:
 				Debug.Log("エラー");
 				return;
@@ -21,8 +21,8 @@ public class SceneSelecter : MonoBehaviour
 				SceneManager.LoadScene("Title2");
 				break;
 			case 2:
+				SceneManager.LoadScene("Title3");
 				break;
 		}		
 	}
 }
-

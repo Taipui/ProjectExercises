@@ -25,6 +25,12 @@ public class Enemy : Character
 	/// </summary>
 	const int Default_Hp = 1;
 
+	/// <summary>
+	/// 撃つ頻度(増やすほど撃たなくなる)
+	/// </summary>
+	[SerializeField]
+	int Frequency;
+
 	protected override void Start ()
 	{
 		base.Start();
@@ -37,7 +43,7 @@ public class Enemy : Character
 
 		Observable.Interval(System.TimeSpan.FromSeconds(0.2f)).Where(x => !!isPlay() && !!enableLaunch)
 			.Subscribe(_ => {
-				if (Random.Range(0, 2) == 0) {
+				if (Random.Range(0, Frequency) == 0) {
 					launch();
 				}
 			})

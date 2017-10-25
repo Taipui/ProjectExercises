@@ -24,7 +24,7 @@ public class Launcher : MonoBehaviour
 	{
 		var go = Instantiate(bullet, bulletParent);
 		var rb = go.GetComponent<Rigidbody>();
-		go.transform.position = new Vector3(transform.position.x, transform.position.y);
+		go.transform.position = transform.position;
 		if (layerNo == Common.PlayerBulletLayer) {
 			rb.velocity = vec;
 		} else {
