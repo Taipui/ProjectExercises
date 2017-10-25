@@ -123,6 +123,8 @@
     <Compile Include="Assets\Scripts\TargetRotator.cs" />
     <Compile Include="Assets\Scripts\Title.cs" />
     <Compile Include="Assets\Scripts\Title1.cs" />
+    <Compile Include="Assets\Scripts\Title2.cs" />
+    <Compile Include="Assets\Scripts\TitleBase.cs" />
     <Compile Include="Assets\Scripts\Tutorial.cs" />
     <Compile Include="Assets\Scripts\Txt.cs" />
     <Compile Include="Assets\Scripts\Wind.cs" />

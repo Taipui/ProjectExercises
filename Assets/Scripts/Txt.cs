@@ -11,13 +11,29 @@ public class Txt : MonoBehaviour
 	/// Title1
 	/// </summary>
 	[SerializeField]
-	Title1 Title1;
+	TitleBase Title;
 
 	/// <summary>
 	/// メニューの番号
 	/// </summary>
 	[SerializeField]
 	int Index;
+	public int Index_ {
+		set
+		{
+			Index = value;
+		}
+		get
+		{
+			return Index;
+		}
+	}
+
+	/// <summary>
+	/// 当たり判定をチェックするかどうか
+	/// </summary>
+	[SerializeField]
+	bool IsCheckCol;
 
 	void Start ()
 	{
@@ -26,10 +42,13 @@ public class Txt : MonoBehaviour
 
 	void OnCollisionEnter(Collision col)
 	{
+		if (!IsCheckCol) {
+			return;
+		}
 		if (col.gameObject.tag != "Bullet") {
 			return;
 		}
-		Title1.setCurrentSelect(Index);
+		Title.setCurrentSelect(Index);
 		Destroy(col.gameObject);
 	}
 }

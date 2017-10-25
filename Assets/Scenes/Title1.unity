@@ -7878,8 +7878,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94942e0d9fa7ee248814c56df4dd807a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Title1: {fileID: 1678804880}
+  Title: {fileID: 1678804880}
   Index: 0
+  IsCheckCol: 1
 --- !u!54 &526324178
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8989,8 +8990,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94942e0d9fa7ee248814c56df4dd807a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Title1: {fileID: 1678804880}
+  Title: {fileID: 1678804880}
   Index: 1
+  IsCheckCol: 1
 --- !u!4 &849653521 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: c09ee09ae4c58ea49af05761dc4133cd, type: 3}

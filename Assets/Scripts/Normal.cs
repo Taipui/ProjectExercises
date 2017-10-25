@@ -7,9 +7,18 @@ using UnityEngine;
 /// </summary>
 public class Normal : Enemy
 {
+	/// <summary>
+	/// 常に発射するか
+	/// </summary>
+	[SerializeField]
+	bool IsAlways;
+
 	protected override void Start ()
 	{
 		base.Start();
+		if (!!IsAlways) {
+			permitLaunch();
+		}
 	}
 
 	/// <summary>
