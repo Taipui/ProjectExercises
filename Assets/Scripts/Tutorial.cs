@@ -59,7 +59,7 @@ public class Tutorial : MonoBehaviour
 
 		col.OnTriggerEnterAsObservable().Where(colGo => !!isPlayer(colGo))
 			.Subscribe(_ => {
-				PlayerMes.text = "Push Enter";
+				PlayerMes.text = "Press\n<b>F</b> Key";
 				Player.setEnableChange(true);
 			})
 			.AddTo(this);

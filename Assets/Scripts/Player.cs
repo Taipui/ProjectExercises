@@ -398,7 +398,7 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isEnter() && contactSignboard != null)
+		this.UpdateAsObservable().Where(x => !!isRead() && contactSignboard != null)
 			.Subscribe(_ => {
 				contactSignboard.execPop();
 			})
@@ -503,9 +503,9 @@ public class Player : Character
 	/// Enterキーを押したかどうか
 	/// </summary>
 	/// <returns>押した瞬間true</returns>
-	bool isEnter()
+	bool isRead()
 	{
-		return !!Input.GetKeyDown(KeyCode.Return);
+		return !!Input.GetKeyDown(KeyCode.F);
 	}
 	
 	/// <summary>
