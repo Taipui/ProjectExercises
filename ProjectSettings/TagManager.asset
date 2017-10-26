@@ -11,6 +11,7 @@ TagManager:
   - Signboard
   - Obstacle
   - Text
+  - Item1
   layers:
   - Default
   - TransparentFX

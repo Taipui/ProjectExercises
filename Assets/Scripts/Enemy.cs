@@ -89,6 +89,7 @@ public class Enemy : Character
 		var vec = Vector3.up * Item_Launch_Power;
 		vec = Quaternion.Euler(new Vector3(0.0f, 0.0f, Random.Range(-Item_Launch_Angle_Range, Item_Launch_Angle_Range))) * vec;
 		go.GetComponent<Rigidbody>().AddForce(vec, ForceMode.Impulse);
+		go.tag = "Item" + (r + 1).ToString();
 	}
 
 	/// <summary>

@@ -12245,6 +12245,11 @@ Prefab:
       propertyPath: HPGos.Array.size
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 114847447254561632, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: ItemSprites.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4923706407512518, guid: 39252dcfb402ba24191e7dc644c1e107, type: 2}
       propertyPath: m_LocalPosition.x
       value: -7
@@ -12332,6 +12337,17 @@ Prefab:
       propertyPath: HPGos.Array.data[2]
       value: 
       objectReference: {fileID: 619630384}
+    - target: {fileID: 114847447254561632, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: ItemImg
+      value: 
+      objectReference: {fileID: 264725851}
+    - target: {fileID: 114847447254561632, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: ItemSprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 28b41fef228d6814f90e541deaf9f262,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 39252dcfb402ba24191e7dc644c1e107, type: 2}
   m_IsPrefabParent: 0

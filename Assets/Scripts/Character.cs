@@ -138,7 +138,7 @@ public class Character : MonoBehaviour
 		return Gm.CurrentGameState == GameManager.GameState.Play;
 	}
 
-	void OnCollisionEnter(Collision col)
+	protected virtual void OnCollisionEnter(Collision col)
 	{
 		StartCoroutine(chechBullet(col.gameObject));
 	}

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UniRx;
@@ -206,6 +207,19 @@ public class Player : Character
 	/// </summary>
 	[SerializeField]
 	bool IsTitle;
+
+	#region アイテム関連
+	/// <summary>
+	/// UIのImage
+	/// </summary>
+	[SerializeField]
+	Image ItemImg;
+	/// <summary>
+	/// UIに設定するアイテムのSprite
+	/// </summary>
+	[SerializeField]
+	Sprite[] ItemSprites;
+	#endregion
 
 	/// <summary>
 	/// 変身可能かどうかのフラグをセット
@@ -463,6 +477,7 @@ public class Player : Character
 				childTfm.gameObject.SetActive(false);
 			}
 		}
+		ItemImg.sprite = null;
 	}
 
 	/// <summary>
@@ -724,5 +739,17 @@ public class Player : Character
 	{
 		base.damage();
 		HPGos[hp.Value].SetActive(false);
+	}
+
+	protected override void OnCollisionEnter(Collision col)
+	{
+		base.OnCollisionEnter(col);
+		var tag = col.gameObject.tag;
+		if (tag.IndexOf("Item") < 0) {
+			return;
+		}
+		var index = System.Convert.ToInt32(tag.Substring(tag.Length - 1, 1));
+		ItemImg.sprite = ItemSprites[index - 1];
+		Destroy(col.gameObject);
 	}
 }
