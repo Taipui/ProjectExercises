@@ -31,6 +31,22 @@ public class Enemy : Character
 	[SerializeField]
 	int Frequency;
 
+	#region アイテム関連
+	/// <summary>
+	/// ドロップするアイテムのGameObject
+	/// </summary>
+	[SerializeField]
+	GameObject[] Items;
+	/// <summary>
+	/// アイテムをドロップする力
+	/// </summary>
+	const float Item_Launch_Power = 2.0f;
+	/// <summary>
+	/// アイテムをドロップする角度の範囲
+	/// </summary>
+	const float Item_Launch_Angle_Range = 45.0f;
+	#endregion
+
 	protected override void Start ()
 	{
 		base.Start();
@@ -44,7 +60,7 @@ public class Enemy : Character
 		Observable.Interval(System.TimeSpan.FromSeconds(0.2f)).Where(x => !!isPlay() && !!enableLaunch)
 			.Subscribe(_ => {
 				if (Random.Range(0, Frequency) == 0) {
-					launch();
+					//launch();
 				}
 			})
 		.AddTo(this);
@@ -64,6 +80,15 @@ public class Enemy : Character
 	protected override void dead()
 	{
 		Destroy(gameObject);
+		var r = Random.Range(0, Items.Length + 1);
+		r = 0;
+		if (r == Items.Length) {
+			return;
+		}
+		var go = Instantiate(Items[r], transform.position, Quaternion.identity);
+		var vec = Vector3.up * Item_Launch_Power;
+		vec = Quaternion.Euler(new Vector3(0.0f, 0.0f, Random.Range(-Item_Launch_Angle_Range, Item_Launch_Angle_Range))) * vec;
+		go.GetComponent<Rigidbody>().AddForce(vec, ForceMode.Impulse);
 	}
 
 	/// <summary>

@@ -519,6 +519,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 208240466}
     m_Modifications:
+    - target: {fileID: 114445350602727562, guid: 571001343dd23db4e9d7ffd1d7da8c34,
+        type: 2}
+      propertyPath: Items.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4189524451895946, guid: 571001343dd23db4e9d7ffd1d7da8c34, type: 2}
       propertyPath: m_LocalPosition.x
       value: 12.98
@@ -639,6 +644,12 @@ Prefab:
       propertyPath: Frequency
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 114445350602727562, guid: 571001343dd23db4e9d7ffd1d7da8c34,
+        type: 2}
+      propertyPath: Items.Array.data[0]
+      value: 
+      objectReference: {fileID: 1258334143515940, guid: caec74f9ac2ce2741883d530bd5e2c16,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 571001343dd23db4e9d7ffd1d7da8c34, type: 2}
   m_IsPrefabParent: 0
@@ -21808,6 +21819,7 @@ MonoBehaviour:
   - {fileID: 1920792348}
   PlayerTfm: {fileID: 1232336293}
   Frequency: 5
+  Items: []
 --- !u!54 &1531212954
 Rigidbody:
   m_ObjectHideFlags: 0
