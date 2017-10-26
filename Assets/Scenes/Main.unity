@@ -12419,6 +12419,11 @@ Prefab:
       propertyPath: ItemSprites.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114847447254561632, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: ShotgunYVecCurve.m_Curve.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4923706407512518, guid: 39252dcfb402ba24191e7dc644c1e107, type: 2}
       propertyPath: m_LocalPosition.x
       value: -7
@@ -12522,6 +12527,71 @@ Prefab:
       propertyPath: ItemEffectRemainTxt
       value: 
       objectReference: {fileID: 426950296}
+    - target: {fileID: 114847447254561632, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: ShotgunYVecCurve.m_Curve.Array.data[0].inSlope
+      value: 0.06888059
+      objectReference: {fileID: 0}
+    - target: {fileID: 114847447254561632, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: ShotgunYVecCurve.m_Curve.Array.data[0].outSlope
+      value: 0.06888059
+      objectReference: {fileID: 0}
+    - target: {fileID: 114847447254561632, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: ShotgunYVecCurve.m_Curve.Array.data[1].time
+      value: 0.11630817
+      objectReference: {fileID: 0}
+    - target: {fileID: 114847447254561632, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: ShotgunYVecCurve.m_Curve.Array.data[1].value
+      value: 0.73400635
+      objectReference: {fileID: 0}
+    - target: {fileID: 114847447254561632, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: ShotgunYVecCurve.m_Curve.Array.data[1].inSlope
+      value: -0.25133532
+      objectReference: {fileID: 0}
+    - target: {fileID: 114847447254561632, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: ShotgunYVecCurve.m_Curve.Array.data[1].outSlope
+      value: -0.25133532
+      objectReference: {fileID: 0}
+    - target: {fileID: 114847447254561632, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: ShotgunYVecCurve.m_RotationOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114847447254561632, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: ShotgunYVecCurve.m_Curve.Array.data[0].time
+      value: -0.003768921
+      objectReference: {fileID: 0}
+    - target: {fileID: 114847447254561632, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: ShotgunYVecCurve.m_Curve.Array.data[0].value
+      value: 0.7431984
+      objectReference: {fileID: 0}
+    - target: {fileID: 114847447254561632, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: ShotgunYVecCurve.m_Curve.Array.data[2].time
+      value: 0.98591924
+      objectReference: {fileID: 0}
+    - target: {fileID: 114847447254561632, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: ShotgunYVecCurve.m_Curve.Array.data[2].value
+      value: 0.3140082
+      objectReference: {fileID: 0}
+    - target: {fileID: 114847447254561632, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: ShotgunYVecCurve.m_Curve.Array.data[2].inSlope
+      value: -0.015555657
+      objectReference: {fileID: 0}
+    - target: {fileID: 114847447254561632, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: ShotgunYVecCurve.m_Curve.Array.data[2].outSlope
+      value: -0.015555657
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 39252dcfb402ba24191e7dc644c1e107, type: 2}
   m_IsPrefabParent: 0

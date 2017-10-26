@@ -224,7 +224,6 @@ public class Player : Character
 	/// </summary>
 	[SerializeField]
 	Sprite[] ItemSprites;
-
 	/// <summary>
 	/// 取得アイテムの状態
 	/// </summary>
@@ -271,6 +270,11 @@ public class Player : Character
 			}
 		}
 	}
+	/// <summary>
+	/// ショットガンの上下方向のベクトルのカーブ
+	/// </summary>
+	[SerializeField]
+	AnimationCurve ShotgunYVecCurve;
 	#endregion
 
 	/// <summary>
@@ -756,7 +760,9 @@ public class Player : Character
 		direction.y = mousePos.y - LaunchTfm.position.y;
 		direction.z = mousePos.z - LaunchTfm.position.z;
 		var go = Instantiate(Bullet, LaunchTfm.position, Quaternion.identity);
-		var magnitude = 25.0f - direction.magnitude;
+		var correctMagnitude = Mathf.Max(direction.magnitude, 15.0f);
+		var magnitude = ShotgunYVecCurve.Evaluate(Mathf.InverseLerp(10.0f, 20.0f, correctMagnitude)) * 10.0f;
+		direction = direction.normalized * correctMagnitude;
 		var vec = Vector3.up * magnitude + direction;
 		Debug.Log(direction.magnitude);
 		go.GetComponent<Rigidbody>().velocity = vec;
