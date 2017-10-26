@@ -233,21 +233,40 @@ public class Player : Character
 		/// <summary>
 		/// ショットガン
 		/// </summary>
-		Item0
+		Item1
 	}
+	/// <summary>
+	/// 現在の取得アイテムの状態
+	/// </summary>
+	ItemState currentItemState;
 	/// <summary>
 	/// アイテムの耐久度のテキスト
 	/// </summary>
 	[SerializeField]
 	TextMeshProUGUI ItemEffectRemainTxt;
 	/// <summary>
-	/// アイテムの耐久度
-	/// </summary>
-	int ItemDurability;
-	/// <summary>
 	/// アイテムの耐久度の初期値
 	/// </summary>
 	const int Default_Item_Durability = 10;
+	/// <summary>
+	/// アイテムの耐久度
+	/// </summary>
+	readonly ReactiveProperty<int> itemDurability = new ReactiveProperty<int>();
+	public int ItemDurability {
+		get
+		{
+			return itemDurability.Value;
+		}
+		set
+		{
+			itemDurability.Value = value;
+			if (itemDurability.Value > 0) {
+				ItemEffectRemainTxt.text = "残り" + itemDurability.ToString() + "回";
+			} else {
+				ItemEffectRemainTxt.text = "";
+			}
+		}
+	}
 	#endregion
 
 	/// <summary>
@@ -477,6 +496,13 @@ public class Player : Character
 				contactSignboard = null;
 			})
 			.AddTo(this);
+
+		itemDurability.AsObservable().Where(val => val <= 0)
+			.Subscribe(val => {
+				currentItemState = ItemState.NoItem;
+				ItemEffectRemainTxt.text = "";
+			})
+			.AddTo(this);
 	}
 
 	/// <summary>
@@ -506,9 +532,10 @@ public class Player : Character
 				childTfm.gameObject.SetActive(false);
 			}
 		}
+
 		ItemImg.sprite = null;
 		ItemEffectRemainTxt.text = "";
-		ItemDurability = Default_Item_Durability;
+		currentItemState = ItemState.NoItem;
 	}
 
 	/// <summary>
@@ -717,6 +744,19 @@ public class Player : Character
 	}
 
 	/// <summary>
+	/// ダメージ処理
+	/// </summary>
+	protected override void damage()
+	{
+		if (currentItemState != ItemState.NoItem) {
+			--ItemDurability;
+		} else {
+			base.damage();
+			HPGos[hp.Value].SetActive(false);
+		}
+	}
+
+	/// <summary>
 	/// 死亡処理
 	/// </summary>
 	protected override void dead()
@@ -763,15 +803,6 @@ public class Player : Character
 		return col.tag == "Signboard";
 	}
 
-	/// <summary>
-	/// ダメージ処理
-	/// </summary>
-	protected override void damage()
-	{
-		base.damage();
-		HPGos[hp.Value].SetActive(false);
-	}
-
 	protected override void OnCollisionEnter(Collision col)
 	{
 		base.OnCollisionEnter(col);
@@ -782,6 +813,8 @@ public class Player : Character
 		var index = System.Convert.ToInt32(tag.Substring(tag.Length - 1, 1));
 		ItemImg.sprite = ItemSprites[index - 1];
 		Destroy(col.gameObject);
-		ItemEffectRemainTxt.text = "残り" + ItemDurability.ToString() + "回";
+		ItemEffectRemainTxt.text = "残り" + itemDurability.ToString() + "回";
+		currentItemState = ItemState.Item1;
+		ItemDurability = Default_Item_Durability;
 	}
 }
