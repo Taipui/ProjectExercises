@@ -119,6 +119,10 @@ public class Player : Character
 	/// </summary>
 	[SerializeField]
 	Transform LaunchTfm;
+	/// <summary>
+	/// 雪弾を発射する強さ
+	/// </summary>
+	const float Launch_Power = 40.0f;
 	#endregion
 
 	/// <summary>
@@ -411,9 +415,15 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isPlay() && !!isLClk() && !isEmpty())
+		this.UpdateAsObservable().Where(x => !!isPlay() && !!isLClk() && !isEmpty() && currentItemState == ItemState.NoItem)
 			.Subscribe(_ => {
 				--stock.Value;
+			})
+			.AddTo(this);
+
+		this.UpdateAsObservable().Where(x => !!isPlay() && !!isLClk() && currentItemState == ItemState.Item1)
+			.Subscribe(_ => {
+				shotgunLaunch();
 			})
 			.AddTo(this);
 
@@ -731,8 +741,26 @@ public class Player : Character
 		direction.y = mousePos.y - LaunchTfm.position.y;
 		direction.z = mousePos.z - LaunchTfm.position.z;
 		foreach (Transform child in LauncherParent) {
-			child.GetComponent<Launcher>().launch(Bullet, mousePos, 13, BulletParentTfm, direction.normalized * 40.0f);
+			child.GetComponent<Launcher>().launch(Bullet, mousePos, 13, BulletParentTfm, direction.normalized * Launch_Power);
 		}
+	}
+
+	/// <summary>
+	/// ショットガン
+	/// </summary>
+	void shotgunLaunch()
+	{
+		var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		var direction = Vector3.zero;
+		direction.x = mousePos.x - LaunchTfm.position.x;
+		direction.y = mousePos.y - LaunchTfm.position.y;
+		direction.z = mousePos.z - LaunchTfm.position.z;
+		var go = Instantiate(Bullet, LaunchTfm.position, Quaternion.identity);
+		var magnitude = 25.0f - direction.magnitude;
+		var vec = Vector3.up * magnitude + direction;
+		Debug.Log(direction.magnitude);
+		go.GetComponent<Rigidbody>().velocity = vec;
+		go.layer = Common.PlayerBulletLayer;
 	}
 
 	/// <summary>
