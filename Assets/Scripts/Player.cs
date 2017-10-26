@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UniRx;
 using UniRx.Triggers;
+using TMPro;
 
 // 必要なコンポーネントの列記
 [RequireComponent(typeof(Animator))]
@@ -219,6 +220,34 @@ public class Player : Character
 	/// </summary>
 	[SerializeField]
 	Sprite[] ItemSprites;
+
+	/// <summary>
+	/// 取得アイテムの状態
+	/// </summary>
+	enum ItemState
+	{
+		/// <summary>
+		/// アイテムを未取得/効果切れ状態
+		/// </summary>
+		NoItem,
+		/// <summary>
+		/// ショットガン
+		/// </summary>
+		Item0
+	}
+	/// <summary>
+	/// アイテムの耐久度のテキスト
+	/// </summary>
+	[SerializeField]
+	TextMeshProUGUI ItemEffectRemainTxt;
+	/// <summary>
+	/// アイテムの耐久度
+	/// </summary>
+	int ItemDurability;
+	/// <summary>
+	/// アイテムの耐久度の初期値
+	/// </summary>
+	const int Default_Item_Durability = 10;
 	#endregion
 
 	/// <summary>
@@ -478,6 +507,8 @@ public class Player : Character
 			}
 		}
 		ItemImg.sprite = null;
+		ItemEffectRemainTxt.text = "";
+		ItemDurability = Default_Item_Durability;
 	}
 
 	/// <summary>
@@ -751,5 +782,6 @@ public class Player : Character
 		var index = System.Convert.ToInt32(tag.Substring(tag.Length - 1, 1));
 		ItemImg.sprite = ItemSprites[index - 1];
 		Destroy(col.gameObject);
+		ItemEffectRemainTxt.text = "残り" + ItemDurability.ToString() + "回";
 	}
 }
