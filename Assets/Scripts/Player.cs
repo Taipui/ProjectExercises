@@ -124,10 +124,17 @@ public class Player : Character
 	/// </summary>
 	readonly ReactiveProperty<bool> isSp = new ReactiveProperty<bool>(false);
 
+	#region HP関連
 	/// <summary>
-	/// デフォルトの体力
+	/// デフォルトのHP
 	/// </summary>
 	const int Default_Hp = 3;
+	/// <summary>
+	/// HPを表すGameObject
+	/// </summary>
+	[SerializeField]
+	GameObject[] HPGos;
+	#endregion
 
 	/// <summary>
 	/// GroundChipErase
@@ -444,7 +451,8 @@ public class Player : Character
 
 		MyBulletLayer = Common.PlayerBulletLayer;
 
-		setHp(1000000);
+		//setHp(1000000);
+		setHp(Default_Hp);
 
 		enableTeleportation = true;
 		foreach (Transform parentTfm in ParticleParents) {
@@ -707,5 +715,14 @@ public class Player : Character
 	bool isSignboard(Collider col)
 	{
 		return col.tag == "Signboard";
+	}
+
+	/// <summary>
+	/// ダメージ処理
+	/// </summary>
+	protected override void damage()
+	{
+		base.damage();
+		HPGos[hp.Value].SetActive(false);
 	}
 }

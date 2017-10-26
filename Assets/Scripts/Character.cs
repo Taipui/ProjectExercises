@@ -29,7 +29,7 @@ public class Character : MonoBehaviour
 	/// <summary>
 	/// 体力
 	/// </summary>
-	readonly ReactiveProperty<int> hp = new ReactiveProperty<int>(1);
+	readonly protected ReactiveProperty<int> hp = new ReactiveProperty<int>(1);
 
 	/// <summary>
 	/// GameManager
@@ -88,7 +88,7 @@ public class Character : MonoBehaviour
 	/// <summary>
 	/// ダメージ処理
 	/// </summary>
-	void damage()
+	protected virtual void damage()
 	{
 		--hp.Value;
 	}
