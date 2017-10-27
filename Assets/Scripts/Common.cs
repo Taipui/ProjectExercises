@@ -40,7 +40,7 @@ public static class Common
 	public static void setCursor()
 	{
 		Cursor.lockState = CursorLockMode.Confined;
-		var tex = Resources.Load("Aim9") as Texture2D;
+		var tex = Resources.Load("Aim10") as Texture2D;
 		var hotspot = tex.texelSize * 0.5f;
 		hotspot.y *= -1;
 		Cursor.SetCursor(tex, hotspot, CursorMode.ForceSoftware);
