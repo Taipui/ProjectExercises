@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour
 
 	void Start ()
 	{
+		Common.setCursor();
 		CurrentGameState = GameState.Play;
 		if (GameOverGo != null) {
 			GameOverGo.SetActive(false);

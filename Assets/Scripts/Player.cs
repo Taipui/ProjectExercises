@@ -275,6 +275,10 @@ public class Player : Character
 	/// </summary>
 	[SerializeField]
 	AnimationCurve ShotgunYVecCurve;
+	/// <summary>
+	/// ショットガンで一度に飛ばす弾の数
+	/// </summary>
+	const int Max_Shotgun_Num = 3;
 	#endregion
 
 	/// <summary>
@@ -759,14 +763,21 @@ public class Player : Character
 		direction.x = mousePos.x - LaunchTfm.position.x;
 		direction.y = mousePos.y - LaunchTfm.position.y;
 		direction.z = mousePos.z - LaunchTfm.position.z;
-		var go = Instantiate(Bullet, LaunchTfm.position, Quaternion.identity);
-		var correctMagnitude = Mathf.Max(direction.magnitude, 15.0f);
-		var magnitude = ShotgunYVecCurve.Evaluate(Mathf.InverseLerp(10.0f, 20.0f, correctMagnitude)) * 10.0f;
-		direction = direction.normalized * correctMagnitude;
-		var vec = Vector3.up * magnitude + direction;
-		Debug.Log(direction.magnitude);
-		go.GetComponent<Rigidbody>().velocity = vec;
-		go.layer = Common.PlayerBulletLayer;
+		Vector3[] vecs = new Vector3[3];
+		vecs[0] = Vector3.up;
+		vecs[1] = Vector3.right;
+		vecs[2] = Vector3.down;
+		var launchPos = new Vector3(LaunchTfm.position.x + 0.5f, LaunchTfm.position.y - 0.5f, LaunchTfm.position.z);
+		for (var i = 0; i < Max_Shotgun_Num; ++i) {
+			launchPos.y += 0.2f;
+			var go = Instantiate(Bullet, launchPos, Quaternion.identity);
+			var correctMagnitude = Mathf.Max(direction.magnitude, 15.0f);
+			var magnitude = ShotgunYVecCurve.Evaluate(Mathf.InverseLerp(10.0f, 20.0f, correctMagnitude)) * 10.0f;
+			direction = direction.normalized * correctMagnitude;
+			var vec = vecs[i] * magnitude + direction;
+			go.GetComponent<Rigidbody>().velocity = vec;
+			go.layer = Common.PlayerBulletLayer;
+		}
 	}
 
 	/// <summary>

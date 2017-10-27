@@ -60,7 +60,7 @@ public class Enemy : Character
 		Observable.Interval(System.TimeSpan.FromSeconds(0.2f)).Where(x => !!isPlay() && !!enableLaunch)
 			.Subscribe(_ => {
 				if (Random.Range(0, Frequency) == 0) {
-					//launch();
+					launch();
 				}
 			})
 		.AddTo(this);
@@ -81,7 +81,7 @@ public class Enemy : Character
 	{
 		Destroy(gameObject);
 		var r = Random.Range(0, Items.Length + 1);
-		r = 0;
+		r = Items.Length;
 		if (r == Items.Length) {
 			return;
 		}
