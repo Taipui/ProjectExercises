@@ -254,7 +254,7 @@ public class Player : Character
 	/// <summary>
 	/// アイテムの耐久度
 	/// </summary>
-	readonly ReactiveProperty<int> itemDurability = new ReactiveProperty<int>();
+	readonly ReactiveProperty<int> itemDurability = new ReactiveProperty<int>(Default_Item_Durability);
 	public int ItemDurability {
 		get
 		{

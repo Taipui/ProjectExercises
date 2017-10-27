@@ -41,8 +41,7 @@ public static class Common
 	{
 		Cursor.lockState = CursorLockMode.Confined;
 		var tex = Resources.Load("Aim10") as Texture2D;
-		var hotspot = tex.texelSize * 0.5f;
-		hotspot.y *= -1;
+		var hotspot = new Vector2(tex.width / 2, tex.height / 2);
 		Cursor.SetCursor(tex, hotspot, CursorMode.ForceSoftware);
 	}
 }
