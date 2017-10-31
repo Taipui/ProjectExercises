@@ -95,27 +95,27 @@ public class Player : Character
 	/// </summary>
 	readonly ReactiveProperty<string> dir = new ReactiveProperty<string>("D");
 
-	#region 弾関連
+	#region 雪弾関連
 	/// <summary>
-	/// 弾のストック数
+	/// 雪弾のストック数
 	/// </summary>
 	readonly ReactiveProperty<int> stock = new ReactiveProperty<int>(0);
 	/// <summary>
-	/// 弾の最大ストック数
+	/// 雪弾の最大ストック数
 	/// </summary>
 	const int Max_Stock = 10;
 	/// <summary>
-	/// ストック用の弾
+	/// ストック用の雪弾
 	/// </summary>
 	[SerializeField]
 	GameObject StockBullet;
 	/// <summary>
-	/// ストック用の弾の親オブジェクトのTransform
+	/// ストック用の雪弾の親オブジェクトのTransform
 	/// </summary>
 	[SerializeField]
 	Transform StockTfm;
 	/// <summary>
-	/// 弾の発射位置
+	/// 雪弾の発射位置
 	/// </summary>
 	[SerializeField]
 	Transform LaunchTfm;
@@ -123,6 +123,10 @@ public class Player : Character
 	/// 雪弾を発射する強さ
 	/// </summary>
 	const float Launch_Power = 40.0f;
+	/// <summary>
+	/// 雪弾を発射するベクトル
+	/// </summary>
+	Vector3 launchVec;
 	#endregion
 
 	/// <summary>
@@ -281,6 +285,34 @@ public class Player : Character
 	const int Max_Shotgun_Num = 3;
 	#endregion
 
+	#region 軌跡関連
+	/// <summary>
+	/// 軌跡を描くために発射するコライダのTransform
+	/// </summary>
+	[SerializeField]
+	Transform LocusDrawColTfm;
+	/// <summary>
+	/// LocusDrawColliderの初期座標
+	/// </summary>
+	Vector3 defaultLocusDrawColPos;
+	/// <summary>
+	/// 軌跡を点として記録する間隔
+	/// </summary>
+	const float Sampling_Interval = 0.01f;
+	/// <summary>
+	/// 軌跡の点のリスト
+	/// </summary>
+	List<Vector3> locusPoses;
+	/// <summary>
+	/// LineRenderer
+	/// </summary>
+	LineRenderer lr;
+	/// <summary>
+	/// 軌跡の線の幅
+	/// </summary>
+	const float Locus_Width = 0.1f;
+	#endregion
+
 	/// <summary>
 	/// 変身可能かどうかのフラグをセット
 	/// </summary>
@@ -302,6 +334,8 @@ public class Player : Character
 		Tutorial contactSignboard = null;
 		var tfm = transform;
 		var cachedLocalPosition = tfm.localPosition;
+		var prevMousePos = Input.mousePosition;
+		var prevPlayerPos = transform.localPosition;
 
 		this.FixedUpdateAsObservable().Subscribe(_ => {
 			h.Value = Input.GetAxis("Horizontal");
@@ -521,6 +555,26 @@ public class Player : Character
 				ItemEffectRemainTxt.text = "";
 			})
 			.AddTo(this);
+
+		this.UpdateAsObservable().Where(x => !!isPlay())
+			.Subscribe(_ => {
+				drawLocus();
+			})
+			.AddTo(this);
+
+		this.UpdateAsObservable().Where(x => !!isPlay() && prevMousePos != Input.mousePosition)
+			.Subscribe(_ => {
+				prevMousePos = Input.mousePosition;
+				launchLocusDrawCol();
+			})
+			.AddTo(this);
+
+		this.UpdateAsObservable().Where(x => !!isPlay() && prevPlayerPos != transform.localPosition)
+			.Subscribe(_ => {
+				prevPlayerPos = transform.localPosition;
+				launchLocusDrawCol();
+			})
+			.AddTo(this);
 	}
 
 	/// <summary>
@@ -554,6 +608,13 @@ public class Player : Character
 		ItemImg.sprite = null;
 		ItemEffectRemainTxt.text = "";
 		currentItemState = ItemState.NoItem;
+
+		lr = GetComponent<LineRenderer>();
+		lr.startWidth = Locus_Width;
+		lr.endWidth = Locus_Width;
+		locusPoses = new List<Vector3>();
+		defaultLocusDrawColPos = LocusDrawColTfm.localPosition;
+		launchLocusDrawCol();
 	}
 
 	/// <summary>
@@ -744,12 +805,51 @@ public class Player : Character
 	void launch()
 	{
 		var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		// アシストの数だけ一度に撃つ
+		foreach (Transform child in LauncherParent) {
+			child.GetComponent<Launcher>().launch(Bullet, mousePos, 13, BulletParentTfm, launchVec);
+		}
+	}
+
+	/// <summary>
+	/// LocusDrawColliderを初期座標に戻し、発射する
+	/// </summary>
+	public void launchLocusDrawCol()
+	{
+		StopCoroutine("recordLocus");
+		locusPoses.Clear();
+		LocusDrawColTfm.localPosition = defaultLocusDrawColPos;
+		var rb = LocusDrawColTfm.GetComponent<Rigidbody>();
+		var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		var direction = Vector3.zero;
 		direction.x = mousePos.x - LaunchTfm.position.x;
 		direction.y = mousePos.y - LaunchTfm.position.y;
 		direction.z = mousePos.z - LaunchTfm.position.z;
-		foreach (Transform child in LauncherParent) {
-			child.GetComponent<Launcher>().launch(Bullet, mousePos, 13, BulletParentTfm, direction.normalized * Launch_Power);
+		launchVec = direction.normalized * Launch_Power;
+		rb.velocity = launchVec;
+		StartCoroutine("recordLocus");
+	}
+
+	/// <summary>
+	/// 軌跡を点として記録する
+	/// </summary>
+	/// <returns></returns>
+	IEnumerator recordLocus()
+	{
+		while (true) {
+			locusPoses.Add(LocusDrawColTfm.position);
+			yield return new WaitForSeconds(Sampling_Interval);
+		}
+	}
+
+	/// <summary>
+	/// 軌跡を描画する
+	/// </summary>
+	void drawLocus()
+	{
+		lr.positionCount = locusPoses.Count;
+		for (var i = 0; i < locusPoses.Count; ++i) {
+			lr.SetPosition(i, locusPoses[i]);
 		}
 	}
 
