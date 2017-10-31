@@ -335,7 +335,7 @@ public class Player : Character
 		var tfm = transform;
 		var cachedLocalPosition = tfm.localPosition;
 		var prevMousePos = Input.mousePosition;
-		var prevPlayerPos = transform.localPosition;
+		var prevPlayerXPos = transform.localPosition.x;
 
 		this.FixedUpdateAsObservable().Subscribe(_ => {
 			h.Value = Input.GetAxis("Horizontal");
@@ -569,9 +569,9 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isPlay() && prevPlayerPos != transform.localPosition)
+		this.UpdateAsObservable().Where(x => !!isPlay() && Mathf.Abs(prevPlayerXPos - transform.localPosition.x) >= 0.1f)
 			.Subscribe(_ => {
-				prevPlayerPos = transform.localPosition;
+				prevPlayerXPos = transform.localPosition.x;
 				launchLocusDrawCol();
 			})
 			.AddTo(this);
