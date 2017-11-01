@@ -306,7 +306,8 @@ public class Player : Character
 	/// <summary>
 	/// LineRenderer
 	/// </summary>
-	LineRenderer lr;
+	[SerializeField]
+	LineRenderer Lr;
 	/// <summary>
 	/// 軌跡の線の幅
 	/// </summary>
@@ -599,8 +600,8 @@ public class Player : Character
 
 		MyBulletLayer = Common.PlayerBulletLayer;
 
-		//setHp(1000000);
 		setHp(Default_Hp);
+		//setHp(1000000);
 
 		enableTeleportation = true;
 		foreach (Transform parentTfm in ParticleParents) {
@@ -616,9 +617,8 @@ public class Player : Character
 		ItemEffectRemainTxt.text = "";
 		currentItemState = ItemState.NoItem;
 
-		lr = GetComponent<LineRenderer>();
-		lr.startWidth = Locus_Width;
-		lr.endWidth = Locus_Width;
+		Lr.startWidth = Locus_Width;
+		Lr.endWidth = Locus_Width;
 		locusPoses = new List<Vector3>();
 		defaultLocusDrawColPos = LocusDrawColTfm.localPosition;
 		launchLocusDrawCol();
@@ -854,9 +854,9 @@ public class Player : Character
 	/// </summary>
 	void drawLocus()
 	{
-		lr.positionCount = locusPoses.Count;
+		Lr.positionCount = locusPoses.Count;
 		for (var i = 0; i < locusPoses.Count; ++i) {
-			lr.SetPosition(i, locusPoses[i]);
+			Lr.SetPosition(i, locusPoses[i]);
 		}
 	}
 
@@ -903,8 +903,10 @@ public class Player : Character
 		if (currentItemState != ItemState.NoItem) {
 			--ItemDurability;
 		} else {
-			base.damage();
-			HPGos[hp.Value].SetActive(false);
+			if (hp.Value <= Default_Hp) {
+				base.damage();
+				HPGos[hp.Value].SetActive(false);
+			}
 		}
 	}
 
