@@ -337,6 +337,7 @@
     <None Include="Assets\README_SD_UnityChan.txt" />
     <None Include="Assets\SAColliderBuilder\Readme_en.txt" />
     <None Include="Assets\SAColliderBuilder\Readme_jp.txt" />
+    <None Include="Assets\Shaders\Gradation.shader" />
     <None Include="Assets\Shaders\ProjectorDecal.shader" />
     <None Include="Assets\TextMesh Pro\Fonts\Anton OFL.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\Bangers - OFL.txt" />
