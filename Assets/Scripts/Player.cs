@@ -315,10 +315,21 @@ public class Player : Character
 	#endregion
 
 	/// <summary>
-	/// CameraMover
+	/// CameraMover(カメラを揺らすため)
 	/// </summary>
 	[SerializeField]
 	CameraMover CamMover;
+
+	/// <summary>
+	/// 雪弾を取りに行くアニメーションをするためのhiyoko
+	/// </summary>
+	//[SerializeField]
+	//GameObject EffectHiyoko;
+	/// <summary>
+	/// hiyokoのGameObject
+	/// </summary>
+	//[SerializeField]
+	//GameObject HiyokoGo;
 
 	/// <summary>
 	/// 変身可能かどうかのフラグをセット
@@ -461,6 +472,8 @@ public class Player : Character
 		this.UpdateAsObservable().Where(x => !!isPlay() && !!isRClk() && !isMaxStock() && !!enableJump(currentBaseState) && !IsTitle)
 			.Subscribe(_ => {
 				Gce.checkGroundChip();
+				//EffectHiyoko.SetActive(true);
+				//HiyokoGo.SetActive(false);
 			})
 			.AddTo(this);
 
@@ -570,12 +583,12 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isPlay() && prevMousePos != Input.mousePosition)
-			.Subscribe(_ => {
-				prevMousePos = Input.mousePosition;
-				launchLocusDrawCol();
-			})
-			.AddTo(this);
+		//this.UpdateAsObservable().Where(x => !!isPlay() && prevMousePos != Input.mousePosition)
+		//	.Subscribe(_ => {
+		//		prevMousePos = Input.mousePosition;
+		//		launchLocusDrawCol();
+		//	})
+		//	.AddTo(this);
 
 		this.UpdateAsObservable().Where(x => !!isPlay() && Mathf.Abs(prevPlayerXPos - transform.localPosition.x) >= 0.1f)
 			.Subscribe(_ => {
@@ -622,6 +635,9 @@ public class Player : Character
 		locusPoses = new List<Vector3>();
 		defaultLocusDrawColPos = LocusDrawColTfm.localPosition;
 		launchLocusDrawCol();
+
+//		EffectHiyoko.SetActive(false);
+		//HiyokoGo.SetActive(true);
 	}
 
 	/// <summary>
@@ -893,6 +909,8 @@ public class Player : Character
 	public void onErased()
 	{
 		++stock.Value;
+//		EffectHiyoko.SetActive(false);
+		//HiyokoGo.SetActive(true);
 	}
 
 	/// <summary>

@@ -23,7 +23,7 @@ public class GroundChipEraser : MonoBehaviour
 	/// <summary>
 	/// 地面のチップを消す用のCollider
 	/// </summary>
-	MeshCollider groundChipEraserCollider;
+	SphereCollider groundChipEraserCollider;
 
 	/// <summary>
 	/// 移動中かどうか
@@ -38,13 +38,13 @@ public class GroundChipEraser : MonoBehaviour
 	void Start ()
 	{
 		defaultYPos = transform.localPosition.y;
-		groundChipEraserCollider = GetComponent<MeshCollider>();
+		groundChipEraserCollider = GetComponent<SphereCollider>();
 		groundChipEraserCollider.enabled = false;
 		isMove = false;
 
 		this.UpdateAsObservable().Where(x => !!isMove)
 			.Subscribe(_ => {
-				transform.Translate(new Vector3(0.0f, 0.0f, Move_Speed * Time.deltaTime));
+				transform.Translate(new Vector3(0.0f, -Move_Speed * Time.deltaTime));
 			})
 			.AddTo(this);
 	}
