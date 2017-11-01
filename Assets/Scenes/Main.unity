@@ -12688,6 +12688,19 @@ Prefab:
       propertyPath: LocusDrawColTfm
       value: 
       objectReference: {fileID: 1939319476}
+    - target: {fileID: 114847447254561632, guid: 39252dcfb402ba24191e7dc644c1e107,
+        type: 2}
+      propertyPath: CamMover
+      value: 
+      objectReference: {fileID: 1375938366}
+    - target: {fileID: 1010418275719956, guid: 39252dcfb402ba24191e7dc644c1e107, type: 2}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1829782935188054, guid: 39252dcfb402ba24191e7dc644c1e107, type: 2}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 39252dcfb402ba24191e7dc644c1e107, type: 2}
   m_IsPrefabParent: 0

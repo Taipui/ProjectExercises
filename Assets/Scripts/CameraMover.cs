@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
+using DG.Tweening;
 
 /// <summary>
 /// カメラを動かすクラス
@@ -63,5 +64,16 @@ public class CameraMover : MonoBehaviour
 				prevX = tfm.localPosition.x;
 			})
 			.AddTo(this);
+	}
+
+	/// <summary>
+	/// カメラを揺らす
+	/// </summary>
+	public void shake()
+	{
+		transform.DOShakePosition(
+			0.5f,
+			0.5f
+		);
 	}
 }

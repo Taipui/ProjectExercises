@@ -314,6 +314,12 @@ public class Player : Character
 	#endregion
 
 	/// <summary>
+	/// CameraMover
+	/// </summary>
+	[SerializeField]
+	CameraMover CamMover;
+
+	/// <summary>
 	/// 変身可能かどうかのフラグをセット
 	/// </summary>
 	/// <param name="val">セットする値</param>
@@ -522,6 +528,7 @@ public class Player : Character
 		this.UpdateAsObservable().Where(x => !!isChange())
 			.Subscribe(_ => {
 				changeAvatar();
+				CamMover.shake();
 			})
 			.AddTo(this);
 
