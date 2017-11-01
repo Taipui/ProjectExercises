@@ -42,12 +42,19 @@ public class CameraMover : MonoBehaviour
 	/// </summary>
 	const float X_Limit = 142.0f;
 
+	/// <summary>
+	/// カメラが揺れた時、地面が消えてしまうのを防ぐため
+	/// </summary>
+	[SerializeField]
+	BoxCollider GroundChipChecker;
+
 	void Start ()
 	{
 		var tfm = transform;
 		var maxX = 0.4f;
 		var prevX = tfm.localPosition.x;
 		var cachedLocalPos = Vector3.zero;
+		GroundChipChecker.enabled = true;
 
 		PlayerTfm.UpdateAsObservable()
 			.Subscribe(_ => {
@@ -71,9 +78,12 @@ public class CameraMover : MonoBehaviour
 	/// </summary>
 	public void shake()
 	{
-		transform.DOShakePosition(
+		GroundChipChecker.enabled = false;
+		transform.DOShakeRotation(
 			0.5f,
-			0.5f
-		);
+			1.0f
+		).OnComplete(() => {
+			GroundChipChecker.enabled = true;
+		});
 	}
 }

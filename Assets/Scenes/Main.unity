@@ -19446,6 +19446,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerTfm: {fileID: 1232336293}
   Gc: {fileID: 531841840}
+  GroundChipChecker: {fileID: 1045853187}
 --- !u!82 &1375938368
 AudioSource:
   m_ObjectHideFlags: 0
