@@ -9,6 +9,12 @@ using UniRx.Triggers;
 /// </summary>
 public class Boss : Enemy
 {
+	/// <summary>
+	/// GrayちゃんのモデルのGameObject
+	/// </summary>
+	[SerializeField]
+	GameObject ModelGo;
+
 	protected override void Start ()
 	{
 		base.Start();
@@ -52,6 +58,35 @@ public class Boss : Enemy
 		} else if (diff > bias) {
 			transform.Translate(new Vector3(0.0f, moveSpeed));
 		}
+	}
+
+	/// <summary>
+	/// キャラクターの点滅を始める
+	/// </summary>
+	protected override void startFlick()
+	{
+		StartCoroutine("flick");
+	}
+
+	/// <summary>
+	/// キャラクターを点滅させる
+	/// </summary>
+	/// <returns></returns>
+	protected override IEnumerator flick()
+	{
+		while (true) {
+			ModelGo.SetActive(!ModelGo.activeSelf);
+			yield return new WaitForSeconds(Flick_Interval);
+		}
+	}
+
+	/// <summary>
+	/// 点滅を止める
+	/// </summary>
+	protected override void stopFlick()
+	{
+		StopCoroutine("flick");
+		ModelGo.SetActive(true);
 	}
 
 	/// <summary>

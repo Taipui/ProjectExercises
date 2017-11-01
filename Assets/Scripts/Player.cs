@@ -828,6 +828,9 @@ public class Player : Character
 	void launch()
 	{
 		var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		if (!!IsTitle) {
+			launchVec = calcLaunchVec();
+		}
 		// アシストの数だけ一度に撃つ
 		foreach (Transform child in LauncherParent) {
 			child.GetComponent<Launcher>().launch(Bullet, mousePos, 13, BulletParentTfm, launchVec);
@@ -843,14 +846,23 @@ public class Player : Character
 		locusPoses.Clear();
 		LocusDrawColTfm.localPosition = defaultLocusDrawColPos;
 		var rb = LocusDrawColTfm.GetComponent<Rigidbody>();
+		rb.velocity = calcLaunchVec();
+		StartCoroutine("recordLocus");
+	}
+
+	/// <summary>
+	/// 発射ベクトルを計算する
+	/// </summary>
+	/// <returns>発射ベクトル</returns>
+	Vector3 calcLaunchVec()
+	{
 		var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		var direction = Vector3.zero;
 		direction.x = mousePos.x - LaunchTfm.position.x;
 		direction.y = mousePos.y - LaunchTfm.position.y;
 		direction.z = mousePos.z - LaunchTfm.position.z;
 		launchVec = direction.normalized * Launch_Power;
-		rb.velocity = launchVec;
-		StartCoroutine("recordLocus");
+		return launchVec;
 	}
 
 	/// <summary>
@@ -870,6 +882,9 @@ public class Player : Character
 	/// </summary>
 	void drawLocus()
 	{
+		if (!!IsTitle) {
+			return;
+		}
 		Lr.positionCount = locusPoses.Count;
 		for (var i = 0; i < locusPoses.Count; ++i) {
 			Lr.SetPosition(i, locusPoses[i]);
@@ -926,6 +941,35 @@ public class Player : Character
 				HPGos[hp.Value].SetActive(false);
 			}
 		}
+	}
+
+	/// <summary>
+	/// キャラクターの点滅を始める
+	/// </summary>
+	protected override void startFlick()
+	{
+		StartCoroutine("flick");
+	}
+
+	/// <summary>
+	/// キャラクターを点滅させる
+	/// </summary>
+	/// <returns></returns>
+	protected override IEnumerator flick()
+	{
+		while (true) {
+			Models[currentAvatar].SetActive(!Models[currentAvatar].activeSelf);
+			yield return new WaitForSeconds(Flick_Interval);
+		}
+	}
+
+	/// <summary>
+	/// 点滅を止める
+	/// </summary>
+	protected override void stopFlick()
+	{
+		StopCoroutine("flick");
+		Models[currentAvatar].SetActive(true);
 	}
 
 	/// <summary>

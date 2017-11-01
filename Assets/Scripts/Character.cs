@@ -52,11 +52,16 @@ public class Character : MonoBehaviour
 	/// <summary>
 	/// 無敵時間
 	/// </summary>
-	const float Invincible_Time = 0.1f;
+	const float Invincible_Time = 1.0f;
 	/// <summary>
 	/// 無敵かどうか(弾の当たり判定が連続で来ないように)
 	/// </summary>
 	bool isInvinsible;
+
+	/// <summary>
+	/// 無敵時に点滅する間隔
+	/// </summary>
+	protected const float Flick_Interval = 0.1f;
 
 	/// <summary>
 	/// 体力をセット
@@ -122,8 +127,39 @@ public class Character : MonoBehaviour
 		activeDecal(go.transform.localPosition.y);
 		Destroy(go);
 		isInvinsible = true;
+		startFlick();
 		yield return new WaitForSeconds(Invincible_Time);
 		isInvinsible = false;
+		stopFlick();
+	}
+
+	/// <summary>
+	/// キャラクターの点滅を始める
+	/// </summary>
+	protected virtual void startFlick()
+	{
+		StartCoroutine("flick");
+	}
+
+	/// <summary>
+	/// キャラクターを点滅させる
+	/// </summary>
+	/// <returns></returns>
+	protected virtual IEnumerator flick()
+	{
+		while (true) {
+			gameObject.SetActive(!gameObject.activeSelf);
+			yield return new WaitForSeconds(Flick_Interval);
+		}
+	}
+
+	/// <summary>
+	/// 点滅を止める
+	/// </summary>
+	protected virtual void stopFlick()
+	{
+		StopCoroutine("flick");
+		gameObject.SetActive(true);
 	}
 
 	/// <summary>
