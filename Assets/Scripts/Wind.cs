@@ -29,10 +29,10 @@ public class Wind : MonoBehaviour
 		var col = GetComponent<SphereCollider>();
 		Destroy(gameObject, Destroy_Time);
 
-		this.UpdateAsObservable().Subscribe(_ => {
-			transform.Rotate(new Vector3(0.0f, 0.0f, Rotate_Speed * Time.deltaTime));
-		})
-		.AddTo(this);
+		//this.UpdateAsObservable().Subscribe(_ => {
+		//	transform.Rotate(new Vector3(0.0f, 0.0f, Rotate_Speed * Time.deltaTime));
+		//})
+		//.AddTo(this);
 
 		col.OnTriggerStayAsObservable().Where(colGo => !!isBullet(colGo))
 			.Subscribe(colGo => {
