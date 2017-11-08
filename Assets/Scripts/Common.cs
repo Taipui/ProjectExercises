@@ -37,10 +37,13 @@ public static class Common
 	public const int BulletLayer = 9;
 	#endregion
 
+	/// <summary>
+	/// カーソルの画像をセットする
+	/// </summary>
 	public static void setCursor()
 	{
 		Cursor.lockState = CursorLockMode.Confined;
-		var tex = Resources.Load("Aim10") as Texture2D;
+		var tex = Resources.Load("Aim") as Texture2D;
 		var hotspot = new Vector2(tex.width / 2, tex.height / 2);
 		Cursor.SetCursor(tex, hotspot, CursorMode.ForceSoftware);
 	}

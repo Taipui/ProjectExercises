@@ -320,10 +320,6 @@ public class Player : Character
 	[SerializeField]
 	Transform LocusDrawColTfm;
 	/// <summary>
-	/// LocusDrawColliderの初期座標
-	/// </summary>
-	Vector3 defaultLocusDrawColPos;
-	/// <summary>
 	/// 軌跡を点として記録する間隔
 	/// </summary>
 	const float Sampling_Interval = 0.01f;
@@ -676,7 +672,6 @@ public class Player : Character
 		Lr.startWidth = Locus_Width;
 		Lr.endWidth = Locus_Width;
 		locusPoses = new List<Vector3>();
-		defaultLocusDrawColPos = LocusDrawColTfm.localPosition;
 		launchLocusDrawCol();
 
 		windLifespanSlider = WindLifespanSliderGo.GetComponent<Slider>();
@@ -890,7 +885,7 @@ public class Player : Character
 	{
 		StopCoroutine("recordLocus");
 		locusPoses.Clear();
-		LocusDrawColTfm.localPosition = defaultLocusDrawColPos;
+		LocusDrawColTfm.position = LaunchTfm.position;
 		var rb = LocusDrawColTfm.GetComponent<Rigidbody>();
 		rb.velocity = calcLaunchVec();
 		StartCoroutine("recordLocus");

@@ -17700,7 +17700,7 @@ Transform:
   m_Children:
   - {fileID: 1820320546}
   m_Father: {fileID: 1232336293}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &664952199
 SkinnedMeshRenderer:
@@ -27292,7 +27292,7 @@ Transform:
   m_Children:
   - {fileID: 1559419182}
   m_Father: {fileID: 1232336293}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1005738446
 MonoBehaviour:
@@ -32882,7 +32882,6 @@ Transform:
   - {fileID: 1103218841}
   - {fileID: 1005302602}
   - {fileID: 1168070251}
-  - {fileID: 1939319476}
   - {fileID: 664690627}
   - {fileID: 1005738445}
   - {fileID: 2024359946}
@@ -53879,12 +53878,12 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1939319475}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -7, y: 2, z: 0}
+  m_LocalScale: {x: 0.10000006, y: 0.1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1232336293}
-  m_RootOrder: 6
+  m_Father: {fileID: 0}
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &1939319477
 SphereCollider:
@@ -55904,7 +55903,7 @@ RectTransform:
   m_Children:
   - {fileID: 504242056}
   m_Father: {fileID: 1232336293}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
