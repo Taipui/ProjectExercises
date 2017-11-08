@@ -582,7 +582,7 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isChange())
+		this.UpdateAsObservable().Where(x => !!isChange() && !!EnableChange)
 			.Subscribe(_ => {
 				changeAvatar();
 				CamMover.shake();
@@ -1032,9 +1032,6 @@ public class Player : Character
 	/// </summary>
 	void changeAvatar()
 	{
-		if (!EnableChange) {
-			return;
-		}
 		currentAvatar = (currentAvatar + 1) % Avatars.Length;
 		foreach (GameObject go in Models) {
 			go.SetActive(false);
