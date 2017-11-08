@@ -60,13 +60,36 @@ public class Player : Character
 	/// 前進速度
 	/// </summary>
 	const float Forward_Speed = 7.0f;
+	#endregion
+
+	#region プレイヤーのジャンプ関連
 	/// <summary>
 	/// ジャンプ力
 	/// </summary>
-	//const float Jump_Power = 4.0f;
 	const float Jump_Power = 5.0f;
+	/// <summary>
+	/// 入力を許可するかどうか
+	/// </summary>
+	bool canInput;
+	/// <summary>
+	/// 入力を許可しない時間
+	/// </summary>
+	const float Disable_Input_Time = 0.4f;
+	/// <summary>
+	/// アニメーションのデフォルトの再生速度
+	/// </summary>
+	float defaultSpeed;
+	/// <summary>
+	/// 着地判定を調べる回数
+	/// </summary>
+	const int Landing_Check_Limit = 100;
+	/// <summary>
+	/// 着地モーションへの移項を許可する距離
+	/// </summary>
+	const float Landing_Dist = 1.05F;
 	#endregion
 
+	#region その他プレイヤー関連
 	/// <summary>
 	/// キャラクターのコライダ
 	/// </summary>
@@ -100,6 +123,7 @@ public class Player : Character
 	/// プレイヤーの向いている方向
 	/// </summary>
 	readonly ReactiveProperty<string> dir = new ReactiveProperty<string>("D");
+	#endregion
 
 	#region 雪弾関連
 	/// <summary>
@@ -393,7 +417,8 @@ public class Player : Character
 			rb.useGravity = true;
 
 			// 以下、キャラクターの移動処理
-			velocity = new Vector3(h.Value, 0, 0);
+			velocity = new Vector3(!!canInput ? h.Value : 0, 0, 0);
+			anim.SetBool("IsIdle", h.Value == 0);
 
 			//以下のvの閾値は、Mecanim側のトランジションと一緒に調整する
 			if (Mathf.Abs(h.Value) > 0.1f) {
@@ -661,6 +686,7 @@ public class Player : Character
 		orgColHightSD = col.height * 0.7f;
 		orgVectColCenterSD = new Vector3(col.center.x, orgVectColCenterNormal.y - orgColHightSD / 4, col.center.z);
 		canModifyCol = false;
+		canInput = true;
 
 		MyBulletLayer = Common.PlayerBulletLayer;
 
@@ -730,6 +756,7 @@ public class Player : Character
 		}
 		//rb.AddForce(Vector3.up * Jump_Power, ForceMode.VelocityChange);
 		anim.SetBool("Jump", true);
+		StartCoroutine("disableInput");
 	}
 
 	/// <summary>
@@ -768,23 +795,6 @@ public class Player : Character
 		col.height = currentAvatar == 0 ? orgColHightNormal : orgColHightSD;
 		col.center = currentAvatar == 0 ? orgVectColCenterNormal : orgVectColCenterSD;
 	}
-
-	/// <summary>
-	/// アニメーションのデフォルトの再生速度
-	/// </summary>
-	private float defaultSpeed;
-	/// <summary>
-	/// 着地判定を調べる回数
-	/// </summary>
-	private readonly int landingCheckLimit = 100;
-	/// <summary>
-	/// 着地判定チェックを行う時間間隔
-	/// </summary>
-	private readonly float waitTime = 0.01F;
-	/// <summary>
-	/// 着地モーションへの移項を許可する距離
-	/// </summary>
-	private readonly float landingDistance = 1.05F;
 
 	/// <summary>
 	/// ジャンプアニメーションのイベント(地面から足が離れる瞬間に呼ばれる)
@@ -829,6 +839,7 @@ public class Player : Character
 	void OnJumpEnd()
 	{
 		isSp.Value = false;
+		StartCoroutine("disableInput");
 		//Debug.Break();
 	}
 
@@ -839,7 +850,7 @@ public class Player : Character
 	IEnumerator CheckLanding()
 	{
 		// 規定回数チェックして成功しない場合も着地モーションに移行する
-		for (int count = 0; count < landingCheckLimit; count++) {
+		for (int count = 0; count < Landing_Check_Limit; count++) {
 			var raycast = new RaycastHit();
 			var raycastSuccess = Physics.Raycast(transform.localPosition, Vector3.down, out raycast);
 			Debug.DrawRay(transform.localPosition, Vector3.down, Color.red);
@@ -847,7 +858,7 @@ public class Player : Character
 			//Debug.Log(anim.speed);
 			//Debug.Break();
 			// レイを飛ばして、成功且つ一定距離内であった場合、着地モーションへ移項させる
-			if (raycastSuccess && raycast.distance < landingDistance) {
+			if (raycastSuccess && raycast.distance < Landing_Dist) {
 				break;
 			}
 			//yield return new WaitForSeconds(waitTime);
@@ -855,6 +866,17 @@ public class Player : Character
 		}
 		anim.speed = defaultSpeed;
 		Debug.Log("break");
+	}
+
+	/// <summary>
+	/// 一時的に入力を無効にする
+	/// </summary>
+	/// <returns></returns>
+	IEnumerator disableInput()
+	{
+		canInput = false;
+		yield return new WaitForSeconds(Disable_Input_Time);
+		canInput = true;
 	}
 
 	/// <summary>
