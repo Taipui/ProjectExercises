@@ -163,7 +163,35 @@ public class Player : Character
 	/// 風のGameObject
 	/// </summary>
 	[SerializeField]
-	GameObject WindObj;
+	GameObject WindGo;
+	/// <summary>
+	/// 風の寿命
+	/// </summary>
+	const float Wind_Lifespan = 10.0f;
+	/// <summary>
+	/// 風の寿命のタイマー
+	/// </summary>
+	readonly ReactiveProperty<float> windLifespanTimer = new ReactiveProperty<float>(Wind_Lifespan);
+	public float WindLifespanTimer {
+		get
+		{
+			return windLifespanTimer.Value;
+		}
+		set
+		{
+			windLifespanTimer.Value = value;
+			windLifespanSlider.value = windLifespanTimer.Value;
+		}
+	}
+	/// <summary>
+	/// 風の寿命を表示するスライダーのGameObject(スライダーの表示/非表示に使用)
+	/// </summary>
+	[SerializeField]
+	GameObject WindLifespanSliderGo;
+	/// <summary>
+	/// 風の寿命を表示するスライダー
+	/// </summary>
+	Slider windLifespanSlider;
 	#endregion
 
 	#region 変身関連
@@ -348,7 +376,7 @@ public class Player : Character
 		var velocity = Vector3.zero;
 		var prevStock = 0;
 		var stockBullets = new List<GameObject>();
-		GameObject instanceWindObj = null;
+		GameObject instanceWindGo = null;
 		Tutorial contactSignboard = null;
 		var tfm = transform;
 		var cachedLocalPosition = tfm.localPosition;
@@ -532,10 +560,25 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isSp.Value && !!isShift() && instanceWindObj == null)
+		this.UpdateAsObservable().Where(x => !!isSp.Value && !!isShift() && instanceWindGo == null)
 			.Subscribe(_ => {
 				var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-				instanceWindObj = Instantiate(WindObj, new Vector3(mousePos.x, mousePos.y), Quaternion.identity);
+				instanceWindGo = Instantiate(WindGo, new Vector3(mousePos.x, mousePos.y), Quaternion.identity);
+				WindLifespanSliderGo.SetActive(true);
+			})
+			.AddTo(this);
+
+		this.UpdateAsObservable().Where(x => instanceWindGo != null)
+			.Subscribe(_ => {
+				WindLifespanTimer -= Time.deltaTime;
+			})
+			.AddTo(this);
+
+		windLifespanTimer.AsObservable().Where(val => val <= 0.0f)
+			.Subscribe(_ => {
+				Destroy(instanceWindGo);
+				WindLifespanTimer = Wind_Lifespan;
+				WindLifespanSliderGo.SetActive(false);
 			})
 			.AddTo(this);
 
@@ -635,6 +678,9 @@ public class Player : Character
 		locusPoses = new List<Vector3>();
 		defaultLocusDrawColPos = LocusDrawColTfm.localPosition;
 		launchLocusDrawCol();
+
+		windLifespanSlider = WindLifespanSliderGo.GetComponent<Slider>();
+		WindLifespanSliderGo.SetActive(false);
 
 //		EffectHiyoko.SetActive(false);
 		//HiyokoGo.SetActive(true);

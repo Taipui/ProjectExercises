@@ -15,11 +15,6 @@ public class Wind : MonoBehaviour
 	const float Rotate_Speed = 200.0f;
 
 	/// <summary>
-	/// 消えるまでの時間
-	/// </summary>
-	const float Destroy_Time = 10.0f;
-
-	/// <summary>
 	/// 吸引力
 	/// </summary>
 	const float Turbulence = 100.0f;
@@ -27,7 +22,6 @@ public class Wind : MonoBehaviour
 	void Start ()
 	{
 		var col = GetComponent<SphereCollider>();
-		Destroy(gameObject, Destroy_Time);
 
 		//this.UpdateAsObservable().Subscribe(_ => {
 		//	transform.Rotate(new Vector3(0.0f, 0.0f, Rotate_Speed * Time.deltaTime));
