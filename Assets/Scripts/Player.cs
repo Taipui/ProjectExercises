@@ -1030,7 +1030,14 @@ public class Player : Character
 			return;
 		}
 		Lr.positionCount = locusPoses.Count;
+		var startColor = Color.red;
+		var endColor = new Color(1.0f, 0.0f, 1.0f, 1.0f);
+		var val = 0.01f;
 		for (var i = 0; i < locusPoses.Count; ++i) {
+			Lr.startColor = startColor;
+			Lr.endColor = endColor;
+			startColor = new Color(Mathf.Max(0.0f, startColor.r - val), Mathf.Min(1.0f, startColor.g + val), startColor.b, startColor.a);
+			endColor = new Color(Mathf.Max(0.0f, endColor.r - val), endColor.g, endColor.b, endColor.a);
 			Lr.SetPosition(i, locusPoses[i]);
 		}
 	}
