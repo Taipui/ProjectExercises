@@ -774,7 +774,7 @@ public class Player : Character
 	/// <returns>押した瞬間true</returns>
 	bool isChange()
 	{
-		return !!Input.GetKeyDown(KeyCode.S);
+		return !!Input.GetKeyDown(KeyCode.Return);
 	}
 
 	/// <summary>
@@ -851,14 +851,18 @@ public class Player : Character
 	{
 		// 規定回数チェックして成功しない場合も着地モーションに移行する
 		for (int count = 0; count < Landing_Check_Limit; count++) {
-			var raycast = new RaycastHit();
-			var raycastSuccess = Physics.Raycast(transform.localPosition, Vector3.down, out raycast);
-			Debug.DrawRay(transform.localPosition, Vector3.down, Color.red);
-			Debug.Log(raycast.distance);
+			var raycastL = new RaycastHit();
+			var raycastR = new RaycastHit();
+			var rayOffset = 0.125f;
+			var raycastSuccessL = Physics.Raycast(transform.localPosition + new Vector3(-rayOffset, 0.0f), Vector3.down, out raycastL);
+			var raycastSuccessR = Physics.Raycast(transform.localPosition + new Vector3(rayOffset, 0.0f), Vector3.down, out raycastR);
+			Debug.DrawRay(transform.localPosition + new Vector3(-rayOffset, 0.0f), Vector3.down, Color.red);
+			Debug.DrawRay(transform.localPosition + new Vector3(rayOffset, 0.0f), Vector3.down, Color.red);
+			Debug.Log(raycastL.distance);
 			//Debug.Log(anim.speed);
 			//Debug.Break();
 			// レイを飛ばして、成功且つ一定距離内であった場合、着地モーションへ移項させる
-			if (raycastSuccess && raycast.distance < Landing_Dist) {
+			if ((!!raycastSuccessL || !!raycastSuccessR) && (raycastL.distance < Landing_Dist || raycastR.distance < Landing_Dist)) {
 				break;
 			}
 			//yield return new WaitForSeconds(waitTime);
@@ -866,6 +870,7 @@ public class Player : Character
 		}
 		anim.speed = defaultSpeed;
 		Debug.Log("break");
+		//Debug.Break();
 	}
 
 	/// <summary>
