@@ -33,6 +33,11 @@ public class Player : Character
 	/// アニメーター
 	/// </summary>
 	Animator anim;
+
+	/// <summary>
+	/// コライダの変更を可能にするかどうか
+	/// </summary>
+	bool canModifyCol;
 	#endregion
 
 	#region 各ステートの参照
@@ -58,7 +63,8 @@ public class Player : Character
 	/// <summary>
 	/// ジャンプ力
 	/// </summary>
-	const float Jump_Power = 4.0f;
+	//const float Jump_Power = 4.0f;
+	const float Jump_Power = 5.0f;
 	#endregion
 
 	/// <summary>
@@ -382,7 +388,7 @@ public class Player : Character
 		this.FixedUpdateAsObservable().Subscribe(_ => {
 			h.Value = Input.GetAxis("Horizontal");
 			anim.SetFloat("Speed", Mathf.Abs(h.Value));
-			anim.speed = Anim_Speed;
+			//anim.speed = Anim_Speed;
 			currentBaseState = anim.GetCurrentAnimatorStateInfo(0);
 			rb.useGravity = true;
 
@@ -426,14 +432,14 @@ public class Player : Character
 						var jumpHeight = anim.GetFloat("JumpHeight");
 						var gravityControl = anim.GetFloat("GravityControl");
 						if (gravityControl > 0.0f) {
-							rb.useGravity = false;  //ジャンプ中の重力の影響を切る
+							//rb.useGravity = false;  //ジャンプ中の重力の影響を切る
 						}
 
 						// レイキャストをキャラクターのセンターから落とす
 						var ray = new Ray(transform.position + Vector3.up, -Vector3.up);
 						var hitInfo = new RaycastHit();
 						// 高さが useCurvesHeight 以上ある時のみ、コライダーの高さと中心をJUMP00アニメーションについているカーブで調整する
-						if (!!Physics.Raycast(ray, out hitInfo)) {
+						if (!!Physics.Raycast(ray, out hitInfo) && !!canModifyCol) {
 							if (hitInfo.distance > Use_Curve_Height) {
 								var orgColHight = currentAvatar == 0 ? orgColHightNormal : orgColHightSD;
 								var orgColCenter = currentAvatar == 0 ? orgVectColCenterNormal : orgVectColCenterSD;
@@ -635,6 +641,11 @@ public class Player : Character
 				launchLocusDrawCol();
 			})
 			.AddTo(this);
+
+		this.UpdateAsObservable().Subscribe(_ => {
+			//Debug.Log(rb.useGravity);
+		})
+		.AddTo(this);
 	}
 
 	/// <summary>
@@ -649,6 +660,7 @@ public class Player : Character
 		orgVectColCenterNormal = col.center;
 		orgColHightSD = col.height * 0.7f;
 		orgVectColCenterSD = new Vector3(col.center.x, orgVectColCenterNormal.y - orgColHightSD / 4, col.center.z);
+		canModifyCol = false;
 
 		MyBulletLayer = Common.PlayerBulletLayer;
 
@@ -716,7 +728,7 @@ public class Player : Character
 		if (!!anim.IsInTransition(0)) {
 			return;
 		}
-		rb.AddForce(Vector3.up * Jump_Power, ForceMode.VelocityChange);
+		//rb.AddForce(Vector3.up * Jump_Power, ForceMode.VelocityChange);
 		anim.SetBool("Jump", true);
 	}
 
@@ -758,11 +770,37 @@ public class Player : Character
 	}
 
 	/// <summary>
+	/// アニメーションのデフォルトの再生速度
+	/// </summary>
+	private float defaultSpeed;
+	/// <summary>
+	/// 着地判定を調べる回数
+	/// </summary>
+	private readonly int landingCheckLimit = 100;
+	/// <summary>
+	/// 着地判定チェックを行う時間間隔
+	/// </summary>
+	private readonly float waitTime = 0.01F;
+	/// <summary>
+	/// 着地モーションへの移項を許可する距離
+	/// </summary>
+	private readonly float landingDistance = 1.05F;
+
+	/// <summary>
 	/// ジャンプアニメーションのイベント(地面から足が離れる瞬間に呼ばれる)
 	/// </summary>
 	void OnJumpStart()
 	{
+		defaultSpeed = anim.speed;
+		rb.AddForce(Vector3.up * Jump_Power, ForceMode.VelocityChange);
+	}
 
+	/// <summary>
+	/// 脚の曲げ始め
+	/// </summary>
+	void OnStartLegCurve()
+	{
+		canModifyCol = true;
 	}
 
 	/// <summary>
@@ -770,7 +808,19 @@ public class Player : Character
 	/// </summary>
 	void OnJumpTopPoint()
 	{
+		// アニメーションを停止して、着地判定のチェックを行う
+		anim.speed = 0;
+		StartCoroutine(CheckLanding());
+		//Debug.Break();
+	}
 
+	/// <summary>
+	/// 脚の曲げ終わり
+	/// </summary>
+	void OnEndLegCurve()
+	{
+		resetCollider();
+		canModifyCol = false;
 	}
 
 	/// <summary>
@@ -779,6 +829,32 @@ public class Player : Character
 	void OnJumpEnd()
 	{
 		isSp.Value = false;
+		//Debug.Break();
+	}
+
+	/// <summary>
+	/// 足下との距離を計算して、一定距離まで近づいたらアニメーションを再会させる
+	/// </summary>
+	/// <returns>The landing.</returns>
+	IEnumerator CheckLanding()
+	{
+		// 規定回数チェックして成功しない場合も着地モーションに移行する
+		for (int count = 0; count < landingCheckLimit; count++) {
+			var raycast = new RaycastHit();
+			var raycastSuccess = Physics.Raycast(transform.localPosition, Vector3.down, out raycast);
+			Debug.DrawRay(transform.localPosition, Vector3.down, Color.red);
+			Debug.Log(raycast.distance);
+			//Debug.Log(anim.speed);
+			//Debug.Break();
+			// レイを飛ばして、成功且つ一定距離内であった場合、着地モーションへ移項させる
+			if (raycastSuccess && raycast.distance < landingDistance) {
+				break;
+			}
+			//yield return new WaitForSeconds(waitTime);
+			yield return new WaitForEndOfFrame();
+		}
+		anim.speed = defaultSpeed;
+		Debug.Log("break");
 	}
 
 	/// <summary>

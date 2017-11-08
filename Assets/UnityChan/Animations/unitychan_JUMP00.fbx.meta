@@ -750,8 +750,22 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.2445055
+        functionName: OnStartLegCurve
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       - time: 0.35230353
         functionName: OnJumpTopPoint
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.38527736
+        functionName: OnEndLegCurve
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
