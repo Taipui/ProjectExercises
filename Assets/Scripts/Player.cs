@@ -338,9 +338,13 @@ public class Player : Character
 	AnimationCurve ShotgunYVecCurve;
 
 	/// <summary>
-	/// マシンガンで連続で発射する雪弾の数
+	/// マシンガンで持ち弾を消費して発射する雪弾の数
 	/// </summary>
 	const int Machinegun_Launch_Num = 3;
+	/// <summary>
+	/// マシンガンで持ち弾を消費せずに発射する雪弾の数
+	/// </summary>
+	const int Machinegun_Plus_Alpha_Num = 1;
 	/// <summary>
 	/// マシンガンで雪弾を発射する間隔
 	/// </summary>
@@ -866,9 +870,9 @@ public class Player : Character
 			var rayOffset = 0.125f;
 			var raycastSuccessL = Physics.Raycast(transform.localPosition + new Vector3(-rayOffset, 0.0f), Vector3.down, out raycastL);
 			var raycastSuccessR = Physics.Raycast(transform.localPosition + new Vector3(rayOffset, 0.0f), Vector3.down, out raycastR);
-			Debug.DrawRay(transform.localPosition + new Vector3(-rayOffset, 0.0f), Vector3.down, Color.red);
-			Debug.DrawRay(transform.localPosition + new Vector3(rayOffset, 0.0f), Vector3.down, Color.red);
-			Debug.Log(raycastL.distance);
+			//Debug.DrawRay(transform.localPosition + new Vector3(-rayOffset, 0.0f), Vector3.down, Color.red);
+			//Debug.DrawRay(transform.localPosition + new Vector3(rayOffset, 0.0f), Vector3.down, Color.red);
+			//Debug.Log(raycastL.distance);
 			//Debug.Log(anim.speed);
 			//Debug.Break();
 			// レイを飛ばして、成功且つ一定距離内であった場合、着地モーションへ移項させる
@@ -879,7 +883,7 @@ public class Player : Character
 			yield return new WaitForEndOfFrame();
 		}
 		anim.speed = defaultSpeed;
-		Debug.Log("break");
+		//Debug.Log("break");
 		//Debug.Break();
 	}
 
@@ -1104,10 +1108,13 @@ public class Player : Character
 		--ItemDurability;
 		for (var i = 0; i < Machinegun_Launch_Num; ++i) {
 			if (stock.Value <= 0) {
-				yield break;
+				break;
 			}
 			--stock.Value;
 			yield return new WaitForSeconds(Machinegun_Launch_Interval);
+		}
+		for (var i = 0; i < Machinegun_Plus_Alpha_Num; ++i) {
+			launch();
 		}
 	}
 
