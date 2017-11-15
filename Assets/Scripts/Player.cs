@@ -336,10 +336,6 @@ public class Player : Character
 	/// </summary>
 	[SerializeField]
 	AnimationCurve ShotgunYVecCurve;
-	/// <summary>
-	/// ショットガンで一度に飛ばす弾の数
-	/// </summary>
-	const int Max_Shotgun_Num = 3;
 
 	/// <summary>
 	/// マシンガンで連続で発射する雪弾の数
@@ -548,7 +544,7 @@ public class Player : Character
 
 		this.UpdateAsObservable().Where(x => !!isPlay() && !!isLClk() && currentItemState == ItemState.Item1)
 			.Subscribe(_ => {
-				shotgunLaunch();
+				StartCoroutine("shotgunLaunch");
 			})
 			.AddTo(this);
 
@@ -1059,7 +1055,7 @@ public class Player : Character
 	/// <summary>
 	/// ショットガン
 	/// </summary>
-	void shotgunLaunch()
+	IEnumerator shotgunLaunch()
 	{
 		var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		var direction = Vector3.zero;
@@ -1070,18 +1066,33 @@ public class Player : Character
 		vecs[0] = Vector3.up;
 		vecs[1] = Vector3.right;
 		vecs[2] = Vector3.down;
-		var launchPos = new Vector3(LaunchTfm.position.x + 0.5f, LaunchTfm.position.y - 0.5f, LaunchTfm.position.z);
-		for (var i = 0; i < Max_Shotgun_Num; ++i) {
-			launchPos.y += 0.2f;
-			var go = Instantiate(Bullet, launchPos, Quaternion.identity);
-			var correctMagnitude = Mathf.Max(direction.magnitude, 15.0f);
-			var magnitude = ShotgunYVecCurve.Evaluate(Mathf.InverseLerp(10.0f, 20.0f, correctMagnitude)) * 10.0f;
-			direction = direction.normalized * correctMagnitude;
-			var vec = vecs[i] * magnitude + direction;
-			go.GetComponent<Rigidbody>().velocity = vec;
+		SphereCollider[] launchGoCols = new SphereCollider[3];
+		for (var i = 0; i < 3; ++i) {
+			var go = Instantiate(Bullet, LaunchTfm.position, Quaternion.identity);
+			if (i == 1) {
+				go.GetComponent<Rigidbody>().velocity = calcLaunchVec();
+			} else {
+				var sideVec = vecs[i];
+				var inverseLerp = Mathf.InverseLerp(10.0f, 20.0f, direction.magnitude);
+				var eval = ShotgunYVecCurve.Evaluate(inverseLerp);
+				sideVec *= eval;
+				//Debug.Log("direction.magnitude" + direction.magnitude);
+				//Debug.Log("InverseLerp:" + inverseLerp);
+				//Debug.Log("Eval:" + eval);
+				//Debug.Log("sideVec.magnitude:" + sideVec.magnitude);
+				var vec = (sideVec + direction.normalized) * Launch_Power;
+				go.GetComponent<Rigidbody>().velocity = vec;
+			}
 			go.layer = Common.PlayerBulletLayer;
+			launchGoCols[i] = go.GetComponent<SphereCollider>();
+			launchGoCols[i].enabled = false;
 		}
+		//Debug.Break();
 		--ItemDurability;
+		yield return new WaitForSeconds(0.1f);
+		for (var i = 0; i < 3; ++i) {
+			launchGoCols[i].enabled = true;
+		}
 	}
 
 	/// <summary>

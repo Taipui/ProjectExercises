@@ -90,7 +90,7 @@ public class Enemy : Character
 			return;
 		}
 		var r = Random.Range(0, 3);
-		r = 2;
+		//r = 1;
 		if (r <= 0) {
 			return;
 		}

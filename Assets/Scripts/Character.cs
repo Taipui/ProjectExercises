@@ -176,6 +176,9 @@ public class Character : MonoBehaviour
 
 	protected virtual void OnCollisionEnter(Collision col)
 	{
+		if (!gameObject.activeSelf) {
+			return;
+		}
 		StartCoroutine(chechBullet(col.gameObject));
 	}
 
