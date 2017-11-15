@@ -327,7 +327,7 @@ public class Player : Character
 			if (itemDurability.Value > 0) {
 				ItemEffectRemainTxt.text = "残り" + itemDurability.ToString() + "回";
 			} else {
-				ItemEffectRemainTxt.text = "";
+				itemLost();
 			}
 		}
 	}
@@ -1081,6 +1081,7 @@ public class Player : Character
 			go.GetComponent<Rigidbody>().velocity = vec;
 			go.layer = Common.PlayerBulletLayer;
 		}
+		--ItemDurability;
 	}
 
 	/// <summary>
@@ -1089,6 +1090,7 @@ public class Player : Character
 	/// <returns></returns>
 	IEnumerator machinegunLaunch()
 	{
+		--ItemDurability;
 		for (var i = 0; i < Machinegun_Launch_Num; ++i) {
 			if (stock.Value <= 0) {
 				yield break;
@@ -1096,6 +1098,16 @@ public class Player : Character
 			--stock.Value;
 			yield return new WaitForSeconds(Machinegun_Launch_Interval);
 		}
+	}
+
+	/// <summary>
+	/// アイテムの効果を失った時の処理
+	/// </summary>
+	void itemLost()
+	{
+		ItemEffectRemainTxt.text = "";
+		ItemImg.sprite = null;
+		currentItemState = ItemState.NoItem;
 	}
 
 	/// <summary>
@@ -1113,13 +1125,9 @@ public class Player : Character
 	/// </summary>
 	protected override void damage()
 	{
-		if (currentItemState != ItemState.NoItem) {
-			--ItemDurability;
-		} else {
-			if (hp.Value <= Default_Hp) {
-				base.damage();
-				HPGos[hp.Value].SetActive(false);
-			}
+		if (hp.Value <= Default_Hp) {
+			base.damage();
+			HPGos[hp.Value].SetActive(false);
 		}
 	}
 
