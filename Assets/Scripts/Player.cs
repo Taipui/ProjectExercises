@@ -297,7 +297,7 @@ public class Player : Character
 		/// <summary>
 		/// マシンガン
 		/// </summary>
-		Item2
+		Item2,
 	}
 	/// <summary>
 	/// 現在の取得アイテムの状態
@@ -1215,6 +1215,17 @@ public class Player : Character
 		return col.tag == "Signboard";
 	}
 
+	/// <summary>
+	/// アイテムをセットする
+	/// </summary>
+	/// <param name="index">セットするアイテムの種類</param>
+	void setItem(int index)
+	{
+		ItemImg.sprite = GameManager.Instance.ItemSprites_[index - 1];
+		ItemEffectRemainTxt.text = "残り" + itemDurability.ToString() + "回";
+		ItemDurability = Default_Item_Durability;
+	}
+
 	protected override void OnCollisionEnter(Collision col)
 	{
 		base.OnCollisionEnter(col);
@@ -1223,17 +1234,21 @@ public class Player : Character
 			return;
 		}
 		var index = System.Convert.ToInt32(tag.Substring(tag.Length - 1, 1));
-		ItemImg.sprite = GameManager.Instance.ItemSprites_[index];
 		Destroy(col.gameObject);
-		ItemEffectRemainTxt.text = "残り" + itemDurability.ToString() + "回";
 		switch (index) {
 			case 1:
 				currentItemState = ItemState.Item1;
+				setItem(index);
 				break;
 			case 2:
 				currentItemState = ItemState.Item2;
+				setItem(index);
+				break;
+			case 3:
+				for (var i = stock.Value; i < Max_Stock; ++i) {
+					++stock.Value;
+				}
 				break;
 		}
-		ItemDurability = Default_Item_Durability;
 	}
 }

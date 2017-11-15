@@ -89,7 +89,7 @@ public class Enemy : Character
 		if (!IsDrop) {
 			return;
 		}
-		var r = Random.Range(0, 3);
+		var r = Random.Range(0, 4);
 		//r = 1;
 		if (r <= 0) {
 			return;
@@ -99,7 +99,7 @@ public class Enemy : Character
 		vec = Quaternion.Euler(new Vector3(0.0f, 0.0f, Random.Range(-Item_Launch_Angle_Range, Item_Launch_Angle_Range))) * vec;
 		go.GetComponent<Rigidbody>().AddForce(vec, ForceMode.Impulse);
 		go.tag = "Item" + r.ToString();
-		go.GetComponent<SpriteRenderer>().sprite = GameManager.Instance.ItemSprites_[r];
+		go.GetComponent<SpriteRenderer>().sprite = GameManager.Instance.ItemSprites_[r - 1];
 	}
 
 	/// <summary>

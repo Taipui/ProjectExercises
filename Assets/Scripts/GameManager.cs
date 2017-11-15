@@ -23,6 +23,10 @@ public class GameManager
 		get
 		{
 			if (ItemSprites == null) {
+				//ItemSprites = new Sprite[3];
+				//for (var i = 0; i < 3; ++i) {
+				//	ItemSprites[i] = Resources.Load<Sprite>("Sprites/Items/Item" + (i + 1).ToString());
+				//}
 				ItemSprites = Resources.LoadAll<Sprite>("Sprites/Items");
 			}
 			return ItemSprites;
