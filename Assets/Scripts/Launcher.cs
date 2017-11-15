@@ -20,11 +20,13 @@ public class Launcher : MonoBehaviour
 	/// <param name="layerNo">適用するレイヤーの番号</param>
 	/// <param name="bulletParent">発射した弾を格納するGameObjectのTransform</param>
 	/// <param name="vec">弾に力を加えるベクトル</param>
-	public void launch(GameObject bullet, Vector3 targetPos, int layerNo, Transform bulletParent, Vector3 vec)
+	/// <param name="scale">弾のスケール(倍)</param>
+	public void launch(GameObject bullet, Vector3 targetPos, int layerNo, Transform bulletParent, Vector3 vec, float scale = 1.0f)
 	{
 		var go = Instantiate(bullet, bulletParent);
 		var rb = go.GetComponent<Rigidbody>();
 		go.transform.position = transform.position;
+		go.transform.localScale *= scale;
 		if (layerNo == Common.PlayerBulletLayer) {
 			rb.velocity = vec;
 		} else {

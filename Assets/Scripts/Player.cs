@@ -298,6 +298,14 @@ public class Player : Character
 		/// マシンガン
 		/// </summary>
 		Item2,
+		/// <summary>
+		/// 雪弾巨大化
+		/// </summary>
+		Item4,
+		/// <summary>
+		/// 雪弾生成数x3
+		/// </summary>
+		Item5
 	}
 	/// <summary>
 	/// 現在の取得アイテムの状態
@@ -349,6 +357,11 @@ public class Player : Character
 	/// マシンガンで雪弾を発射する間隔
 	/// </summary>
 	const float Machinegun_Launch_Interval = 0.1f;
+
+	/// <summary>
+	/// 雪弾巨大化状態時の雪弾のスケール(倍)
+	/// </summary>
+	const float Big_Scale = 2.0f;
 	#endregion
 
 	#region 軌跡関連
@@ -540,7 +553,7 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isPlay() && !!isLClk() && !isEmpty() && currentItemState == ItemState.NoItem)
+		this.UpdateAsObservable().Where(x => !!isPlay() && !!isLClk() && !isEmpty() && !!permitLaunchItemState())
 			.Subscribe(_ => {
 				--stock.Value;
 			})
@@ -989,9 +1002,14 @@ public class Player : Character
 		if (!!IsTitle) {
 			launchVec = calcLaunchVec();
 		}
+		var scale = 1.0f;
+		if (currentItemState == ItemState.Item4) {
+			scale = Big_Scale;
+			--ItemDurability;
+		}
 		// アシストの数だけ一度に撃つ
 		foreach (Transform child in LauncherParent) {
-			child.GetComponent<Launcher>().launch(Bullet, mousePos, 13, BulletParentTfm, launchVec);
+			child.GetComponent<Launcher>().launch(Bullet, mousePos, 13, BulletParentTfm, launchVec, scale);
 		}
 	}
 
@@ -1129,6 +1147,25 @@ public class Player : Character
 	}
 
 	/// <summary>
+	/// currentItemStateによって雪弾の発射を許可する
+	/// </summary>
+	/// <returns>trueで許可</returns>
+	bool permitLaunchItemState()
+	{
+		switch (currentItemState) {
+			default:
+				Debug.Log("currentItemStateが不正です。");
+				return true;
+			case ItemState.Item1:
+			case ItemState.Item2:
+				return false;
+			case ItemState.Item4:
+			case ItemState.Item5:
+				return true;
+		}
+	}
+
+	/// <summary>
 	/// 地面のチップが消されたら呼ばれる
 	/// </summary>
 	public void onErased()
@@ -1255,6 +1292,12 @@ public class Player : Character
 				for (var i = stock.Value; i < Max_Stock; ++i) {
 					++stock.Value;
 				}
+				break;
+			case 4:
+				currentItemState = ItemState.Item4;
+				setItem(index);
+				break;
+			case 5:
 				break;
 		}
 	}
