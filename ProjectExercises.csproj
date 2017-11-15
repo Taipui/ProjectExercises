@@ -118,6 +118,7 @@
     <Compile Include="Assets\Scripts\Launcher.cs" />
     <Compile Include="Assets\Scripts\LaunchTrigger.cs" />
     <Compile Include="Assets\Scripts\LocusDrawCollider.cs" />
+    <Compile Include="Assets\Scripts\Main.cs" />
     <Compile Include="Assets\Scripts\Normal.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\SceneSelecter.cs" />

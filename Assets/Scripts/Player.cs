@@ -282,11 +282,6 @@ public class Player : Character
 	[SerializeField]
 	Image ItemImg;
 	/// <summary>
-	/// UIに設定するアイテムのSprite
-	/// </summary>
-	[SerializeField]
-	Sprite[] ItemSprites;
-	/// <summary>
 	/// 取得アイテムの状態
 	/// </summary>
 	enum ItemState
@@ -298,7 +293,11 @@ public class Player : Character
 		/// <summary>
 		/// ショットガン
 		/// </summary>
-		Item1
+		Item1,
+		/// <summary>
+		/// マシンガン
+		/// </summary>
+		Item2
 	}
 	/// <summary>
 	/// 現在の取得アイテムの状態
@@ -341,6 +340,15 @@ public class Player : Character
 	/// ショットガンで一度に飛ばす弾の数
 	/// </summary>
 	const int Max_Shotgun_Num = 3;
+
+	/// <summary>
+	/// マシンガンで連続で発射する雪弾の数
+	/// </summary>
+	const int Machinegun_Launch_Num = 3;
+	/// <summary>
+	/// マシンガンで雪弾を発射する間隔
+	/// </summary>
+	const float Machinegun_Launch_Interval = 0.1f;
 	#endregion
 
 	#region 軌跡関連
@@ -541,6 +549,12 @@ public class Player : Character
 		this.UpdateAsObservable().Where(x => !!isPlay() && !!isLClk() && currentItemState == ItemState.Item1)
 			.Subscribe(_ => {
 				shotgunLaunch();
+			})
+			.AddTo(this);
+
+		this.UpdateAsObservable().Where(x => !!isPlay() && !!isLClk() && currentItemState == ItemState.Item2)
+			.Subscribe(_ => {
+				StartCoroutine("machinegunLaunch");
 			})
 			.AddTo(this);
 
@@ -1070,6 +1084,21 @@ public class Player : Character
 	}
 
 	/// <summary>
+	/// マシンガン
+	/// </summary>
+	/// <returns></returns>
+	IEnumerator machinegunLaunch()
+	{
+		for (var i = 0; i < Machinegun_Launch_Num; ++i) {
+			if (stock.Value <= 0) {
+				yield break;
+			}
+			--stock.Value;
+			yield return new WaitForSeconds(Machinegun_Launch_Interval);
+		}
+	}
+
+	/// <summary>
 	/// 地面のチップが消されたら呼ばれる
 	/// </summary>
 	public void onErased()
@@ -1175,10 +1204,17 @@ public class Player : Character
 			return;
 		}
 		var index = System.Convert.ToInt32(tag.Substring(tag.Length - 1, 1));
-		ItemImg.sprite = ItemSprites[index - 1];
+		ItemImg.sprite = GameManager.Instance.ItemSprites_[index];
 		Destroy(col.gameObject);
 		ItemEffectRemainTxt.text = "残り" + itemDurability.ToString() + "回";
-		currentItemState = ItemState.Item1;
+		switch (index) {
+			case 1:
+				currentItemState = ItemState.Item1;
+				break;
+			case 2:
+				currentItemState = ItemState.Item2;
+				break;
+		}
 		ItemDurability = Default_Item_Durability;
 	}
 }

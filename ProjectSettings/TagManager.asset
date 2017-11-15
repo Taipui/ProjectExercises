@@ -12,6 +12,7 @@ TagManager:
   - Obstacle
   - Text
   - Item1
+  - Item2
   layers:
   - Default
   - TransparentFX
@@ -33,7 +34,7 @@ TagManager:
   - LocusDrawCollider
   - Obstacle
   - Background
-  - 
+  - Item
   - 
   - 
   - 

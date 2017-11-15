@@ -35,7 +35,7 @@ public class Character : MonoBehaviour
 	/// GameManager
 	/// </summary>
 	[SerializeField]
-	protected GameManager Gm;
+	protected Main Gm;
 
 	/// <summary>
 	/// Launcherの親となるオブジェクト
@@ -171,7 +171,7 @@ public class Character : MonoBehaviour
 		if (Gm == null) {
 			return true;
 		}
-		return Gm.CurrentGameState == GameManager.GameState.Play;
+		return Gm.CurrentGameState == Main.GameState.Play;
 	}
 
 	protected virtual void OnCollisionEnter(Collision col)

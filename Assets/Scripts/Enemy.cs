@@ -36,7 +36,7 @@ public class Enemy : Character
 	/// ドロップするアイテムのGameObject
 	/// </summary>
 	[SerializeField]
-	GameObject[] Items;
+	GameObject ItemGo;
 	/// <summary>
 	/// アイテムをドロップする力
 	/// </summary>
@@ -46,6 +46,12 @@ public class Enemy : Character
 	/// </summary>
 	const float Item_Launch_Angle_Range = 45.0f;
 	#endregion
+
+	/// <summary>
+	/// アイテムをドロップするかどうか
+	/// </summary>
+	[SerializeField]
+	bool IsDrop;
 
 	protected override void Start ()
 	{
@@ -60,7 +66,7 @@ public class Enemy : Character
 		Observable.Interval(System.TimeSpan.FromSeconds(0.2f)).Where(x => !!isPlay() && !!enableLaunch)
 			.Subscribe(_ => {
 				if (Random.Range(0, Frequency) == 0) {
-					launch();
+					//launch();
 				}
 			})
 		.AddTo(this);
@@ -80,16 +86,20 @@ public class Enemy : Character
 	protected override void dead()
 	{
 		Destroy(gameObject);
-		var r = Random.Range(0, Items.Length + 1);
-		r = Items.Length;
-		if (r == Items.Length) {
+		if (!IsDrop) {
 			return;
 		}
-		var go = Instantiate(Items[r], transform.position, Quaternion.identity);
+		var r = Random.Range(0, 3);
+		r = 2;
+		if (r <= 0) {
+			return;
+		}
+		var go = Instantiate(ItemGo, transform.position, Quaternion.identity);
 		var vec = Vector3.up * Item_Launch_Power;
 		vec = Quaternion.Euler(new Vector3(0.0f, 0.0f, Random.Range(-Item_Launch_Angle_Range, Item_Launch_Angle_Range))) * vec;
 		go.GetComponent<Rigidbody>().AddForce(vec, ForceMode.Impulse);
-		go.tag = "Item" + (r + 1).ToString();
+		go.tag = "Item" + r.ToString();
+		go.GetComponent<SpriteRenderer>().sprite = GameManager.Instance.ItemSprites_[r];
 	}
 
 	/// <summary>
