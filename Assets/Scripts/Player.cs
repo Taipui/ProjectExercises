@@ -362,6 +362,11 @@ public class Player : Character
 	/// 雪弾巨大化状態時の雪弾のスケール(倍)
 	/// </summary>
 	const float Big_Scale = 2.0f;
+
+	/// <summary>
+	/// 生成数増加で増やす数
+	/// </summary>
+	const int Make_Num = 3;
 	#endregion
 
 	#region 軌跡関連
@@ -1159,6 +1164,7 @@ public class Player : Character
 			case ItemState.Item1:
 			case ItemState.Item2:
 				return false;
+			case ItemState.NoItem:
 			case ItemState.Item4:
 			case ItemState.Item5:
 				return true;
@@ -1171,6 +1177,13 @@ public class Player : Character
 	public void onErased()
 	{
 		++stock.Value;
+		if (currentItemState != ItemState.Item5) {
+			return;
+		}
+		for (var i = 0; i < Make_Num - 1; ++i) {
+			++stock.Value;
+		}
+		--ItemDurability;
 //		EffectHiyoko.SetActive(false);
 		//HiyokoGo.SetActive(true);
 	}
@@ -1298,6 +1311,8 @@ public class Player : Character
 				setItem(index);
 				break;
 			case 5:
+				currentItemState = ItemState.Item5;
+				setItem(index);
 				break;
 		}
 	}
