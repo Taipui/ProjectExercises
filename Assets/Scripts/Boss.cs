@@ -23,7 +23,8 @@ public class Boss : Enemy
 		if (PlayerTfm == null) {
 			return;
 		}
-		PlayerTfm.UpdateAsObservable().Subscribe(_ => {
+		PlayerTfm.UpdateAsObservable().Where(x => !!canInput)
+			.Subscribe(_ => {
 			move();
 		})
 		.AddTo(this);
@@ -95,6 +96,6 @@ public class Boss : Enemy
 	protected override void dead()
 	{
 		base.dead();
-		Gm.clr();
+		Main.clr();
 	}
 }

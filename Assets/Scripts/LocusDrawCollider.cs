@@ -25,12 +25,13 @@ public class LocusDrawCollider : MonoBehaviour
 		col = GetComponent<SphereCollider>();
 		var rect = new Rect(0, 0, 1, 1);
 
-		col.OnCollisionEnterAsObservable().Subscribe(_ => {
+		col.OnCollisionEnterAsObservable().Where(x => Player != null)
+			.Subscribe(_ => {
 			Player.launchLocusDrawCol();
 		})
 		.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !rect.Contains(Camera.main.WorldToViewportPoint(transform.position)))
+		this.UpdateAsObservable().Where(x => !rect.Contains(Camera.main.WorldToViewportPoint(transform.position)) && Player != null)
 			.Subscribe(_ => {
 				Player.launchLocusDrawCol();
 			})

@@ -29,10 +29,6 @@ public class Player : Character
 	/// カーブ補正の有効高さ(地面をすり抜けやすい時には大きくする)
 	/// </summary>
 	const float Use_Curve_Height = 0.25f;
-	/// <summary>
-	/// アニメーター
-	/// </summary>
-	Animator anim;
 
 	/// <summary>
 	/// コライダの変更を可能にするかどうか
@@ -68,14 +64,6 @@ public class Player : Character
 	/// </summary>
 	const float Jump_Power = 5.0f;
 	/// <summary>
-	/// 入力を許可するかどうか
-	/// </summary>
-	bool canInput;
-	/// <summary>
-	/// 入力を許可しない時間
-	/// </summary>
-	const float Disable_Input_Time = 0.4f;
-	/// <summary>
 	/// アニメーションのデフォルトの再生速度
 	/// </summary>
 	float defaultSpeed;
@@ -94,10 +82,6 @@ public class Player : Character
 	/// キャラクターのコライダ
 	/// </summary>
 	CapsuleCollider col;
-	/// <summary>
-	/// プレイヤーのRidigbody
-	/// </summary>
-	Rigidbody rb;
 	/// <summary>
 	/// CapsuleColliderで設定されているコライダのHeightの初期値を収める変数(Normal)
 	/// </summary>
@@ -420,6 +404,8 @@ public class Player : Character
 		EnableChange = val;
 	}
 
+
+
 	protected override void Start()
 	{
 		base.Start();
@@ -518,7 +504,7 @@ public class Player : Character
 		})
 		.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isSpJump())
+		this.UpdateAsObservable().Where(x => !!isSpJump() && !!enableJump(currentBaseState) )
 			.Subscribe(_ => {
 				isSp.Value = true;
 			})
@@ -710,9 +696,7 @@ public class Player : Character
 	/// </summary>
 	void init()
 	{
-		anim = GetComponent<Animator>();
 		col = GetComponent<CapsuleCollider>();
-		rb = GetComponent<Rigidbody>();
 		orgColHightNormal = col.height;
 		orgVectColCenterNormal = col.center;
 		orgColHightSD = col.height * 0.7f;
@@ -723,7 +707,7 @@ public class Player : Character
 		MyBulletLayer = Common.PlayerBulletLayer;
 
 		setHp(Default_Hp);
-		//setHp(1000000);
+		setHp(1000000);
 
 		enableTeleportation = true;
 		foreach (Transform parentTfm in ParticleParents) {
@@ -775,7 +759,7 @@ public class Player : Character
 	/// <returns>可能ならtrue</returns>
 	bool enableJump(AnimatorStateInfo animStateInfo)
 	{
-		return animStateInfo.fullPathHash != jumpState;
+		return animStateInfo.fullPathHash != jumpState && !anim.IsInTransition(0);
 	}
 
 	/// <summary>
@@ -783,10 +767,6 @@ public class Player : Character
 	/// </summary>
 	void jump()
 	{
-		if (!!anim.IsInTransition(0)) {
-			return;
-		}
-		//rb.AddForce(Vector3.up * Jump_Power, ForceMode.VelocityChange);
 		anim.SetBool("Jump", true);
 		StartCoroutine("disableInput");
 	}
@@ -903,17 +883,6 @@ public class Player : Character
 		anim.speed = defaultSpeed;
 		//Debug.Log("break");
 		//Debug.Break();
-	}
-
-	/// <summary>
-	/// 一時的に入力を無効にする
-	/// </summary>
-	/// <returns></returns>
-	IEnumerator disableInput()
-	{
-		canInput = false;
-		yield return new WaitForSeconds(Disable_Input_Time);
-		canInput = true;
 	}
 
 	/// <summary>
@@ -1233,7 +1202,7 @@ public class Player : Character
 	/// </summary>
 	protected override void dead()
 	{
-		Gm.gameOver();
+		Main.gameOver();
 		Destroy(gameObject);
 	}
 
@@ -1315,5 +1284,10 @@ public class Player : Character
 				setItem(index);
 				break;
 		}
+	}
+
+	void OnDestroy()
+	{
+		StopAllCoroutines();
 	}
 }

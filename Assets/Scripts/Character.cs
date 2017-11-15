@@ -32,10 +32,10 @@ public class Character : MonoBehaviour
 	readonly protected ReactiveProperty<int> hp = new ReactiveProperty<int>(1);
 
 	/// <summary>
-	/// GameManager
+	/// Main
 	/// </summary>
 	[SerializeField]
-	protected Main Gm;
+	protected Main Main;
 
 	/// <summary>
 	/// Launcherの親となるオブジェクト
@@ -64,6 +64,25 @@ public class Character : MonoBehaviour
 	protected const float Flick_Interval = 0.1f;
 
 	/// <summary>
+	/// アニメーター
+	/// </summary>
+	protected Animator anim;
+
+	/// <summary>
+	/// 入力を許可するかどうか
+	/// </summary>
+	protected bool canInput;
+	/// <summary>
+	/// 入力を許可しない時間
+	/// </summary>
+	protected const float Disable_Input_Time = 0.4f;
+
+	/// <summary>
+	/// キャラクターのRidigbody
+	/// </summary>
+	protected Rigidbody rb;
+
+	/// <summary>
 	/// 体力をセット
 	/// </summary>
 	/// <param name="val">セットする体力</param>
@@ -72,16 +91,31 @@ public class Character : MonoBehaviour
 		hp.Value = val;
 	}
 
-	protected virtual void Start ()
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void init()
 	{
+		if (GetComponent<Animator>() != null) {
+			anim = GetComponent<Animator>();
+		}
+		if (GetComponent<Rigidbody>() != null) {
+			rb = GetComponent<Rigidbody>();
+		}
+
 		isInvinsible = false;
-		//foreach (var obj in Decals) {
-		//	obj.SetActive(false);
-		//}
+
 		for (var i = 0; i < Decals.Length; ++i) {
 			Decals[i].SetActive(false);
 		}
 
+		canInput = true;
+
+	}
+
+	protected virtual void Start ()
+	{
+		init();
 
 		hp.AsObservable().Where(val => val <= 0)
 			.Subscribe(_ => {
@@ -127,6 +161,13 @@ public class Character : MonoBehaviour
 		activeDecal(go.transform.localPosition.y);
 		Destroy(go);
 		isInvinsible = true;
+		if (anim != null) {
+			StartCoroutine("disableInput");
+			anim.SetTrigger("Damage");
+			if (rb != null) {
+				rb.velocity = Vector2.zero;
+			}
+		}
 		startFlick();
 		yield return new WaitForSeconds(Invincible_Time);
 		isInvinsible = false;
@@ -168,10 +209,10 @@ public class Character : MonoBehaviour
 	/// <returns>ゲームプレイ中ならtrue</returns>
 	protected bool isPlay()
 	{
-		if (Gm == null) {
+		if (Main == null) {
 			return true;
 		}
-		return Gm.CurrentGameState == Main.GameState.Play;
+		return Main.CurrentGameState == Main.GameState.Play;
 	}
 
 	protected virtual void OnCollisionEnter(Collision col)
@@ -198,5 +239,16 @@ public class Character : MonoBehaviour
 		} else {
 			Decals[2].SetActive(true);
 		}
+	}
+
+	/// <summary>
+	/// 一時的に入力を無効にする
+	/// </summary>
+	/// <returns></returns>
+	protected IEnumerator disableInput()
+	{
+		canInput = false;
+		yield return new WaitForSeconds(Disable_Input_Time);
+		canInput = true;
 	}
 }
