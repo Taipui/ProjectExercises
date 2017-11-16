@@ -103,4 +103,10 @@ public class Boss : Enemy
 		StopCoroutine("flick");
 		ModelGo.SetActive(true);
 	}
+
+	protected override void dead()
+	{
+		base.dead();
+		Main.clr();
+	}
 }

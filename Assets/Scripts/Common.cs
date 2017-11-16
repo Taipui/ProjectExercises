@@ -11,15 +11,19 @@ public static class Common
 	/// <summary>
 	/// タイトル
 	/// </summary>
-	public const string Title = "Title";
+	public const string Title_Scene = "Title";
 	/// <summary>
 	/// メイン
 	/// </summary>
-	public const string Main = "Main";
+	public const string Main_Scene = "Main";
 	/// <summary>
 	/// ゲームオーバー
 	/// </summary>
-	public const string GameOver = "GameOver";
+	public const string GameOver_Scene = "GameOver";
+	/// <summary>
+	/// ゲームクリア
+	/// </summary>
+	public const string Clr_Scene = "Clear";
 	#endregion
 
 	#region レイヤー

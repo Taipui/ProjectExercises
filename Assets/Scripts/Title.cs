@@ -20,7 +20,7 @@ public class Title : MonoBehaviour
 		this.UpdateAsObservable().Where(x => !!Input.anyKeyDown)
 			.Subscribe(_ => {
 				LoadingGo.SetActive(true);
-				SceneManager.LoadScene(Common.Main);
+				SceneManager.LoadScene(Common.Main_Scene);
 			}).
 			AddTo(this);
 	}
