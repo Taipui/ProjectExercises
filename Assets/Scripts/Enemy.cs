@@ -31,20 +31,32 @@ public class Enemy : Character
 	[SerializeField]
 	int Frequency;
 
-	protected override void Start ()
-	{
-		base.Start();
+	/// <summary>
+	/// CameraMover(カメラを揺らすため)
+	/// </summary>
+	CameraMover camMover;
 
+	void init()
+	{
 		MyBulletLayer = Common.EnemyBulletLayer;
 
 		enableLaunch = false;
 
 		hp = Default_Hp;
 
+		camMover = Camera.main.GetComponent<CameraMover>();
+	}
+
+	protected override void Start ()
+	{
+		base.Start();
+
+		init();
+
 		Observable.Interval(System.TimeSpan.FromSeconds(0.2f)).Where(x => !!isPlay() && !!enableLaunch)
 			.Subscribe(_ => {
 				if (Random.Range(0, Frequency) == 0) {
-					//launch();
+					launch();
 				}
 			})
 		.AddTo(this);
@@ -56,6 +68,15 @@ public class Enemy : Character
 	protected virtual void launch()
 	{
 		// 派生クラスで実装
+	}
+
+	/// <summary>
+	/// ダメージ処理
+	/// </summary>
+	protected override IEnumerator dmg()
+	{
+		camMover.shake(0.5f);
+		return base.dmg();
 	}
 
 	/// <summary>

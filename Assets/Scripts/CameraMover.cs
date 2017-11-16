@@ -76,12 +76,13 @@ public class CameraMover : MonoBehaviour
 	/// <summary>
 	/// カメラを揺らす
 	/// </summary>
-	public void shake()
+	/// <param name="shakePower">揺らす力(基準は1(変身時))</param>
+	public void shake(float shakePower = 1.0f)
 	{
 		GroundChipChecker.enabled = false;
 		transform.DOShakeRotation(
-			0.5f,
-			1.0f
+			0.5f * shakePower,
+			1.0f * shakePower
 		).OnComplete(() => {
 			GroundChipChecker.enabled = true;
 		});

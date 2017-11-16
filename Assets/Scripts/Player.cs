@@ -381,8 +381,7 @@ public class Player : Character
 	/// <summary>
 	/// CameraMover(カメラを揺らすため)
 	/// </summary>
-	[SerializeField]
-	CameraMover CamMover;
+	CameraMover camMover;
 
 	/// <summary>
 	/// 雪弾を取りに行くアニメーションをするためのhiyoko
@@ -630,7 +629,7 @@ public class Player : Character
 		this.UpdateAsObservable().Where(x => !!isChange() && !!EnableChange)
 			.Subscribe(_ => {
 				changeAvatar();
-				CamMover.shake();
+				camMover.shake();
 			})
 			.AddTo(this);
 
@@ -730,8 +729,10 @@ public class Player : Character
 		windLifespanSlider = WindLifespanSliderGo.GetComponent<Slider>();
 		WindLifespanSliderGo.SetActive(false);
 
-//		EffectHiyoko.SetActive(false);
+		//		EffectHiyoko.SetActive(false);
 		//HiyokoGo.SetActive(true);
+
+		camMover = Camera.main.GetComponent<CameraMover>();
 	}
 
 	/// <summary>
@@ -1162,18 +1163,12 @@ public class Player : Character
 	protected override IEnumerator dmg()
 	{
 		StartCoroutine(base.dmg());
+		camMover.shake(0.7f);
 		if (hp < 0) {
 			yield break;
 		}
 		HPGos[hp].SetActive(false);
 		yield return null;
-		//if (hp.Value <= 0) {
-		//	yield break;
-		//}
-		//if (hp.Value <= Default_Hp) {
-		//	StartCoroutine(base.dmg());
-		//	HPGos[hp.Value].SetActive(false);
-		//}
 	}
 
 	/// <summary>
