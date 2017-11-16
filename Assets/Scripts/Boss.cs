@@ -15,10 +15,24 @@ public class Boss : Enemy
 	[SerializeField]
 	GameObject ModelGo;
 
+	/// <summary>
+	/// デフォルトの体力
+	/// </summary>
+	const int Default_Hp = 3;
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void init()
+	{
+		hp = Default_Hp;
+	}
+
 	protected override void Start ()
 	{
 		base.Start();
-		setHp(3);
+
+		init();
 
 		if (PlayerTfm == null) {
 			return;
@@ -88,14 +102,5 @@ public class Boss : Enemy
 	{
 		StopCoroutine("flick");
 		ModelGo.SetActive(true);
-	}
-
-	/// <summary>
-	/// 死亡処理
-	/// </summary>
-	protected override void dead()
-	{
-		base.dead();
-		Main.clr();
 	}
 }

@@ -422,14 +422,14 @@ public class Player : Character
 		var prevPlayerXPos = transform.localPosition.x;
 
 		this.FixedUpdateAsObservable().Subscribe(_ => {
-			h.Value = Input.GetAxis("Horizontal");
+			h.Value = !!canInput ? Input.GetAxis("Horizontal") : 0.0f;
 			anim.SetFloat("Speed", Mathf.Abs(h.Value));
 			//anim.speed = Anim_Speed;
 			currentBaseState = anim.GetCurrentAnimatorStateInfo(0);
 			rb.useGravity = true;
 
 			// 以下、キャラクターの移動処理
-			velocity = new Vector3(!!canInput ? h.Value : 0, 0, 0);
+			velocity = new Vector3(h.Value, 0, 0);
 			anim.SetBool("IsIdle", h.Value == 0);
 
 			//以下のvの閾値は、Mecanim側のトランジションと一緒に調整する
@@ -706,8 +706,7 @@ public class Player : Character
 
 		MyBulletLayer = Common.PlayerBulletLayer;
 
-		setHp(Default_Hp);
-		setHp(1000000);
+		hp = Default_Hp;
 
 		enableTeleportation = true;
 		foreach (Transform parentTfm in ParticleParents) {
@@ -1160,12 +1159,21 @@ public class Player : Character
 	/// <summary>
 	/// ダメージ処理
 	/// </summary>
-	protected override void damage()
+	protected override IEnumerator dmg()
 	{
-		if (hp.Value <= Default_Hp) {
-			base.damage();
-			HPGos[hp.Value].SetActive(false);
+		StartCoroutine(base.dmg());
+		if (hp < 0) {
+			yield break;
 		}
+		HPGos[hp].SetActive(false);
+		yield return null;
+		//if (hp.Value <= 0) {
+		//	yield break;
+		//}
+		//if (hp.Value <= Default_Hp) {
+		//	StartCoroutine(base.dmg());
+		//	HPGos[hp.Value].SetActive(false);
+		//}
 	}
 
 	/// <summary>
@@ -1202,8 +1210,9 @@ public class Player : Character
 	/// </summary>
 	protected override void dead()
 	{
-		Main.gameOver();
-		Destroy(gameObject);
+		base.dead();
+		//Main.gameOver();
+		//Destroy(gameObject);
 	}
 
 	/// <summary>

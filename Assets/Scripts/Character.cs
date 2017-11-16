@@ -29,7 +29,7 @@ public class Character : MonoBehaviour
 	/// <summary>
 	/// 体力
 	/// </summary>
-	readonly protected ReactiveProperty<int> hp = new ReactiveProperty<int>(1);
+	protected int hp;
 
 	/// <summary>
 	/// Main
@@ -83,15 +83,6 @@ public class Character : MonoBehaviour
 	protected Rigidbody rb;
 
 	/// <summary>
-	/// 体力をセット
-	/// </summary>
-	/// <param name="val">セットする体力</param>
-	protected void setHp(int val)
-	{
-		hp.Value = val;
-	}
-
-	/// <summary>
 	/// 初期化
 	/// </summary>
 	void init()
@@ -111,25 +102,35 @@ public class Character : MonoBehaviour
 
 		canInput = true;
 
+		hp = 1;
 	}
 
 	protected virtual void Start ()
 	{
 		init();
-
-		hp.AsObservable().Where(val => val <= 0)
-			.Subscribe(_ => {
-				dead();
-			})
-			.AddTo(this);
 	}
 
 	/// <summary>
 	/// ダメージ処理
 	/// </summary>
-	protected virtual void damage()
+	protected virtual IEnumerator dmg()
 	{
-		--hp.Value;
+		if (--hp <= 0) {
+			dead();
+			yield break;
+		}
+		isInvinsible = true;
+		if (anim != null) {
+			StartCoroutine("disableInput");
+			anim.SetTrigger("Damage");
+			if (rb != null) {
+				rb.velocity = Vector2.zero;
+			}
+		}
+		startFlick();
+		yield return new WaitForSeconds(Invincible_Time);
+		isInvinsible = false;
+		stopFlick();
 	}
 
 	/// <summary>
@@ -137,7 +138,19 @@ public class Character : MonoBehaviour
 	/// </summary>
 	protected virtual void dead()
 	{
-		// 派生クラスで実装
+		canInput = false;
+		if (anim == null) {
+			return;
+		}
+		anim.SetTrigger("Dead");
+	}
+
+	/// <summary>
+	/// Deadアニメーションで立ち上がろうとする瞬間に呼ばれる
+	/// </summary>
+	void OnStandUp()
+	{
+		anim.speed = 0.0f;
 	}
 
 	/// <summary>
@@ -156,22 +169,10 @@ public class Character : MonoBehaviour
 			yield break;
 		}
 
-		damage();
-		go.transform.SetParent(transform);
+		StartCoroutine("dmg");
 		activeDecal(go.transform.localPosition.y);
+		go.transform.SetParent(transform);
 		Destroy(go);
-		isInvinsible = true;
-		if (anim != null) {
-			StartCoroutine("disableInput");
-			anim.SetTrigger("Damage");
-			if (rb != null) {
-				rb.velocity = Vector2.zero;
-			}
-		}
-		startFlick();
-		yield return new WaitForSeconds(Invincible_Time);
-		isInvinsible = false;
-		stopFlick();
 	}
 
 	/// <summary>

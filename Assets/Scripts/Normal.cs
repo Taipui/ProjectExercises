@@ -13,6 +13,27 @@ public class Normal : Enemy
 	[SerializeField]
 	bool IsAlways;
 
+	#region アイテム関連
+	/// <summary>
+	/// ドロップするアイテムのGameObject
+	/// </summary>
+	[SerializeField]
+	GameObject ItemGo;
+	/// <summary>
+	/// アイテムをドロップする力
+	/// </summary>
+	const float Item_Launch_Power = 2.0f;
+	/// <summary>
+	/// アイテムをドロップする角度の範囲
+	/// </summary>
+	const float Item_Launch_Angle_Range = 45.0f;
+	/// <summary>
+	/// アイテムをドロップするかどうか
+	/// </summary>
+	[SerializeField]
+	bool IsDrop;
+	#endregion
+
 	protected override void Start ()
 	{
 		base.Start();
@@ -27,5 +48,27 @@ public class Normal : Enemy
 	protected override void launch()
 	{
 		AI.ShootFixedAngle(transform.position, PlayerTfm.position, 60.0f, GetComponent<Launcher>(), Bullet, BulletParentTfm);
+	}
+
+	/// <summary>
+	/// 死亡処理
+	/// </summary>
+	protected override void dead()
+	{
+		Destroy(gameObject);
+		if (!IsDrop) {
+			return;
+		}
+		var r = Random.Range(0, 4);
+		//r = 5;
+		if (r <= 0) {
+			return;
+		}
+		var go = Instantiate(ItemGo, transform.position, Quaternion.identity);
+		var vec = Vector3.up * Item_Launch_Power;
+		vec = Quaternion.Euler(new Vector3(0.0f, 0.0f, Random.Range(-Item_Launch_Angle_Range, Item_Launch_Angle_Range))) * vec;
+		go.GetComponent<Rigidbody>().AddForce(vec, ForceMode.Impulse);
+		go.tag = "Item" + r.ToString();
+		go.GetComponent<SpriteRenderer>().sprite = GameManager.Instance.ItemSprites_[r - 1];
 	}
 }
