@@ -1106,6 +1106,12 @@ Prefab:
       propertyPath: Main
       value: 
       objectReference: {fileID: 1495790034}
+    - target: {fileID: 114445350602727562, guid: 571001343dd23db4e9d7ffd1d7da8c34,
+        type: 2}
+      propertyPath: Particle
+      value: 
+      objectReference: {fileID: 1491199491681276, guid: f4572180cefa92747a6922e95e814b35,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 571001343dd23db4e9d7ffd1d7da8c34, type: 2}
   m_IsPrefabParent: 0
