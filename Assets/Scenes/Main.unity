@@ -38399,7 +38399,6 @@ MonoBehaviour:
     m_RotationOrder: 0
   LocusDrawColTfm: {fileID: 1939319476}
   Lr: {fileID: 1939319480}
-  CamMover: {fileID: 1375938366}
 --- !u!1 &1437207892
 GameObject:
   m_ObjectHideFlags: 0
