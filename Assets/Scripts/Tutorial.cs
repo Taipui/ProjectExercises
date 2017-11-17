@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UniRx;
 using UniRx.Triggers;
 using DG.Tweening;
@@ -52,6 +53,20 @@ public class Tutorial : MonoBehaviour
 	/// </summary>
 	bool isOpen;
 
+	/// <summary>
+	/// 背景を暗くするためのImage
+	/// </summary>
+	[SerializeField]
+	Image DarkPanelImg;
+	/// <summary>
+	/// アルファの初期値
+	/// </summary>
+	float defaultAlpha;
+	/// <summary>
+	/// 背景を暗くするTween
+	/// </summary>
+	Tweener darkTween;
+
 	void Start ()
 	{
 		init();
@@ -84,6 +99,9 @@ public class Tutorial : MonoBehaviour
 		foreach (var go in Messages) {
 			go.SetActive(false);
 		}
+
+		defaultAlpha = DarkPanelImg.color.a;
+		DarkPanelImg.color = Color.clear;
 	}
 
 	/// <summary>
@@ -93,6 +111,9 @@ public class Tutorial : MonoBehaviour
 	{
 		if (popTween != null) {
 			popTween.Kill();
+		}
+		if (darkTween != null) {
+			darkTween.Kill();
 		}
 
 		if (!!isFeedPage) {
@@ -128,6 +149,13 @@ public class Tutorial : MonoBehaviour
 			Vector3.one,
 			0.5f
 			).SetUpdate(true);
+
+		darkTween = DOTween.ToAlpha(
+			() => DarkPanelImg.color,
+			color => DarkPanelImg.color = color,
+			defaultAlpha,
+			0.5f
+			).SetUpdate(true);
 	}
 
 	/// <summary>
@@ -151,6 +179,13 @@ public class Tutorial : MonoBehaviour
 				Time.timeScale = 1.0f;
 				clrMes();
 			});
+
+		darkTween = DOTween.ToAlpha(
+			() => DarkPanelImg.color,
+			color => DarkPanelImg.color = color,
+			0.0f,
+			0.5f
+			).SetUpdate(true);
 	}
 
 	/// <summary>
