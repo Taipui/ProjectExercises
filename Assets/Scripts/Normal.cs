@@ -52,11 +52,6 @@ public class Normal : Enemy
 	/// アイテムをドロップする角度の範囲
 	/// </summary>
 	const float Item_Launch_Angle_Range = 45.0f;
-	/// <summary>
-	/// アイテムをドロップするかどうか
-	/// </summary>
-	[SerializeField]
-	bool IsDrop;
 	#endregion
 
 	/// <summary>
@@ -146,7 +141,7 @@ public class Normal : Enemy
 		go.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
 		Destroy(go, go.GetComponent<ParticleSystem>().main.duration);
 
-		if (!IsDrop) {
+		if (ItemGo == null) {
 			return;
 		}
 		var r = Random.Range(0, 4);
