@@ -18,18 +18,17 @@ public class Enemy : Character
 	/// <summary>
 	/// 発射可能かどうか
 	/// </summary>
-	bool enableLaunch;
+ 	protected bool enableLaunch;
+	/// <summary>
+	/// 常に発射するか
+	/// </summary>
+	[SerializeField]
+	protected bool IsAlways;
 
 	/// <summary>
 	/// デフォルトの体力
 	/// </summary>
 	const int Default_Hp = 1;
-
-	/// <summary>
-	/// 撃つ頻度(増やすほど撃たなくなる)
-	/// </summary>
-	[SerializeField]
-	int Frequency;
 
 	/// <summary>
 	/// CameraMover(カメラを揺らすため)
@@ -52,14 +51,6 @@ public class Enemy : Character
 		base.Start();
 
 		init();
-
-		Observable.Interval(System.TimeSpan.FromSeconds(0.2f)).Where(x => !!isPlay() && !!enableLaunch)
-			.Subscribe(_ => {
-				if (Random.Range(0, Frequency) == 0) {
-					launch();
-				}
-			})
-		.AddTo(this);
 	}
 
 	/// <summary>

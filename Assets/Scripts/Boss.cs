@@ -26,6 +26,9 @@ public class Boss : Enemy
 	void init()
 	{
 		hp = Default_Hp;
+		if (!!IsAlways) {
+			permitLaunch();
+		}
 	}
 
 	protected override void Start ()
@@ -41,6 +44,14 @@ public class Boss : Enemy
 			.Subscribe(_ => {
 			move();
 		})
+		.AddTo(this);
+
+		Observable.Interval(System.TimeSpan.FromSeconds(0.2f)).Where(x => !!isPlay() && !!enableLaunch)
+			.Subscribe(_ => {
+				if (Random.Range(0, 10) == 0) {
+					launch();
+				}
+			})
 		.AddTo(this);
 	}
 

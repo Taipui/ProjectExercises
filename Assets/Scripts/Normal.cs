@@ -2,17 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UniRx;
+using UniRx.Triggers;
 
 /// <summary>
 /// ザコ敵に関するクラス
 /// </summary>
 public class Normal : Enemy
 {
+	#region 発射関連
 	/// <summary>
-	/// 常に発射するか
+	/// ランダムな間隔で発射するかどうか
 	/// </summary>
 	[SerializeField]
-	bool IsAlways;
+	bool IsRandomInterval;
+	/// <summary>
+	/// 撃つ頻度(ランダムの時)(増やすほど撃たなくなる)
+	/// </summary>
+	[SerializeField]
+	int Frequency;
+	/// <summary>
+	/// 発射頻度(ランダムでない時)
+	/// </summary>
+	[SerializeField]
+	float LaunchInterval;
+	/// <summary>
+	/// ある位置にいる時だけ発射するようにするかどうか
+	/// </summary>
+	[SerializeField]
+	bool IsPointLaunch;
+	/// <summary>
+	/// 発射する位置(IsPointLaunchがtrueの時のみ)(0がデフォルトの位置、1～がMovePointsのインデックス(-1))
+	/// </summary>
+	[SerializeField]
+	int LaunchPosIndex;
+	#endregion
 
 	#region アイテム関連
 	/// <summary>
@@ -56,25 +80,51 @@ public class Normal : Enemy
 	/// </summary>
 	int currentPoint;
 	/// <summary>
-	/// 
+	/// 目標地点まで移動する速度
 	/// </summary>
 	const float Move_Time = 1.0f;
+	/// <summary>
+	/// 目標地点まで到達後、再び移動するまで待つ時間
+	/// </summary>
+	const float Wait_Time = 1.0f;
 	#endregion
 
-	protected override void Start ()
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void init()
 	{
-		base.Start();
 		if (!!IsAlways) {
 			permitLaunch();
 		}
 
-		if (MovePoints == null || MovePoints.Length <= 0) {
-			return;
-		}
-		defaultPoint = transform.position;
-		currentPoint = 0;
+		if (MovePoints != null && MovePoints.Length > 0) {
+			defaultPoint = transform.position;
+			currentPoint = 0;
 
-		StartCoroutine("movePoint");
+			StartCoroutine("movePoint");
+		}
+	}
+
+	protected override void Start ()
+	{
+		base.Start();
+
+		init();
+
+		Observable.Interval(System.TimeSpan.FromSeconds(0.2f)).Where(x => !!isPlay() && !!IsRandomInterval && !IsPointLaunch && !!enableLaunch)
+			.Subscribe(_ => {
+				if (Random.Range(0, Frequency) == 0) {
+					launch();
+				}
+			})
+		.AddTo(this);
+
+		Observable.Interval(System.TimeSpan.FromSeconds(LaunchInterval)).Where(x => !!isPlay() && !IsRandomInterval && !IsPointLaunch && !!enableLaunch)
+			.Subscribe(_ => {
+				launch();
+			})
+		.AddTo(this);
 	}
 
 	/// <summary>
@@ -130,7 +180,12 @@ public class Normal : Enemy
 				dest,
 				1.0f
 			);
-			yield return new WaitForSeconds(1.0f + 1.0f);
+			yield return new WaitForSeconds(Move_Time);
+			if (!!IsPointLaunch && currentPoint == LaunchPosIndex) {
+				launch();
+			} else {
+				yield return new WaitForSeconds(Wait_Time);
+			}
 		}
 	}
 }
