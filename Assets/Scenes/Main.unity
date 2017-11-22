@@ -23965,7 +23965,7 @@ Prefab:
     - target: {fileID: 114445350602727562, guid: 571001343dd23db4e9d7ffd1d7da8c34,
         type: 2}
       propertyPath: IsAlways
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114445350602727562, guid: 571001343dd23db4e9d7ffd1d7da8c34,
         type: 2}
@@ -39552,6 +39552,7 @@ MonoBehaviour:
     m_RotationOrder: 0
   LocusDrawColTfm: {fileID: 1939319476}
   Lr: {fileID: 1939319480}
+  Title: {fileID: 0}
 --- !u!1 &1437207892
 GameObject:
   m_ObjectHideFlags: 0
@@ -42236,7 +42237,7 @@ MonoBehaviour:
   - {fileID: 21543709}
   - {fileID: 1920792348}
   PlayerTfm: {fileID: 1232336293}
-  IsAlways: 1
+  IsAlways: 0
   ModelGo: {fileID: 1466859759}
 --- !u!54 &1531212954
 Rigidbody:

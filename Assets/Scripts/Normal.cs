@@ -187,7 +187,7 @@ public class Normal : Enemy
 				1.0f
 			);
 			yield return new WaitForSeconds(Move_Time);
-			if (!!IsPointLaunch && currentPoint == LaunchPosIndex) {
+			if (!!IsPointLaunch && currentPoint == LaunchPosIndex && !!enableLaunch) {
 				launch();
 			} else {
 				yield return new WaitForSeconds(Wait_Time);

@@ -1,6 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UniRx;
 using UniRx.Triggers;
 
@@ -10,7 +10,7 @@ using UniRx.Triggers;
 public class Boss : Enemy
 {
 	/// <summary>
-	/// GrayちゃんのモデルのGameObject
+	/// GrayちゃんのモデルのGameObject(ダメージを受けた時に点滅させるため)
 	/// </summary>
 	[SerializeField]
 	GameObject ModelGo;
@@ -21,11 +21,21 @@ public class Boss : Enemy
 	const int Default_Hp = 3;
 
 	/// <summary>
+	/// 移動速度
+	/// </summary>
+	const float Move_Speed = 0.05f;
+	/// <summary>
+	/// プレイヤーからどれだけ離れると移動を始めるかのしきい値
+	/// </summary>
+	const float Move_Threshold = 1.0f;
+
+	/// <summary>
 	/// 初期化
 	/// </summary>
 	void init()
 	{
 		hp = Default_Hp;
+
 		if (!!IsAlways) {
 			permitLaunch();
 		}
@@ -37,9 +47,7 @@ public class Boss : Enemy
 
 		init();
 
-		if (PlayerTfm == null) {
-			return;
-		}
+		Assert.IsNotNull(PlayerTfm, "PlayerTfm is null");
 		PlayerTfm.UpdateAsObservable().Where(x => !!canInput)
 			.Subscribe(_ => {
 			move();
@@ -60,11 +68,16 @@ public class Boss : Enemy
 	/// </summary>
 	protected override void launch()
 	{
+		Assert.IsNotNull(LauncherParent, "LauncherParent is null");
 		foreach (Transform child in LauncherParent) {
 			if (Random.Range(0, 2) == 0) {
 				continue;
 			}
-			AI.ShootFixedAngle(new Vector3(child.position.x, child.position.y), PlayerTfm.position, 60.0f, child.gameObject.GetComponent<Launcher>(), Bullet, BulletParentTfm);
+			Assert.IsNotNull(PlayerTfm, "PlayerTfm is null");
+			var childLauncher = child.gameObject.GetComponent<Launcher>();
+			Assert.IsNotNull(childLauncher, "Child object are not attached to Launcher");
+			Assert.IsNotNull(BulletParentTfm, "BulletParentTfm is null");
+			AI.ShootFixedAngle(new Vector3(child.position.x, child.position.y), PlayerTfm.position, 60.0f, childLauncher, Bullet, BulletParentTfm);
 			base.launch();
 		}
 	}
@@ -74,16 +87,12 @@ public class Boss : Enemy
 	/// </summary>
 	void move()
 	{
-		if (PlayerTfm == null) {
-			return;
-		}
-		var bias = 1.0f;
-		var moveSpeed = 0.05f;
+		Assert.IsNotNull(PlayerTfm, "PlayerTfm is null");
 		var diff = PlayerTfm.position.y - transform.position.y;
-		if (diff < -bias) {
-			transform.Translate(new Vector3(0.0f, -moveSpeed));
-		} else if (diff > bias) {
-			transform.Translate(new Vector3(0.0f, moveSpeed));
+		if (diff < -Move_Threshold) {
+			transform.Translate(new Vector3(0.0f, -Move_Speed));
+		} else if (diff > Move_Threshold) {
+			transform.Translate(new Vector3(0.0f, Move_Speed));
 		}
 	}
 
@@ -116,6 +125,9 @@ public class Boss : Enemy
 		ModelGo.SetActive(true);
 	}
 
+	/// <summary>
+	/// 死亡処理
+	/// </summary>
 	protected override void dead()
 	{
 		base.dead();

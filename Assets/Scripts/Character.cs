@@ -1,8 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UniRx;
-using UniRx.Triggers;
 
 /// <summary>
 /// キャラクターすべてに共通するクラス
@@ -21,9 +18,9 @@ public class Character : MonoBehaviour
 	[SerializeField]
 	protected Transform BulletParentTfm;
 	/// <summary>
-	/// 自分が発射する弾に設定するタグの名前
+	/// 自分が発射する弾に設定するタグのID
 	/// </summary>
-	public int MyBulletLayer { protected set; get; }
+	protected int MyBulletLayer;
 	#endregion
 
 	/// <summary>
@@ -38,7 +35,7 @@ public class Character : MonoBehaviour
 	protected Main Main;
 
 	/// <summary>
-	/// Launcherの親となるオブジェクト
+	/// Launcherの親となるGameObjectのTransform
 	/// </summary>
 	[SerializeField]
 	protected Transform LauncherParent;
