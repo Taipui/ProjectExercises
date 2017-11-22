@@ -138,7 +138,7 @@ public class TitleBase : MonoBehaviour
 		).OnComplete(() => {
 			if (currentSelect.Value == 0) {
 				LoadingTxtGo.SetActive(true);
-				SceneManager.LoadScene("Main");
+				SceneManager.LoadScene(Common.Main_Scene);
 			} else {
 				Application.Quit();
 			}
@@ -151,7 +151,7 @@ public class TitleBase : MonoBehaviour
 	/// <returns></returns>
 	IEnumerator loadScene()
 	{
-		var async = SceneManager.LoadSceneAsync("Main");
+		var async = SceneManager.LoadSceneAsync(Common.Main_Scene);
 		async.allowSceneActivation = false;
 
 		while (async.progress < 0.9f) {

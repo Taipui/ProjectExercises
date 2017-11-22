@@ -107,6 +107,7 @@
     <Compile Include="Assets\Scripts\CameraMover.cs" />
     <Compile Include="Assets\Scripts\Character.cs" />
     <Compile Include="Assets\Scripts\CircleDeployer.cs" />
+    <Compile Include="Assets\Scripts\Clear.cs" />
     <Compile Include="Assets\Scripts\Common.cs" />
     <Compile Include="Assets\Scripts\DestroyCollider.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
