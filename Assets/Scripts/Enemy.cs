@@ -58,7 +58,10 @@ public class Enemy : Character
 	/// </summary>
 	protected virtual void launch()
 	{
-		// 派生クラスで実装
+		if (Main == null) {
+			return;
+		}
+		Main.playSE(Main.SE.Launch, audioSource);
 	}
 
 	/// <summary>

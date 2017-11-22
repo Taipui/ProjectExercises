@@ -65,6 +65,7 @@ public class Boss : Enemy
 				continue;
 			}
 			AI.ShootFixedAngle(new Vector3(child.position.x, child.position.y), PlayerTfm.position, 60.0f, child.gameObject.GetComponent<Launcher>(), Bullet, BulletParentTfm);
+			base.launch();
 		}
 	}
 

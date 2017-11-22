@@ -384,6 +384,12 @@ public class Player : Character
 	CameraMover camMover;
 
 	/// <summary>
+	/// Title
+	/// </summary>
+	[SerializeField]
+	TitleBase Title;
+
+	/// <summary>
 	/// 雪弾を取りに行くアニメーションをするためのhiyoko
 	/// </summary>
 	//[SerializeField]
@@ -402,8 +408,6 @@ public class Player : Character
 	{
 		EnableChange = val;
 	}
-
-
 
 	protected override void Start()
 	{
@@ -608,6 +612,11 @@ public class Player : Character
 			.Subscribe(_ => {
 				var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 				instanceWindGo = Instantiate(WindGo, new Vector3(mousePos.x, mousePos.y), Quaternion.identity);
+				if (Main != null) {
+					instanceWindGo.GetComponent<Wind>().setMain(Main);
+				} else if (Title != null) {
+					instanceWindGo.GetComponent<Wind>().setTitle(Title);
+				}
 				WindLifespanSliderGo.SetActive(true);
 			})
 			.AddTo(this);
@@ -706,8 +715,13 @@ public class Player : Character
 		MyBulletLayer = Common.PlayerBulletLayer;
 
 		hp = Default_Hp;
+		hp = 10000;
 
 		enableTeleportation = true;
+
+		windLifespanSlider = WindLifespanSliderGo.GetComponent<Slider>();
+		WindLifespanSliderGo.SetActive(false);
+
 		foreach (Transform parentTfm in ParticleParents) {
 			if (parentTfm == null) {
 				return;
@@ -725,9 +739,6 @@ public class Player : Character
 		Lr.endWidth = Locus_Width;
 		locusPoses = new List<Vector3>();
 		launchLocusDrawCol();
-
-		windLifespanSlider = WindLifespanSliderGo.GetComponent<Slider>();
-		WindLifespanSliderGo.SetActive(false);
 
 		//		EffectHiyoko.SetActive(false);
 		//HiyokoGo.SetActive(true);
@@ -939,6 +950,8 @@ public class Player : Character
 	/// <returns></returns>
 	IEnumerator teleportation()
 	{
+		Main.playSE(Main.SE.Teleportation, null);
+
 		var power = 200.0f;
 		if (dir.Value == "D") {
 			rb.AddForce(Vector3.right * power, ForceMode.Impulse);
@@ -985,6 +998,13 @@ public class Player : Character
 		foreach (Transform child in LauncherParent) {
 			child.GetComponent<Launcher>().launch(Bullet, mousePos, 13, BulletParentTfm, launchVec, scale);
 		}
+
+		if (Main != null) {
+			Main.playSE(Main.SE.Launch, audioSource);
+		}
+		if (Title != null) {
+			Title.playSE(TitleBase.SE.Launch);
+		}
 	}
 
 	/// <summary>
@@ -992,8 +1012,13 @@ public class Player : Character
 	/// </summary>
 	public void launchLocusDrawCol()
 	{
+		if (LocusDrawColTfm == null) {
+			return;
+		}
 		StopCoroutine("recordLocus");
-		locusPoses.Clear();
+		if (locusPoses != null) {
+			locusPoses.Clear();
+		}
 		LocusDrawColTfm.position = LaunchTfm.position;
 		var rb = LocusDrawColTfm.GetComponent<Rigidbody>();
 		rb.velocity = calcLaunchVec();
@@ -1053,6 +1078,8 @@ public class Player : Character
 	/// </summary>
 	IEnumerator shotgunLaunch()
 	{
+		Main.playSE(Main.SE.ShotgunLaunch, null);
+
 		var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		var direction = Vector3.zero;
 		direction.x = mousePos.x - LaunchTfm.position.x;
@@ -1215,6 +1242,7 @@ public class Player : Character
 	/// </summary>
 	void changeAvatar()
 	{
+		Main.playSE(Main.SE.Transform, null);
 		currentAvatar = (currentAvatar + 1) % Avatars.Length;
 		foreach (GameObject go in Models) {
 			go.SetActive(false);
@@ -1263,6 +1291,7 @@ public class Player : Character
 		if (tag.IndexOf("Item") < 0) {
 			return;
 		}
+		Main.playSE(Main.SE.Item, null);
 		var index = System.Convert.ToInt32(tag.Substring(tag.Length - 1, 1));
 		Destroy(col.gameObject);
 		switch (index) {

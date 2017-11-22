@@ -67,6 +67,12 @@ public class Tutorial : MonoBehaviour
 	/// </summary>
 	Tweener darkTween;
 
+	/// <summary>
+	/// Main
+	/// </summary>
+	[SerializeField]
+	Main Main;
+
 	void Start ()
 	{
 		init();
@@ -123,6 +129,7 @@ public class Tutorial : MonoBehaviour
 				closePop();
 				currentMes = 0;
 			} else {
+				Main.playSE(Main.SE.Feed, null);
 				selectMes();
 			}
 		} else {

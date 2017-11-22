@@ -19,8 +19,50 @@ public class Wind : MonoBehaviour
 	/// </summary>
 	const float Turbulence = 100.0f;
 
+	/// <summary>
+	/// Main
+	/// </summary>
+	Main main;
+
+	/// <summary>
+	/// Title
+	/// </summary>
+	TitleBase title;
+
+	/// <summary>
+	/// Mainをセット
+	/// </summary>
+	/// <param name="main_">セットするMain</param>
+	public void setMain(Main main_)
+	{
+		main = main_;
+	}
+
+	/// <summary>
+	/// Titleをセット
+	/// </summary>
+	/// <param name="title_">セットするTitle</param>
+	public void setTitle(TitleBase title_)
+	{
+		title = title_;
+	}
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void init()
+	{
+		if (main != null) {
+			main.playSE(Main.SE.Wind, GetComponent<AudioSource>());
+		} else if (title != null) {
+			title.playSE(TitleBase.SE.Wind);
+		}
+	}
+
 	void Start ()
 	{
+		init();
+
 		var col = GetComponent<SphereCollider>();
 
 		//this.UpdateAsObservable().Subscribe(_ => {

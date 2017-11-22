@@ -48,6 +48,40 @@ public class TitleBase : MonoBehaviour
 	GameObject LoadingTxtGo;
 
 	/// <summary>
+	/// SEの配列
+	/// </summary>
+	[SerializeField]
+	AudioClip[] SEs;
+	AudioSource audioSource;
+	public enum SE
+	{
+		/// <summary>
+		/// 選択時のSE
+		/// </summary>
+		Select,
+		/// <summary>
+		/// 雪弾の発射時のSE
+		/// </summary>
+		Launch,
+		/// <summary>
+		/// 風を起こしている時のSE
+		/// </summary>
+		Wind,
+		/// <summary>
+		/// STARTが選択された時のSE
+		/// </summary>
+		Start1,
+		Start2,
+		/// <summary>
+		/// QUITが選択された時のSE(
+		/// </summary>
+		Quit1,
+		Quit2,
+		Quit3,
+		Quit4
+	}
+
+	/// <summary>
 	/// 現在選択しているメニューの番号をセット
 	/// </summary>
 	/// <param name="val">セットする番号</param>
@@ -57,7 +91,7 @@ public class TitleBase : MonoBehaviour
 		decide();
 	}
 
-	protected virtual void Start ()
+	void init()
 	{
 		currentSelect.Value = 0;
 		for (var i = 0; i < Particles.Length; ++i) {
@@ -66,23 +100,38 @@ public class TitleBase : MonoBehaviour
 		FadePanel.color = Color.clear;
 		LoadingTxtGo.SetActive(false);
 
+		audioSource = GetComponent<AudioSource>();
+
+		for (var i = 0; i < TxtGoRenderers.Length; ++i) {
+			TxtGoRenderers[i].material = Mats[1];
+		}
+		TxtGoRenderers[currentSelect.Value].material = Mats[0];
+	}
+
+	protected virtual void Start ()
+	{
+		init();
+
 		this.UpdateAsObservable().Where(x => !!isNext() && currentSelect.Value > 0)
 			.Subscribe(_ => {
 				--currentSelect.Value;
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isPrev() && currentSelect.Value < TxtGoRenderers.Length)
+		this.UpdateAsObservable().Where(x => !!isPrev() && currentSelect.Value < TxtGoRenderers.Length - 1)
 			.Subscribe(_ => {
 				++currentSelect.Value;
 			})
 			.AddTo(this);
 
-		currentSelect.AsObservable().Subscribe(val => {
+		currentSelect.SkipLatestValueOnSubscribe()
+			.AsObservable().Subscribe(val => {
 			for (var i = 0; i < TxtGoRenderers.Length; ++i) {
 				TxtGoRenderers[i].material = Mats[1];
 			}
+				Debug.Log(val);
 			TxtGoRenderers[val].material = Mats[0];
+			playSE(SE.Select);
 		})
 			.AddTo(this);
 
@@ -130,6 +179,12 @@ public class TitleBase : MonoBehaviour
 		TxtGoRenderers[currentSelect.Value].enabled = false;
 		Particles[currentSelect.Value].SetActive(true);
 		//StartCoroutine("loadScene");
+		if (currentSelect.Value == 0) {
+			playSE((SE)System.Enum.ToObject(typeof(SE), Random.Range((int)SE.Start1, ((int)SE.Start2) + 1)));
+		} else {
+			playSE((SE)System.Enum.ToObject(typeof(SE), Random.Range((int)SE.Quit1, ((int)SE.Quit3) + 1)));
+			//playSE(SE.Quit4);
+		}
 		DOTween.ToAlpha(
 			() => FadePanel.color,
 			color => FadePanel.color = color,
@@ -164,6 +219,15 @@ public class TitleBase : MonoBehaviour
 		yield return new WaitForSeconds(1);
 
 		async.allowSceneActivation = true;
+	}
+
+	/// <summary>
+	/// SEを鳴らす
+	/// </summary>
+	/// <param name="se">鳴らすSE</param>
+	public void playSE(SE se)
+	{
+		audioSource.PlayOneShot(SEs[(int)se]);
 	}
 }
 

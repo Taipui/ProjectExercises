@@ -85,6 +85,12 @@ public class Normal : Enemy
 	#endregion
 
 	/// <summary>
+	/// Title
+	/// </summary>
+	[SerializeField]
+	TitleBase Title;
+
+	/// <summary>
 	/// 初期化
 	/// </summary>
 	void init()
@@ -128,6 +134,10 @@ public class Normal : Enemy
 	protected override void launch()
 	{
 		AI.ShootFixedAngle(transform.position, PlayerTfm.position, 60.0f, GetComponent<Launcher>(), Bullet, BulletParentTfm);
+		if (Title != null) {
+			Title.playSE(TitleBase.SE.Launch);
+		}
+		base.launch();
 	}
 
 	/// <summary>
@@ -140,6 +150,8 @@ public class Normal : Enemy
 		var go = Instantiate(Particle);
 		go.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
 		Destroy(go, go.GetComponent<ParticleSystem>().main.duration);
+
+		Main.playSE(Main.SE.Kill, null);
 
 		if (ItemGo == null) {
 			return;
@@ -168,7 +180,6 @@ public class Normal : Enemy
 	IEnumerator movePoint()
 	{
 		while (true) {
-			Debug.Log("move");
 			currentPoint = (currentPoint + 1) % (MovePoints.Length + 1);
 			var dest = currentPoint == 0 ? defaultPoint : MovePoints[currentPoint - 1].position;
 			transform.DOMove(

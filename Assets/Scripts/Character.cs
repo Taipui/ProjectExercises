@@ -83,6 +83,11 @@ public class Character : MonoBehaviour
 	protected Rigidbody rb;
 
 	/// <summary>
+	/// AudioSource
+	/// </summary>
+	protected AudioSource audioSource;
+
+	/// <summary>
 	/// 初期化
 	/// </summary>
 	void init()
@@ -103,6 +108,8 @@ public class Character : MonoBehaviour
 		canInput = true;
 
 		hp = 1;
+
+		audioSource = GetComponent<AudioSource>();
 	}
 
 	protected virtual void Start ()
@@ -115,6 +122,7 @@ public class Character : MonoBehaviour
 	/// </summary>
 	protected virtual IEnumerator dmg()
 	{
+		Main.playSE(Main.SE.Hit, null);
 		if (--hp <= 0) {
 			dead();
 			yield break;

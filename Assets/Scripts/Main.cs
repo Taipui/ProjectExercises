@@ -63,6 +63,59 @@ public class Main : MonoBehaviour
 	/// </summary>
 	const float Fade_Time = 3.0f;
 	#endregion
+	
+	/// <summary>
+	/// SE
+	/// </summary>
+	public enum SE
+	{
+		/// <summary>
+		/// 雪弾がキャラクターに当たった時のSE
+		/// </summary>
+		Hit,
+		/// <summary>
+		/// アイテムを取得した時のSE
+		/// </summary>
+		Item,
+		/// <summary>
+		/// 変身した時のSE
+		/// </summary>
+		Transform,
+		/// <summary>
+		/// 敵を倒した時のSE
+		/// </summary>
+		Kill,
+		/// <summary>
+		/// 雪弾の発射時のSE
+		/// </summary>
+		Launch,
+		/// <summary>
+		/// ショットガンの発射時のSE
+		/// </summary>
+		ShotgunLaunch,
+		/// <summary>
+		/// 風を起こしている時のSE
+		/// </summary>
+		Wind,
+		/// <summary>
+		/// 瞬間移動した時のSE
+		/// </summary>
+		Teleportation,
+		/// <summary>
+		/// ページ送りのSE
+		/// </summary>
+		Feed,
+	}
+	/// <summary>
+	/// SEの配列
+	/// </summary>
+	[SerializeField]
+	AudioClip[] SEs;
+
+	/// <summary>
+	/// AudioSource
+	/// </summary>
+	AudioSource audioSource;
 
 	/// <summary>
 	/// ゲームオーバーの処理
@@ -107,6 +160,8 @@ public class Main : MonoBehaviour
 		}
 
 		FadeImg.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+
+		audioSource = GetComponent<AudioSource>();
 	}
 
 	void Start ()
@@ -118,5 +173,17 @@ public class Main : MonoBehaviour
 				SceneManager.LoadScene(Common.Title_Scene);
 			})
 			.AddTo(this);
+	}
+
+	/// <summary>
+	/// SEを再生する
+	/// </summary>
+	/// <param name="se">SEの種類</param>
+	public void playSE(SE se, AudioSource source)
+	{
+		if (source == null) {
+			source = audioSource;
+		}
+		source.PlayOneShot(SEs[(int)se]);
 	}
 }

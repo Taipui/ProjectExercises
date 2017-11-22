@@ -10,7 +10,9 @@ public class SceneSelecter : MonoBehaviour
 {
 	void Start ()
 	{
-		switch (Random.Range(0, 3)) {
+		var r = Random.Range(0, 3);
+		//r = 0;
+		switch (r) {
 			default:
 				Debug.Log("エラー");
 				return;
