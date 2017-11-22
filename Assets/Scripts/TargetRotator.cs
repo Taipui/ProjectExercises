@@ -16,11 +16,14 @@ public class TargetRotator : MonoBehaviour
 	/// <summary>
 	/// 回転の中心となるTransform
 	/// </summary>
+	[SerializeField]
 	Transform Parent;
 
 	void Start ()
 	{
-		Parent = transform.parent.transform;
+		if (Parent == null) {
+			Parent = transform.parent.transform;
+		}
 
 		transform.LookAt(Parent.transform);
 

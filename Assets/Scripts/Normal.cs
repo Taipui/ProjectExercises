@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 /// <summary>
 /// ザコ敵に関するクラス
@@ -40,12 +41,40 @@ public class Normal : Enemy
 	[SerializeField]
 	GameObject Particle;
 
+	#region 移動関連
+	/// <summary>
+	/// 移動点の配列
+	/// </summary>
+	[SerializeField]
+	Transform[] MovePoints;
+	/// <summary>
+	/// 初期位置
+	/// </summary>
+	Vector3 defaultPoint;
+	/// <summary>
+	/// 現在の地点
+	/// </summary>
+	int currentPoint;
+	/// <summary>
+	/// 
+	/// </summary>
+	const float Move_Time = 1.0f;
+	#endregion
+
 	protected override void Start ()
 	{
 		base.Start();
 		if (!!IsAlways) {
 			permitLaunch();
 		}
+
+		if (MovePoints == null || MovePoints.Length <= 0) {
+			return;
+		}
+		defaultPoint = transform.position;
+		currentPoint = 0;
+
+		StartCoroutine("movePoint");
 	}
 
 	/// <summary>
@@ -84,6 +113,24 @@ public class Normal : Enemy
 
 		if (Particle == null) {
 			return;
+		}
+	}
+
+	/// <summary>
+	/// 移動
+	/// </summary>
+	/// <returns></returns>
+	IEnumerator movePoint()
+	{
+		while (true) {
+			Debug.Log("move");
+			currentPoint = (currentPoint + 1) % (MovePoints.Length + 1);
+			var dest = currentPoint == 0 ? defaultPoint : MovePoints[currentPoint - 1].position;
+			transform.DOMove(
+				dest,
+				1.0f
+			);
+			yield return new WaitForSeconds(1.0f + 1.0f);
 		}
 	}
 }
