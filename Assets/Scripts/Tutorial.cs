@@ -59,10 +59,6 @@ public class Tutorial : MonoBehaviour
 	[SerializeField]
 	Image DarkPanelImg;
 	/// <summary>
-	/// アルファの初期値
-	/// </summary>
-	float defaultAlpha;
-	/// <summary>
 	/// 背景を暗くするTween
 	/// </summary>
 	Tweener darkTween;
@@ -106,7 +102,6 @@ public class Tutorial : MonoBehaviour
 			go.SetActive(false);
 		}
 
-		defaultAlpha = DarkPanelImg.color.a;
 		DarkPanelImg.color = Color.clear;
 	}
 
@@ -160,7 +155,7 @@ public class Tutorial : MonoBehaviour
 		darkTween = DOTween.ToAlpha(
 			() => DarkPanelImg.color,
 			color => DarkPanelImg.color = color,
-			defaultAlpha,
+			0.5f,
 			0.5f
 			).SetUpdate(true);
 	}

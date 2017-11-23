@@ -37,6 +37,41 @@ public class GameManager
 		}
 	}
 
+	/// <summary>
+	/// アイテムのマテリアルの配列(Sprite)
+	/// </summary>
+	Material[] ItemMatsSprite;
+	public Material[] ItemMatsSprite_ {
+		get
+		{
+			if (ItemMatsSprite == null) {
+				ItemMatsSprite = Resources.LoadAll<Material>("Materials/Items/Masked");
+			}
+			return ItemMatsSprite;
+		}
+		set
+		{
+			ItemMatsSprite = value;
+		}
+	}
+	/// <summary>
+	/// アイテムのマテリアルの配列(UI)
+	/// </summary>
+	Material[] ItemMatsUI;
+	public Material[] ItemMatsUI_ {
+		get
+		{
+			if (ItemMatsUI == null) {
+				ItemMatsUI = Resources.LoadAll<Material>("Materials/Items/MaskedUI");
+			}
+			return ItemMatsUI;
+		}
+		set
+		{
+			ItemMatsUI = value;
+		}
+	}
+
 	void Start ()
 	{
 		

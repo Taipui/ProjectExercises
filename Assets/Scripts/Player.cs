@@ -1191,7 +1191,7 @@ public class Player : Character
 	{
 		StartCoroutine(base.dmg());
 		camMover.shake(0.7f);
-		if (hp < 0) {
+		if (hp < 0 || hp > Default_Hp) {
 			yield break;
 		}
 		HPGos[hp].SetActive(false);
@@ -1279,7 +1279,8 @@ public class Player : Character
 	/// <param name="index">セットするアイテムの種類</param>
 	void setItem(int index)
 	{
-		ItemImg.sprite = GameManager.Instance.ItemSprites_[index - 1];
+		ItemImg.sprite = GameManager.Instance.ItemSprites_[--index];
+		ItemImg.material = GameManager.Instance.ItemMatsUI_[index];
 		ItemEffectRemainTxt.text = "残り" + itemDurability.ToString() + "回";
 		ItemDurability = Default_Item_Durability;
 	}

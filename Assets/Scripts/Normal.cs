@@ -156,7 +156,7 @@ public class Normal : Enemy
 		if (ItemGo == null) {
 			return;
 		}
-		var r = Random.Range(0, 4);
+		var r = Random.Range(0, GameManager.Instance.ItemSprites_.Length + 1);
 		//r = 5;
 		if (r <= 0) {
 			return;
@@ -166,7 +166,10 @@ public class Normal : Enemy
 		vec = Quaternion.Euler(new Vector3(0.0f, 0.0f, Random.Range(-Item_Launch_Angle_Range, Item_Launch_Angle_Range))) * vec;
 		go.GetComponent<Rigidbody>().AddForce(vec, ForceMode.Impulse);
 		go.tag = "Item" + r.ToString();
-		go.GetComponent<SpriteRenderer>().sprite = GameManager.Instance.ItemSprites_[r - 1];
+		var sr = go.GetComponent<SpriteRenderer>();
+		var index = r - 1;
+		sr.sprite = GameManager.Instance.ItemSprites_[index];
+		sr.material = GameManager.Instance.ItemMatsSprite_[index];
 
 		if (Particle == null) {
 			return;
