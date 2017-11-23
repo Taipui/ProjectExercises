@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 /// <summary>
 /// キャラクターすべてに共通するクラス
@@ -103,15 +104,26 @@ public class Character : MonoBehaviour
 
 		isInvinsible = false;
 
-		for (var i = 0; i < Decals.Length; ++i) {
-			Decals[i].SetActive(false);
-		}
-
 		canInput = true;
 
 		hp = 1;
 
 		audioSource = GetComponent<AudioSource>();
+
+		if (Decals.Length <= 0) {
+			return;
+		}
+		Assert.AreEqual(Decals.Length, 3, "The number of attached decals is not 3");
+		for (var i = 0; i < Decals.Length; ++i) {
+			for (var j = i + 1; j < Decals.Length; ++j) {
+				Assert.AreNotEqual(Decals[i], Decals[j], "Decals[" + i + "] and Decals[" + j + "] are the same");
+			}
+		}
+		for (var i = 0; i < Decals.Length; ++i) {
+			Assert.IsNotNull(Decals[i], "Decals[" + i + "] is null");
+
+			Decals[i].SetActive(false);
+		}
 	}
 
 	protected virtual void Start ()
@@ -141,7 +153,6 @@ public class Character : MonoBehaviour
 			}
 		}
 
-		//flickCoroutine = StartCoroutine(flick(gameObject, gameObject.activeSelf));
 		startFlick();
 
 		yield return new WaitForSeconds(Invincible_Time);
@@ -255,7 +266,7 @@ public class Character : MonoBehaviour
 	/// <param name="posY">当たった弾のY座標(ローカル)</param>
 	void activeDecal(float posY)
 	{
-		if (Decals.Length < 3) {
+		if (Decals.Length <= 0) {
 			return;
 		}
 		if (posY >= 1.0f) {
