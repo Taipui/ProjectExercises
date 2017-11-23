@@ -129,7 +129,6 @@ public class TitleBase : MonoBehaviour
 			for (var i = 0; i < TxtGoRenderers.Length; ++i) {
 				TxtGoRenderers[i].material = Mats[1];
 			}
-				Debug.Log(val);
 			TxtGoRenderers[val].material = Mats[0];
 			playSE(SE.Select);
 		})

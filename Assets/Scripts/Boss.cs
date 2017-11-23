@@ -97,23 +97,11 @@ public class Boss : Enemy
 	}
 
 	/// <summary>
-	/// キャラクターの点滅を始める
+	/// 点滅を始める
 	/// </summary>
 	protected override void startFlick()
 	{
-		StartCoroutine("flick");
-	}
-
-	/// <summary>
-	/// キャラクターを点滅させる
-	/// </summary>
-	/// <returns></returns>
-	protected override IEnumerator flick()
-	{
-		while (true) {
-			ModelGo.SetActive(!ModelGo.activeSelf);
-			yield return new WaitForSeconds(Flick_Interval);
-		}
+		flickCoroutine = StartCoroutine(flick(ModelGo));
 	}
 
 	/// <summary>
@@ -121,7 +109,7 @@ public class Boss : Enemy
 	/// </summary>
 	protected override void stopFlick()
 	{
-		StopCoroutine("flick");
+		StopCoroutine(flickCoroutine);
 		ModelGo.SetActive(true);
 	}
 

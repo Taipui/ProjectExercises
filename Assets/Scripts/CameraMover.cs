@@ -56,7 +56,7 @@ public class CameraMover : MonoBehaviour
 		var cachedLocalPos = Vector3.zero;
 		GroundChipChecker.enabled = true;
 
-		PlayerTfm.UpdateAsObservable()
+		PlayerTfm.LateUpdateAsObservable()
 			.Subscribe(_ => {
 				cachedLocalPos = new Vector3(Mathf.Clamp(PlayerTfm.localPosition.x + X_Offset, maxX, X_Limit), tfm.localPosition.y, tfm.localPosition.z);
 				tfm.localPosition = cachedLocalPos;

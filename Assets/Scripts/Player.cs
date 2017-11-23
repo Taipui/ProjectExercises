@@ -1199,23 +1199,11 @@ public class Player : Character
 	}
 
 	/// <summary>
-	/// キャラクターの点滅を始める
+	/// 点滅を始める
 	/// </summary>
 	protected override void startFlick()
 	{
-		StartCoroutine("flick");
-	}
-
-	/// <summary>
-	/// キャラクターを点滅させる
-	/// </summary>
-	/// <returns></returns>
-	protected override IEnumerator flick()
-	{
-		while (true) {
-			Models[currentAvatar].SetActive(!Models[currentAvatar].activeSelf);
-			yield return new WaitForSeconds(Flick_Interval);
-		}
+		flickCoroutine = StartCoroutine(flick(Models[currentAvatar]));
 	}
 
 	/// <summary>
@@ -1223,7 +1211,7 @@ public class Player : Character
 	/// </summary>
 	protected override void stopFlick()
 	{
-		StopCoroutine("flick");
+		StopCoroutine(flickCoroutine);
 		Models[currentAvatar].SetActive(true);
 	}
 

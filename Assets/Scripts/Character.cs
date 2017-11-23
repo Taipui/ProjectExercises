@@ -46,6 +46,7 @@ public class Character : MonoBehaviour
 	[SerializeField]
 	GameObject[] Decals;
 
+	#region 無敵関連
 	/// <summary>
 	/// 無敵時間
 	/// </summary>
@@ -54,11 +55,15 @@ public class Character : MonoBehaviour
 	/// 無敵かどうか(弾の当たり判定が連続で来ないように)
 	/// </summary>
 	bool isInvinsible;
-
 	/// <summary>
 	/// 無敵時に点滅する間隔
 	/// </summary>
 	protected const float Flick_Interval = 0.1f;
+	/// <summary>
+	/// 無敵時の点滅のコルーチン
+	/// </summary>
+	protected Coroutine flickCoroutine;
+	#endregion
 
 	/// <summary>
 	/// アニメーター
@@ -120,11 +125,14 @@ public class Character : MonoBehaviour
 	protected virtual IEnumerator dmg()
 	{
 		Main.playSE(Main.SE.Hit, null);
+
 		if (--hp <= 0) {
 			dead();
 			yield break;
 		}
+
 		isInvinsible = true;
+
 		if (anim != null) {
 			StartCoroutine("disableInput");
 			anim.SetTrigger("Damage");
@@ -132,9 +140,14 @@ public class Character : MonoBehaviour
 				rb.velocity = Vector2.zero;
 			}
 		}
+
+		//flickCoroutine = StartCoroutine(flick(gameObject, gameObject.activeSelf));
 		startFlick();
+
 		yield return new WaitForSeconds(Invincible_Time);
+
 		isInvinsible = false;
+
 		stopFlick();
 	}
 
@@ -144,9 +157,11 @@ public class Character : MonoBehaviour
 	protected virtual void dead()
 	{
 		canInput = false;
+
 		if (anim == null) {
 			return;
 		}
+
 		anim.SetTrigger("Dead");
 	}
 
@@ -167,35 +182,40 @@ public class Character : MonoBehaviour
 		if (!!isInvinsible) {
 			yield break;
 		}
+
 		if (go.tag != "Bullet") {
 			yield break;
 		}
+
 		if (go.layer == MyBulletLayer) {
 			yield break;
 		}
 
 		StartCoroutine("dmg");
+
 		activeDecal(go.transform.localPosition.y);
+
 		go.transform.SetParent(transform);
+
 		Destroy(go);
 	}
 
 	/// <summary>
-	/// キャラクターの点滅を始める
+	/// 点滅を始める
 	/// </summary>
 	protected virtual void startFlick()
 	{
-		StartCoroutine("flick");
+		flickCoroutine = StartCoroutine(flick(gameObject));
 	}
 
 	/// <summary>
 	/// キャラクターを点滅させる
 	/// </summary>
 	/// <returns></returns>
-	protected virtual IEnumerator flick()
+	protected IEnumerator flick(GameObject go)
 	{
 		while (true) {
-			gameObject.SetActive(!gameObject.activeSelf);
+			go.SetActive(!go.activeSelf);
 			yield return new WaitForSeconds(Flick_Interval);
 		}
 	}
@@ -205,7 +225,7 @@ public class Character : MonoBehaviour
 	/// </summary>
 	protected virtual void stopFlick()
 	{
-		StopCoroutine("flick");
+		StopCoroutine(flickCoroutine);
 		gameObject.SetActive(true);
 	}
 
