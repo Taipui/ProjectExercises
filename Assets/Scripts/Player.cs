@@ -715,7 +715,7 @@ public class Player : Character
 		MyBulletLayer = Common.PlayerBulletLayer;
 
 		hp = Default_Hp;
-		hp = 10000;
+		//hp = 10000;
 
 		enableTeleportation = true;
 
@@ -1220,8 +1220,9 @@ public class Player : Character
 	/// </summary>
 	protected override void dead()
 	{
-		base.dead();
-		//Main.gameOver();
+		//base.dead();
+		canInput = false;
+		Main.gameOver();
 		//Destroy(gameObject);
 	}
 

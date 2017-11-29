@@ -72,6 +72,24 @@ public class GameManager
 		}
 	}
 
+	/// <summary>
+	/// BGM
+	/// </summary>
+	AudioClip[] BGMClips;
+	public AudioClip[] BGMClips_ {
+		get
+		{
+			if (BGMClips == null) {
+				BGMClips = Resources.LoadAll<AudioClip>("Audios/BGM");
+			}
+			return BGMClips;
+		}
+		set
+		{
+			BGMClips = value;
+		}
+	}
+
 	void Start ()
 	{
 		

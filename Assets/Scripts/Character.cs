@@ -254,6 +254,9 @@ public class Character : MonoBehaviour
 
 	protected virtual void OnCollisionEnter(Collision col)
 	{
+		if (!isPlay()) {
+			return;
+		}
 		if (!gameObject.activeSelf) {
 			return;
 		}

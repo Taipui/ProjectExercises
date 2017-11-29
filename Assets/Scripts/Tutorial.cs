@@ -78,6 +78,7 @@ public class Tutorial : MonoBehaviour
 			.Subscribe(_ => {
 				PlayerMes.text = "Press\n<b>F</b> Key";
 				Player.setEnableChange(true);
+				Main.nextStage(System.Convert.ToInt32(name.Substring(5, 1)));
 			})
 			.AddTo(this);
 
