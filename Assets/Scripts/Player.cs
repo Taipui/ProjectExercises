@@ -389,6 +389,44 @@ public class Player : Character
 	[SerializeField]
 	TitleBase Title;
 
+	#region SE関連
+	/// <summary>
+	/// ダメージを受けた時に再生するSEの配列
+	/// </summary>
+	[SerializeField]
+	AudioClip[] DmgSEs;
+	/// <summary>
+	/// ゲームオーバーになった時に再生するSEの配列
+	/// </summary>
+	[SerializeField]
+	AudioClip[] GameOverSEs;
+	/// <summary>
+	/// アイテム取得時のSEの配列
+	/// </summary>
+	[SerializeField]
+	AudioClip[] ItemSEs;
+	/// <summary>
+	/// 雪弾を投げる時のSEの配列
+	/// </summary>
+	[SerializeField]
+	AudioClip[] LaunchSEs;
+	/// <summary>
+	/// ショットガンを撃つ時のSEの配列
+	/// </summary>
+	[SerializeField]
+	AudioClip[] ShotgunLaunchSEs;
+	/// <summary>
+	/// マシンガンを撃つ時のSEの配列
+	/// </summary>
+	[SerializeField]
+	AudioClip[] MachinegunLaunchSEs;
+	/// <summary>
+	/// 雪弾のストックがない状態で発射しようとした時のSEの配列
+	/// </summary>
+	[SerializeField]
+	AudioClip[] EmptySEs;
+	#endregion
+
 	/// <summary>
 	/// 雪弾を取りに行くアニメーションをするためのhiyoko
 	/// </summary>
@@ -977,7 +1015,12 @@ public class Player : Character
 	/// <returns>空ならtrue</returns>
 	bool isEmpty()
 	{
-		return stock.Value <= 0;
+		if (stock.Value <= 0) {
+			audioSource.Stop();
+			audioSource.PlayOneShot(EmptySEs[Random.Range(0, EmptySEs.Length)]);
+			return true;
+		}
+		return false;
 	}
 
 	/// <summary>
@@ -1005,6 +1048,8 @@ public class Player : Character
 		if (Title != null) {
 			Title.playSE(TitleBase.SE.Launch);
 		}
+
+		audioSource.PlayOneShot(LaunchSEs[Random.Range(0, LaunchSEs.Length)]);
 	}
 
 	/// <summary>
@@ -1079,6 +1124,7 @@ public class Player : Character
 	IEnumerator shotgunLaunch()
 	{
 		Main.playSE(Main.SE.ShotgunLaunch, null);
+		audioSource.PlayOneShot(ShotgunLaunchSEs[Random.Range(0, ShotgunLaunchSEs.Length)]);
 
 		var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		var direction = Vector3.zero;
@@ -1124,6 +1170,7 @@ public class Player : Character
 	/// <returns></returns>
 	IEnumerator machinegunLaunch()
 	{
+		audioSource.PlayOneShot(MachinegunLaunchSEs[Random.Range(0, MachinegunLaunchSEs.Length)]);
 		--ItemDurability;
 		for (var i = 0; i < Machinegun_Launch_Num; ++i) {
 			if (stock.Value <= 0) {
@@ -1195,6 +1242,7 @@ public class Player : Character
 			yield break;
 		}
 		HPGos[hp].SetActive(false);
+		audioSource.PlayOneShot(DmgSEs[Random.Range(0, DmgSEs.Length)]);
 		yield return null;
 	}
 
@@ -1223,6 +1271,8 @@ public class Player : Character
 		//base.dead();
 		canInput = false;
 		Main.gameOver();
+		audioSource.Stop();
+		audioSource.PlayOneShot(GameOverSEs[Random.Range(0, GameOverSEs.Length)]);
 		//Destroy(gameObject);
 	}
 
@@ -1307,6 +1357,7 @@ public class Player : Character
 				setItem(index);
 				break;
 		}
+		audioSource.PlayOneShot(ItemSEs[Random.Range(0, ItemSEs.Length)]);
 	}
 
 	void OnDestroy()

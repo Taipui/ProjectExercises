@@ -39559,6 +39559,32 @@ MonoBehaviour:
   LocusDrawColTfm: {fileID: 1939319476}
   Lr: {fileID: 1939319480}
   Title: {fileID: 0}
+  DmgSEs:
+  - {fileID: 8300000, guid: f5f3e09ef248149918ae12fcee944309, type: 3}
+  - {fileID: 8300000, guid: 1fea949ca16274adb8e4a6a9b673d938, type: 3}
+  - {fileID: 8300000, guid: c0cc9bb81e32248d7b64b27359c13a43, type: 3}
+  - {fileID: 8300000, guid: 23e7ee0c4720c4bd48c405abb4ffa7f2, type: 3}
+  - {fileID: 8300000, guid: 14442038946004af3aaf906b64944b5f, type: 3}
+  - {fileID: 8300000, guid: 60e04cb188aff4081a59ce70a1ff20c9, type: 3}
+  - {fileID: 8300000, guid: 8b022f05317f74c7384d83d079aa4428, type: 3}
+  - {fileID: 8300000, guid: 0a5cc4fa350a34a23998ea98dbc02d4b, type: 3}
+  - {fileID: 8300000, guid: 872311653da1a4d1f90f26302192edd5, type: 3}
+  GameOverSEs:
+  - {fileID: 8300000, guid: d7c4040670e28478fbd49fd9b6060ac8, type: 3}
+  - {fileID: 8300000, guid: 874dc2aadd4204ec1987fcd17f8d7fb8, type: 3}
+  - {fileID: 8300000, guid: 91c68039ec5d440779d554f2876d84cc, type: 3}
+  - {fileID: 8300000, guid: 84c678c4c8f2643c1afb6f6ab2ad3293, type: 3}
+  ItemSEs:
+  - {fileID: 8300000, guid: fd78a38399bb64069b2f13cf85d7b9b6, type: 3}
+  LaunchSEs:
+  - {fileID: 8300000, guid: c572d009afc6e44f7a1a311a5d2099fc, type: 3}
+  ShotgunLaunchSEs:
+  - {fileID: 8300000, guid: 330a389a63f06404aba06b59830e123b, type: 3}
+  MachinegunLaunchSEs:
+  - {fileID: 8300000, guid: 3373495a7ec844f93ae7c93adef184c4, type: 3}
+  - {fileID: 8300000, guid: 460213ea8954a4e558d576a727d35c42, type: 3}
+  EmptySEs:
+  - {fileID: 8300000, guid: 542adc815435145d5a9f6fa641352c6a, type: 3}
 --- !u!1 &1437207892
 GameObject:
   m_ObjectHideFlags: 0
