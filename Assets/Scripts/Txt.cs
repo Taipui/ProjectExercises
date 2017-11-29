@@ -37,11 +37,14 @@ public class Txt : MonoBehaviour
 
 	void Start ()
 	{
-		
+
 	}
 
 	void OnCollisionEnter(Collision col)
 	{
+		if (!!Title.IsDecided) {
+			return;
+		}
 		if (!IsCheckCol) {
 			return;
 		}
@@ -50,5 +53,6 @@ public class Txt : MonoBehaviour
 		}
 		Title.setCurrentSelect(Index);
 		Destroy(col.gameObject);
+		Title.setIsDecided();
 	}
 }
