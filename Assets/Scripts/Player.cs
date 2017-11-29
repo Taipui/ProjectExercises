@@ -596,7 +596,7 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isPlay() && !!isLClk() && !isEmpty() && !!permitLaunchItemState())
+		this.UpdateAsObservable().Where(x => currentItemState == ItemState.NoItem && !!isPlay() && !!isLClk() && !isEmpty() && !!permitLaunchItemState())
 			.Subscribe(_ => {
 				--stock.Value;
 			})
