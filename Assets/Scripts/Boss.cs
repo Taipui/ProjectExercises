@@ -50,7 +50,7 @@ public class Boss : Enemy
 		Assert.IsNotNull(PlayerTfm, "PlayerTfm is null");
 		PlayerTfm.UpdateAsObservable().Where(x => !!canInput)
 			.Subscribe(_ => {
-			move();
+				//move();
 		})
 		.AddTo(this);
 
@@ -77,7 +77,9 @@ public class Boss : Enemy
 			var childLauncher = child.gameObject.GetComponent<Launcher>();
 			Assert.IsNotNull(childLauncher, "Child object are not attached to Launcher");
 			Assert.IsNotNull(BulletParentTfm, "BulletParentTfm is null");
+			//var worldPos = transform.TransformPoint(child.position);
 			AI.ShootFixedAngle(new Vector3(child.position.x, child.position.y), PlayerTfm.position, 60.0f, childLauncher, Bullet, BulletParentTfm);
+			//AI.ShootFixedAngle(new Vector3(worldPos.x, worldPos.y), PlayerTfm.position, 60.0f, childLauncher, Bullet, BulletParentTfm);
 			base.launch();
 		}
 	}
