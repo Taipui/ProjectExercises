@@ -425,7 +425,18 @@ public class Player : Character
 	/// </summary>
 	[SerializeField]
 	AudioClip[] EmptySEs;
+	/// <summary>
+	/// 変身時のSEの配列
+	/// </summary>
+	[SerializeField]
+	AudioClip[] TransformSEs;
 	#endregion
+
+	/// <summary>
+	/// 着地時のパーティクルの配列
+	/// </summary>
+	[SerializeField]
+	ParticleSystem[] LandParticle;
 
 	/// <summary>
 	/// 雪弾を取りに行くアニメーションをするためのhiyoko
@@ -902,6 +913,7 @@ public class Player : Character
 		isSp.Value = false;
 		StartCoroutine("disableInput");
 		//Debug.Break();
+		LandParticle[0].Play();
 	}
 
 	/// <summary>
@@ -1281,6 +1293,8 @@ public class Player : Character
 	/// </summary>
 	void changeAvatar()
 	{
+		LandParticle[1].Play();
+		audioSource.PlayOneShot(TransformSEs[Random.Range(0, TransformSEs.Length)]);
 		Main.playSE(Main.SE.Transform, null);
 		currentAvatar = (currentAvatar + 1) % Avatars.Length;
 		foreach (GameObject go in Models) {
