@@ -1769,7 +1769,8 @@ MonoBehaviour:
   MachinegunLaunchSEs: []
   EmptySEs: []
   TransformSEs: []
-  LandParticle: []
+  LandParticle:
+  - {fileID: 1564096477}
 --- !u!54 &171863393
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1837,6 +1838,7 @@ Transform:
   - {fileID: 569570953}
   - {fileID: 726234161}
   - {fileID: 1362696223}
+  - {fileID: 1564096478}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
@@ -20430,6 +20432,79 @@ Transform:
   m_Father: {fileID: 762595007}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1564096476
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 171863396}
+    m_Modifications:
+    - target: {fileID: 4916440926227542, guid: 42ba28fc0815de54c9921150ab676e20, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916440926227542, guid: 42ba28fc0815de54c9921150ab676e20, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916440926227542, guid: 42ba28fc0815de54c9921150ab676e20, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916440926227542, guid: 42ba28fc0815de54c9921150ab676e20, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916440926227542, guid: 42ba28fc0815de54c9921150ab676e20, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916440926227542, guid: 42ba28fc0815de54c9921150ab676e20, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916440926227542, guid: 42ba28fc0815de54c9921150ab676e20, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916440926227542, guid: 42ba28fc0815de54c9921150ab676e20, type: 2}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1218459190427132, guid: 42ba28fc0815de54c9921150ab676e20, type: 2}
+      propertyPath: m_Name
+      value: LandParticle
+      objectReference: {fileID: 0}
+    - target: {fileID: 198109279958170704, guid: 42ba28fc0815de54c9921150ab676e20,
+        type: 2}
+      propertyPath: randomSeed
+      value: 776914058
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916440926227542, guid: 42ba28fc0815de54c9921150ab676e20, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916440926227542, guid: 42ba28fc0815de54c9921150ab676e20, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916440926227542, guid: 42ba28fc0815de54c9921150ab676e20, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 42ba28fc0815de54c9921150ab676e20, type: 2}
+  m_IsPrefabParent: 0
+--- !u!198 &1564096477 stripped
+ParticleSystem:
+  m_PrefabParentObject: {fileID: 198109279958170704, guid: 42ba28fc0815de54c9921150ab676e20,
+    type: 2}
+  m_PrefabInternal: {fileID: 1564096476}
+--- !u!4 &1564096478 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4916440926227542, guid: 42ba28fc0815de54c9921150ab676e20,
+    type: 2}
+  m_PrefabInternal: {fileID: 1564096476}
 --- !u!1 &1581190663
 GameObject:
   m_ObjectHideFlags: 0

@@ -596,7 +596,7 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => currentItemState == ItemState.NoItem && !!isPlay() && !!isLClk() && !isEmpty() && !!permitLaunchItemState() && !IsTitle)
+		this.UpdateAsObservable().Where(x => (currentItemState == ItemState.NoItem || currentItemState == ItemState.Item4) && !!isPlay() && !!isLClk() && !isEmpty() && !!permitLaunchItemState() && !IsTitle)
 			.Subscribe(_ => {
 				--stock.Value;
 			})
@@ -604,7 +604,7 @@ public class Player : Character
 
 		this.UpdateAsObservable().Where(x => !!isPlay() && !!isLClk() && currentItemState == ItemState.Item1)
 			.Subscribe(_ => {
-				StartCoroutine("shotgunLaunch");
+				shotgunLaunch();
 			})
 			.AddTo(this);
 
@@ -1136,7 +1136,7 @@ public class Player : Character
 	/// <summary>
 	/// ショットガン
 	/// </summary>
-	IEnumerator shotgunLaunch()
+	void shotgunLaunch()
 	{
 		Main.playSE(Main.SE.ShotgunLaunch, null);
 		audioSource.PlayOneShot(ShotgunLaunchSEs[Random.Range(0, ShotgunLaunchSEs.Length)]);
@@ -1168,15 +1168,9 @@ public class Player : Character
 				go.GetComponent<Rigidbody>().velocity = vec;
 			}
 			go.layer = Common.PlayerBulletLayer;
-			launchGoCols[i] = go.GetComponent<SphereCollider>();
-			launchGoCols[i].enabled = false;
 		}
 		//Debug.Break();
 		--ItemDurability;
-		yield return new WaitForSeconds(0.1f);
-		for (var i = 0; i < 3; ++i) {
-			launchGoCols[i].enabled = true;
-		}
 	}
 
 	/// <summary>

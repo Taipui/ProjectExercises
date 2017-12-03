@@ -29,6 +29,7 @@ public class Bullet : MonoBehaviour
 	void Start ()
 	{
 		var col = GetComponent<SphereCollider>();
+		col.enabled = false;
 		var isCollide = false;
 
 		this.UpdateAsObservable().Where(x => transform.position.y < Kill_Zone)
@@ -51,5 +52,11 @@ public class Bullet : MonoBehaviour
 			Instantiate(GroundBullet, transform.position, Quaternion.identity);
 		})
 		.AddTo(this);
+
+		Observable.Timer(System.TimeSpan.FromSeconds(0.1f))
+			.Subscribe(_ => {
+				col.enabled = true;
+			})
+			.AddTo(this);
 	}
 }
