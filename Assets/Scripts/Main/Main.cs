@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using DG.Tweening;
+using UniRx;
+using UniRx.Triggers;
 
 /// <summary>
 /// ゲーム全般に関するクラス
@@ -221,6 +223,12 @@ public class Main : MonoBehaviour
 	void Start ()
 	{
 		init();
+
+		this.UpdateAsObservable().Where(x => CurrentGameState == GameState.GameOver && !!Input.anyKeyDown)
+			.Subscribe(_ => {
+				SceneManager.LoadScene(Common.Title_Scene);
+			})
+			.AddTo(this);
 	}
 
 	/// <summary>
