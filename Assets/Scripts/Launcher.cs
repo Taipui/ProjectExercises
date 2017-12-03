@@ -1,17 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// 弾の発射に関するクラス
 /// </summary>
 public class Launcher : MonoBehaviour
 {
-	void Start ()
-	{
-		
-	}
-
 	/// <summary>
 	/// 弾を発射する
 	/// </summary>

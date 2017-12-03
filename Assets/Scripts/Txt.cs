@@ -33,11 +33,6 @@ public class Txt : MonoBehaviour
 	[SerializeField]
 	bool IsCheckCol;
 
-	void Start ()
-	{
-
-	}
-
 	void OnCollisionEnter(Collision col)
 	{
 		if (!IsCheckCol) {

@@ -1,9 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UniRx;
-using UniRx.Triggers;
 
 /// <summary>
 /// ザコ敵に関するクラス
@@ -157,7 +155,7 @@ public class Normal : Enemy
 			return;
 		}
 		var r = Random.Range(0, GameManager.Instance.ItemSprites_.Length + 1);
-		//r = 5;
+		//r = 4;
 		if (r <= 0) {
 			return;
 		}

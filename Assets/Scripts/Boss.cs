@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Assertions;
 using UniRx;
 using UniRx.Triggers;
@@ -50,7 +49,7 @@ public class Boss : Enemy
 		Assert.IsNotNull(PlayerTfm, "PlayerTfm is null");
 		PlayerTfm.UpdateAsObservable().Where(x => !!canInput)
 			.Subscribe(_ => {
-				//move();
+				move();
 		})
 		.AddTo(this);
 

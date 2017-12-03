@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// ちょっとした地面を生成するクラス
@@ -61,10 +59,6 @@ public class SmallGroundCreater : MonoBehaviour
 				createSlope();
 				break;
 		}
-	}
-
-	void Start ()
-	{
 	}
 
 	/// <summary>

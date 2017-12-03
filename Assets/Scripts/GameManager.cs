@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameManager
 {
@@ -89,10 +87,4 @@ public class GameManager
 			BGMClips = value;
 		}
 	}
-
-	void Start ()
-	{
-		
-	}
 }
-
