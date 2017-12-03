@@ -1150,7 +1150,6 @@ public class Player : Character
 		vecs[0] = Vector3.up;
 		vecs[1] = Vector3.right;
 		vecs[2] = Vector3.down;
-		SphereCollider[] launchGoCols = new SphereCollider[3];
 		for (var i = 0; i < 3; ++i) {
 			var go = Instantiate(Bullet, LaunchTfm.position, Quaternion.identity);
 			if (i == 1) {
