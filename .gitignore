@@ -39,3 +39,47 @@ Thumbs.db
 *.log #log files, for some plugins
 *.pyc #python bytecode cache, for some plugins.
 sysinfo.txt #Unity3D Generated File On Crash Reports
+Exe/Game_Data/sharedassets4.assets
+Exe/Game_Data/sharedassets3.assets
+Exe/Game_Data/sharedassets2.assets.resS
+Exe/Game_Data/sharedassets2.assets
+Exe/Game_Data/sharedassets1.resource
+Exe/Game_Data/sharedassets1.assets.resS
+Exe/Game_Data/sharedassets1.assets
+Exe/Game_Data/sharedassets0.assets.resS
+Exe/Game_Data/sharedassets0.assets
+Exe/Game_Data/resources.resource
+Exe/Game_Data/resources.assets.resS
+Exe/Game_Data/resources.assets
+Exe/Game_Data/level5
+Exe/Game_Data/level4
+Exe/Game_Data/level3
+Exe/Game_Data/level2
+Exe/Game_Data/Mono/etc/mono/1.0/machine.config
+Exe/Game_Data/Mono/etc/mono/1.0/DefaultWsdlHelpGenerator.aspx
+Exe/Game_Data/Managed/UnityEngine.dll.mdb
+Assets/Scenes/Sandbox.unity.meta
+Assets/Scenes/Sandbox.unity
+Assets/Models/3DTexts/U.fbx.meta
+Assets/Models/3DTexts/U.fbx
+Exe/Game_Data/sharedassets5.resource
+Exe/Game_Data/sharedassets5.assets.resS
+Exe/Game_Data/sharedassets5.assets
+Exe/Game_Data/sharedassets4.resource
+Exe/Game_Data/sharedassets4.assets.resS
+Exe/Game_Data/level1
+Exe/Game_Data/level0
+Exe/Game_Data/globalgamemanagers.assets
+Exe/Game_Data/globalgamemanagers
+Exe/Game_Data/boot.config
+Exe/Game_Data/app.info
+Exe/Game_Data/Resources/unity_builtin_extra
+Exe/Game_Data/Resources/unity default resources
+Exe/Game_Data/Mono/etc/mono/mconfig/config.xml
+Exe/Game_Data/Mono/etc/mono/config
+Exe/Game_Data/Mono/etc/mono/browscap.ini
+Exe/Game_Data/Mono/etc/mono/2.0/web.config
+Exe/Game_Data/Mono/etc/mono/2.0/settings.map
+Exe/Game_Data/Mono/etc/mono/2.0/machine.config
+Exe/Game_Data/Mono/etc/mono/2.0/DefaultWsdlHelpGenerator.aspx
+Exe/Game_Data/Mono/etc/mono/2.0/Browsers/Compat.browser
