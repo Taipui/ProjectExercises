@@ -76,17 +76,17 @@
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
     </Reference>
-    <Reference Include="DOTween">
-      <HintPath>Assets\Demigiant\DOTween\DOTween.dll</HintPath>
-    </Reference>
-    <Reference Include="TextMeshPro-1.0.55.2017.1.0b12">
-      <HintPath>Assets\TextMesh Pro\Plugins\TextMeshPro-1.0.55.2017.1.0b12.dll</HintPath>
-    </Reference>
     <Reference Include="DemiLib">
       <HintPath>Assets\Demigiant\DemiLib\Core\DemiLib.dll</HintPath>
     </Reference>
+    <Reference Include="DOTween">
+      <HintPath>Assets\Demigiant\DOTween\DOTween.dll</HintPath>
+    </Reference>
     <Reference Include="DOTween43">
       <HintPath>Assets\Demigiant\DOTween\DOTween43.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween46">
+      <HintPath>Assets\Demigiant\DOTween\DOTween46.dll</HintPath>
     </Reference>
     <Reference Include="DOTween50">
       <HintPath>Assets\Demigiant\DOTween\DOTween50.dll</HintPath>
@@ -94,8 +94,8 @@
     <Reference Include="DOTweenPro">
       <HintPath>Assets\Demigiant\DOTweenPro\DOTweenPro.dll</HintPath>
     </Reference>
-    <Reference Include="DOTween46">
-      <HintPath>Assets\Demigiant\DOTween\DOTween46.dll</HintPath>
+    <Reference Include="TextMeshPro-1.0.55.2017.1.0b12">
+      <HintPath>Assets\TextMesh Pro\Plugins\TextMeshPro-1.0.55.2017.1.0b12.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -117,38 +117,38 @@
     <Compile Include="Assets\SAColliderBuilder\Scripts\SABoneColliderChild.cs" />
     <Compile Include="Assets\SAColliderBuilder\Scripts\SAMeshCollider.cs" />
     <Compile Include="Assets\SAColliderBuilder\Scripts\SAMeshColliderBuilder.cs" />
-    <Compile Include="Assets\Scripts\AI.cs" />
-    <Compile Include="Assets\Scripts\Atsumori.cs" />
-    <Compile Include="Assets\Scripts\Boss.cs" />
     <Compile Include="Assets\Scripts\Bullet.cs" />
-    <Compile Include="Assets\Scripts\CameraMover.cs" />
     <Compile Include="Assets\Scripts\Character.cs" />
-    <Compile Include="Assets\Scripts\CircleDeployer.cs" />
-    <Compile Include="Assets\Scripts\Clear.cs" />
+    <Compile Include="Assets\Scripts\Clear\Clear.cs" />
     <Compile Include="Assets\Scripts\Common.cs" />
-    <Compile Include="Assets\Scripts\DestroyCollider.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
-    <Compile Include="Assets\Scripts\Eraser.cs" />
-    <Compile Include="Assets\Scripts\FloatMover.cs" />
-    <Compile Include="Assets\Scripts\GameManager.cs" />
-    <Compile Include="Assets\Scripts\GroundChipEraser.cs" />
-    <Compile Include="Assets\Scripts\GroundCreater.cs" />
     <Compile Include="Assets\Scripts\Launcher.cs" />
     <Compile Include="Assets\Scripts\LaunchTrigger.cs" />
-    <Compile Include="Assets\Scripts\LocusDrawCollider.cs" />
-    <Compile Include="Assets\Scripts\Main.cs" />
+    <Compile Include="Assets\Scripts\Main\AI.cs" />
+    <Compile Include="Assets\Scripts\Main\Atsumori.cs" />
+    <Compile Include="Assets\Scripts\Main\Boss.cs" />
+    <Compile Include="Assets\Scripts\Main\CameraMover.cs" />
+    <Compile Include="Assets\Scripts\Main\CircleDeployer.cs" />
+    <Compile Include="Assets\Scripts\Main\DestroyCollider.cs" />
+    <Compile Include="Assets\Scripts\Main\Eraser.cs" />
+    <Compile Include="Assets\Scripts\Main\FloatMover.cs" />
+    <Compile Include="Assets\Scripts\Main\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Main\GroundChipEraser.cs" />
+    <Compile Include="Assets\Scripts\Main\GroundCreater.cs" />
+    <Compile Include="Assets\Scripts\Main\LocusDrawCollider.cs" />
+    <Compile Include="Assets\Scripts\Main\Main.cs" />
+    <Compile Include="Assets\Scripts\Main\TargetRotator.cs" />
+    <Compile Include="Assets\Scripts\Main\Tutorial.cs" />
     <Compile Include="Assets\Scripts\Normal.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
-    <Compile Include="Assets\Scripts\SceneSelecter.cs" />
     <Compile Include="Assets\Scripts\SmallGroundCreater.cs" />
-    <Compile Include="Assets\Scripts\TargetRotator.cs" />
-    <Compile Include="Assets\Scripts\Title.cs" />
-    <Compile Include="Assets\Scripts\Title1.cs" />
-    <Compile Include="Assets\Scripts\Title2.cs" />
-    <Compile Include="Assets\Scripts\Title3.cs" />
-    <Compile Include="Assets\Scripts\TitleBase.cs" />
-    <Compile Include="Assets\Scripts\Tutorial.cs" />
-    <Compile Include="Assets\Scripts\Txt.cs" />
+    <Compile Include="Assets\Scripts\Title\SceneLoader.cs" />
+    <Compile Include="Assets\Scripts\Title\SceneSelecter.cs" />
+    <Compile Include="Assets\Scripts\Title\Title1.cs" />
+    <Compile Include="Assets\Scripts\Title\Title2.cs" />
+    <Compile Include="Assets\Scripts\Title\Title3.cs" />
+    <Compile Include="Assets\Scripts\Title\TitleBase.cs" />
+    <Compile Include="Assets\Scripts\Title\Txt.cs" />
     <Compile Include="Assets\Scripts\Wind.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples\Scripts\Benchmark01_UGUI.cs" />

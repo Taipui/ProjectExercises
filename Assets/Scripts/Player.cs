@@ -362,7 +362,7 @@ public class Player : Character
 	/// <summary>
 	/// 軌跡を点として記録する間隔
 	/// </summary>
-	const float Sampling_Interval = 0.01f;
+	const float Sampling_Interval = 0.1f;
 	/// <summary>
 	/// 軌跡の点のリスト
 	/// </summary>
@@ -764,7 +764,7 @@ public class Player : Character
 		MyBulletLayer = Common.PlayerBulletLayer;
 
 		hp = Default_Hp;
-		hp = 10000;
+		//hp = 10000;
 
 		enableTeleportation = true;
 
