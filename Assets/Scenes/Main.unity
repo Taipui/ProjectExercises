@@ -2732,7 +2732,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &79796024
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19742,7 +19742,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 1
@@ -42161,6 +42161,27 @@ MonoBehaviour:
   GameOverGo: {fileID: 871546315}
   ClrGo: {fileID: 1150349212}
   FadeImg: {fileID: 540564303}
+  BGMs:
+  - {fileID: 8300000, guid: 368ce2cc61f919b4cba16c81c51f0cfa, type: 3}
+  - {fileID: 8300000, guid: d5d9b64467871534893643bacaf5fb04, type: 3}
+  - {fileID: 8300000, guid: 2a00efba0af356147b84f95204703939, type: 3}
+  - {fileID: 8300000, guid: 7035718e6d3ed75479f6f80fba95e91e, type: 3}
+  - {fileID: 8300000, guid: 506a7fbc23281744eabd1fa5da7a912e, type: 3}
+  - {fileID: 8300000, guid: a1218c1a5954dbe41bbb590ef56c8447, type: 3}
+  - {fileID: 8300000, guid: 2c302791e2b011940b5978e6ad2357f3, type: 3}
+  - {fileID: 8300000, guid: 9e8c2cc417a76cc409135382719348e8, type: 3}
+  - {fileID: 8300000, guid: 3431b6eb6decbc8439d2035928761af9, type: 3}
+  - {fileID: 8300000, guid: e0928c01225510d4d9b7f3cc6ba67c7b, type: 3}
+  - {fileID: 8300000, guid: 1dc692bd5e39f1341b585d7cc6826260, type: 3}
+  - {fileID: 8300000, guid: 30769685a5e695747931f39cfdc751a7, type: 3}
+  - {fileID: 8300000, guid: 245adee6efa203d4d98f251ad2d54fc7, type: 3}
+  - {fileID: 8300000, guid: c517f0ad9d753414fbedba33041e72cf, type: 3}
+  - {fileID: 8300000, guid: 2f2b6f780ba122048ab80b875449cb7d, type: 3}
+  - {fileID: 8300000, guid: b6f8d45e146264744bd0acadc1f262ba, type: 3}
+  - {fileID: 8300000, guid: 9af1b19923270344bad3cfab0ca8cd7e, type: 3}
+  - {fileID: 8300000, guid: 5f19082fc1427714b81c926bf844d4c2, type: 3}
+  - {fileID: 8300000, guid: 58f8656fccf78174491e3745b3956cd1, type: 3}
+  - {fileID: 8300000, guid: 169453da8eec05b4492a481cda3472fc, type: 3}
   BGMAudioSource1: {fileID: 1495790035}
   BGMAudioSource2: {fileID: 1495790037}
   BossBGM: {fileID: 8300000, guid: 557cde9200f01d84c8cb7240addc0fe5, type: 3}

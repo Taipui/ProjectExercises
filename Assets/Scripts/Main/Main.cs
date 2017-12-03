@@ -64,6 +64,8 @@ public class Main : MonoBehaviour
 	#endregion
 
 	#region BGM関連
+	[SerializeField]
+	AudioClip[] BGMs;
 	/// <summary>
 	/// BGMのAudioSource1
 	/// </summary>
@@ -215,9 +217,8 @@ public class Main : MonoBehaviour
 		audioMixer = BGMAudioSource1.outputAudioMixerGroup.audioMixer;
 		currentStage = 1;
 		selectedBGMIds = new List<int>();
-		BGMAudioSource1.clip = GameManager.Instance.BGMClips_[chooseBGMID()];
+		BGMAudioSource1.clip = BGMs[chooseBGMID()];
 		BGMAudioSource1.Play();
-
 	}
 
 	void Start ()
