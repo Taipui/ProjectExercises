@@ -46,6 +46,11 @@ public class GroundCreater : MonoBehaviour
 	int currentWNum;
 
 	/// <summary>
+	/// 一回の生成で生成する列数
+	/// </summary>
+	const int Create_Width_Num = 4;
+
+	/// <summary>
 	/// ゲーム開始時に生成する列数
 	/// </summary>
 	const int Pre_Create_Num = 70;
@@ -91,7 +96,7 @@ public class GroundCreater : MonoBehaviour
 	/// </summary>
 	public void create()
 	{
-		wNum += 2;
+		wNum += Create_Width_Num;
 		stage1();
 		stage2();
 		stage3();
