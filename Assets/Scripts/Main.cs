@@ -224,12 +224,6 @@ public class Main : MonoBehaviour
 	void Start ()
 	{
 		init();
-
-		this.UpdateAsObservable().Where(x => (CurrentGameState == GameState.GameOver || CurrentGameState == GameState.Clr) && !!Input.anyKeyDown)
-			.Subscribe(_ => {
-				SceneManager.LoadScene(Common.Title_Scene);
-			})
-			.AddTo(this);
 	}
 
 	/// <summary>
