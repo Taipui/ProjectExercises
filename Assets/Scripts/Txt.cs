@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// 3D文字に関するクラス
@@ -42,9 +40,6 @@ public class Txt : MonoBehaviour
 
 	void OnCollisionEnter(Collision col)
 	{
-		if (!!Title.IsDecided) {
-			return;
-		}
 		if (!IsCheckCol) {
 			return;
 		}
@@ -53,6 +48,5 @@ public class Txt : MonoBehaviour
 		}
 		Title.setCurrentSelect(Index);
 		Destroy(col.gameObject);
-		Title.setIsDecided();
 	}
 }

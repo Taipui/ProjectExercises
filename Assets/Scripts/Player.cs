@@ -596,7 +596,7 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => currentItemState == ItemState.NoItem && !!isPlay() && !!isLClk() && !isEmpty() && !!permitLaunchItemState())
+		this.UpdateAsObservable().Where(x => currentItemState == ItemState.NoItem && !!isPlay() && !!isLClk() && !isEmpty() && !!permitLaunchItemState() && !IsTitle)
 			.Subscribe(_ => {
 				--stock.Value;
 			})
@@ -764,7 +764,7 @@ public class Player : Character
 		MyBulletLayer = Common.PlayerBulletLayer;
 
 		hp = Default_Hp;
-		//hp = 10000;
+		hp = 10000;
 
 		enableTeleportation = true;
 
@@ -1027,6 +1027,9 @@ public class Player : Character
 	/// <returns>空ならtrue</returns>
 	bool isEmpty()
 	{
+		if (!!IsTitle) {
+			return false;
+		}
 		if (stock.Value <= 0) {
 			audioSource.Stop();
 			audioSource.PlayOneShot(EmptySEs[Random.Range(0, EmptySEs.Length)]);

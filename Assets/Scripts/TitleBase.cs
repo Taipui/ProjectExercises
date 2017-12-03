@@ -81,7 +81,10 @@ public class TitleBase : MonoBehaviour
 		Quit4
 	}
 
-	public bool IsDecided { private set; get; }
+	/// <summary>
+	/// 既に決定したかどうか
+	/// </summary>
+	bool isDecided;
 
 	/// <summary>
 	/// 現在選択しているメニューの番号をセット
@@ -91,14 +94,6 @@ public class TitleBase : MonoBehaviour
 	{
 		currentSelect.Value = val;
 		decide();
-	}
-
-	/// <summary>
-	/// IsDecidedをtrueにする
-	/// </summary>
-	public void setIsDecided()
-	{
-		IsDecided = true;
 	}
 
 	void init()
@@ -116,8 +111,6 @@ public class TitleBase : MonoBehaviour
 			TxtGoRenderers[i].material = Mats[1];
 		}
 		TxtGoRenderers[currentSelect.Value].material = Mats[0];
-
-		IsDecided = false;
 	}
 
 	protected virtual void Start ()
@@ -187,6 +180,10 @@ public class TitleBase : MonoBehaviour
 	/// </summary>
 	protected void decide()
 	{
+		if (!!isDecided) {
+			return;
+		}
+		isDecided = true;
 		TxtGoRenderers[currentSelect.Value].enabled = false;
 		Particles[currentSelect.Value].SetActive(true);
 		//StartCoroutine("loadScene");
