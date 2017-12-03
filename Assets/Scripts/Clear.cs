@@ -18,9 +18,24 @@ public class Clear : MonoBehaviour
 	[SerializeField]
 	Image FadePanel;
 
+	/// <summary>
+	/// 画面遷移が始まったかどうか
+	/// </summary>
+	bool isTransition;
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void init()
+	{
+		isTransition = false;
+	}
+
 	void Start ()
 	{
-		this.UpdateAsObservable().Where(x => !!isInput())
+		init();
+
+		this.UpdateAsObservable().Where(x => !isTransition && !!isInput())
 			.Subscribe(_ => {
 				transition();
 			})
@@ -41,6 +56,11 @@ public class Clear : MonoBehaviour
 	/// </summary>
 	void transition()
 	{
+		if (!!isTransition) {
+			return;
+		}
+		isTransition = true;
+
 		FadePanel.color = Color.clear;
 		DOTween.ToAlpha(
 			() => FadePanel.color,
