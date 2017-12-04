@@ -271,7 +271,7 @@ public class Main : MonoBehaviour
 		var r = 0;
 		do {
 			isDuplication = false;
-			r = Random.Range(0, GameManager.Instance.BGMClips_.Length);
+			r = Random.Range(0, BGMs.Length);
 			for (var i = 0; i < selectedBGMIds.Count; ++i) {
 				if (r == selectedBGMIds[i]) {
 					isDuplication = true;
@@ -300,7 +300,7 @@ public class Main : MonoBehaviour
 			mixerParam1 = mixerParam1.Insert(3, "1");
 			mixerParam2 = mixerParam2.Insert(3, "2");
 		}
-		var clip = GameManager.Instance.BGMClips_[chooseBGMID()];
+		var clip = BGMs[chooseBGMID()];
 		if (!!useBGM1) {
 			BGMAudioSource1.clip = clip;
 			BGMAudioSource1.Play();
@@ -336,6 +336,9 @@ public class Main : MonoBehaviour
 		});
 	}
 
+	/// <summary>
+	/// ボス用のBGMに切り替える
+	/// </summary>
 	void changeBossBGM()
 	{
 		var fadeTime = 1.0f;
