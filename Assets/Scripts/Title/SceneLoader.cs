@@ -29,9 +29,16 @@ public class SceneLoader : MonoBehaviour
 	/// </summary>
 	[SerializeField]
 	Image LoadingCircleImg;
+	/// <summary>
+	/// ロードが完了した時に表示する画像のGameObject
+	/// </summary>
+	[SerializeField]
+	GameObject LoadDoneImgGo;
 
 	IEnumerator Start ()
 	{
+		LoadDoneImgGo.SetActive(false);
+
 		var async = SceneManager.LoadSceneAsync(Common.Main_Scene);
 		async.allowSceneActivation = false;
 
@@ -39,6 +46,8 @@ public class SceneLoader : MonoBehaviour
 
 		StartCoroutine("animLoadTxt");
 		StartCoroutine("animLoadCircle");
+
+		LoadProgressTxt.text = "Initializing...";
 
 		while (async.progress < 0.9f) {
 			LoadProgressSlider.value = async.progress;
@@ -51,6 +60,7 @@ public class SceneLoader : MonoBehaviour
 
 		LoadProgressSlider.value = 1.0f;
 		LoadProgressTxt.text = "100%";
+		LoadDoneImgGo.SetActive(true);
 		//Debug.Log("SceneLoadTime:" + loadTimer);
 
 		//yield return new WaitForSeconds(1);
