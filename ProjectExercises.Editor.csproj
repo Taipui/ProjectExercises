@@ -196,17 +196,10 @@
     <None Include="Assets\Demigiant\DOTweenPro\readme.txt" />
     <None Include="Assets\Demigiant\DemiLib\Core\DemiLib.xml" />
     <None Include="Assets\Demigiant\DemiLib\Core\Editor\DemiEditor.xml" />
-    <None Include="Assets\Demigiant\readme_DOTweenPro.txt" />
-    <None Include="Assets\Movinarc\PackageUninstaller\README.txt" />
-    <None Include="Assets\Plugins\UniRx\ReadMe.txt" />
-    <None Include="Assets\README_SD_UnityChan.txt" />
-    <None Include="Assets\SAColliderBuilder\Readme_en.txt" />
-    <None Include="Assets\SAColliderBuilder\Readme_jp.txt" />
     <None Include="Assets\Shaders\Gradation.shader" />
     <None Include="Assets\Shaders\Masked.shader" />
     <None Include="Assets\Shaders\MaskedUI.shader" />
     <None Include="Assets\Shaders\ProjectorDecal.shader" />
-    <None Include="Assets\Sprites\パーティクル素材2alpha\Readme.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\Anton OFL.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\Bangers - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />

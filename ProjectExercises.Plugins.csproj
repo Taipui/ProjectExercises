@@ -99,19 +99,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Plugins\UniRx\Examples\Sample01_ObservableWWW.cs" />
-    <Compile Include="Assets\Plugins\UniRx\Examples\Sample02_ObservableTriggers.cs" />
-    <Compile Include="Assets\Plugins\UniRx\Examples\Sample03_GameObjectAsObservable.cs" />
-    <Compile Include="Assets\Plugins\UniRx\Examples\Sample04_ConvertFromUnityCallback.cs" />
-    <Compile Include="Assets\Plugins\UniRx\Examples\Sample05_ConvertFromCoroutine.cs" />
-    <Compile Include="Assets\Plugins\UniRx\Examples\Sample06_ConvertToCoroutine.cs" />
-    <Compile Include="Assets\Plugins\UniRx\Examples\Sample07_OrchestratIEnumerator.cs" />
-    <Compile Include="Assets\Plugins\UniRx\Examples\Sample08_DetectDoubleClick.cs" />
-    <Compile Include="Assets\Plugins\UniRx\Examples\Sample09_EventHandling.cs" />
-    <Compile Include="Assets\Plugins\UniRx\Examples\Sample10_MainThreadDispatcher.cs" />
-    <Compile Include="Assets\Plugins\UniRx\Examples\Sample11_Logger.cs" />
-    <Compile Include="Assets\Plugins\UniRx\Examples\Sample12_ReactiveProperty.cs" />
-    <Compile Include="Assets\Plugins\UniRx\Examples\Sample13_ToDoApp.cs" />
     <Compile Include="Assets\Plugins\UniRx\Scripts\Asynchronous\WebRequestExtensions.cs" />
     <Compile Include="Assets\Plugins\UniRx\Scripts\Disposables\BooleanDisposable.cs" />
     <Compile Include="Assets\Plugins\UniRx\Scripts\Disposables\CancellationDisposable.cs" />
@@ -355,17 +342,10 @@
     <None Include="Assets\Demigiant\DOTweenPro\readme.txt" />
     <None Include="Assets\Demigiant\DemiLib\Core\DemiLib.xml" />
     <None Include="Assets\Demigiant\DemiLib\Core\Editor\DemiEditor.xml" />
-    <None Include="Assets\Demigiant\readme_DOTweenPro.txt" />
-    <None Include="Assets\Movinarc\PackageUninstaller\README.txt" />
-    <None Include="Assets\Plugins\UniRx\ReadMe.txt" />
-    <None Include="Assets\README_SD_UnityChan.txt" />
-    <None Include="Assets\SAColliderBuilder\Readme_en.txt" />
-    <None Include="Assets\SAColliderBuilder\Readme_jp.txt" />
     <None Include="Assets\Shaders\Gradation.shader" />
     <None Include="Assets\Shaders\Masked.shader" />
     <None Include="Assets\Shaders\MaskedUI.shader" />
     <None Include="Assets\Shaders\ProjectorDecal.shader" />
-    <None Include="Assets\Sprites\パーティクル素材2alpha\Readme.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\Anton OFL.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\Bangers - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
