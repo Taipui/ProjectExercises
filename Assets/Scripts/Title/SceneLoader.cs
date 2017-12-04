@@ -19,6 +19,16 @@ public class SceneLoader : MonoBehaviour
 	/// </summary>
 	[SerializeField]
 	TextMeshProUGUI LoadProgressTxt;
+	/// <summary>
+	/// Loadingのテキスト
+	/// </summary>
+	[SerializeField]
+	TextMeshProUGUI LoadTxt;
+	/// <summary>
+	/// ロード中を表す円のImage
+	/// </summary>
+	[SerializeField]
+	Image LoadingCircleImg;
 
 	IEnumerator Start ()
 	{
@@ -27,19 +37,65 @@ public class SceneLoader : MonoBehaviour
 
 		var loadTimer = 0.0f;
 
+		StartCoroutine("animLoadTxt");
+		StartCoroutine("animLoadCircle");
+
 		while (async.progress < 0.9f) {
 			LoadProgressSlider.value = async.progress;
 			LoadProgressTxt.text = ((int)(async.progress * 100)).ToString() + '%';
+			Debug.Log(async.progress);
+			Debug.Log((int)(async.progress * 100) + '%');
 			loadTimer += Time.deltaTime;
 			yield return new WaitForEndOfFrame();
 		}
 
 		LoadProgressSlider.value = 1.0f;
 		LoadProgressTxt.text = "100%";
-		Debug.Log("SceneLoadTime:" + loadTimer);
+		//Debug.Log("SceneLoadTime:" + loadTimer);
 
 		//yield return new WaitForSeconds(1);
 
-		async.allowSceneActivation = true;		
+		async.allowSceneActivation = true;
+	}
+
+	/// <summary>
+	/// Loadingの文字をアニメーションする
+	/// </summary>
+	/// <returns></returns>
+	IEnumerator animLoadTxt()
+	{
+		var cnt = 0;
+		while (true) {
+			switch (cnt++) {
+				case 0:
+					LoadTxt.text = "Loading.";
+					break;
+				case 1:
+					LoadTxt.text = "Loading..";
+					break;
+				case 2:
+					LoadTxt.text = "Loading...";
+					break;
+			}
+			cnt %= 3;
+			yield return new WaitForSeconds(1.0f);
+		}
+	}
+
+	/// <summary>
+	/// ロード中を表す円をアニメーションする
+	/// </summary>
+	/// <returns></returns>
+	IEnumerator animLoadCircle()
+	{
+		var fillAmount = 0.0f;
+		while (true) {
+			fillAmount += Time.deltaTime;
+			if (fillAmount >= 1.0f) {
+				fillAmount = 0.0f;
+			}
+			LoadingCircleImg.fillAmount = fillAmount;
+			yield return new WaitForEndOfFrame();
+		}
 	}
 }
