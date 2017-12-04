@@ -41,10 +41,10 @@ public class TitleBase : MonoBehaviour
 	Image FadePanel;
 
 	/// <summary>
-	/// Loadingの文字のGameObject
+	/// ロード画面を表示するPrefab
 	/// </summary>
 	[SerializeField]
-	GameObject LoadingTxtGo;
+	GameObject LoadCanvasPrefab;
 
 	/// <summary>
 	/// SEの配列
@@ -102,7 +102,6 @@ public class TitleBase : MonoBehaviour
 			Particles[i].SetActive(false);
 		}
 		FadePanel.color = Color.clear;
-		LoadingTxtGo.SetActive(false);
 
 		audioSource = GetComponent<AudioSource>();
 
@@ -199,8 +198,7 @@ public class TitleBase : MonoBehaviour
 			1.0f
 		).OnComplete(() => {
 			if (currentSelect.Value == 0) {
-				LoadingTxtGo.SetActive(true);
-				SceneManager.LoadScene(Common.Main_Scene);
+				Instantiate(LoadCanvasPrefab);
 			} else {
 				Application.Quit();
 			}
