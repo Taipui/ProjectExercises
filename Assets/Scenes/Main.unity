@@ -1422,7 +1422,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4925846867578686, guid: 3e860de71b06acc4db76d4675604ec94, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 93.34
+      value: 91.84
       objectReference: {fileID: 0}
     - target: {fileID: 4925846867578686, guid: 3e860de71b06acc4db76d4675604ec94, type: 2}
       propertyPath: m_LocalPosition.y
@@ -12798,7 +12798,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4925846867578686, guid: 3e860de71b06acc4db76d4675604ec94, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 120.15
+      value: 118.62
       objectReference: {fileID: 0}
     - target: {fileID: 4925846867578686, guid: 3e860de71b06acc4db76d4675604ec94, type: 2}
       propertyPath: m_LocalPosition.y
@@ -22365,7 +22365,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1197754704}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 100, y: 0.5, z: 0}
+  m_LocalPosition: {x: 100, y: 1.5, z: 0}
   m_LocalScale: {x: 30, y: 30, z: 30}
   m_Children:
   - {fileID: 1648882193}
@@ -33714,14 +33714,14 @@ MonoBehaviour:
   upDirection: {x: 0, y: 1, z: 0}
   tweenRigidbody: 0
   wps:
-  - {x: 104, y: 4.5, z: 0}
-  - {x: 108, y: 0.5, z: 0}
-  - {x: 104, y: -3.5, z: 0}
+  - {x: 104, y: 5.5, z: 0}
+  - {x: 108, y: 1.5, z: 0}
+  - {x: 104, y: -2.5, z: 0}
   fullWps: []
   path:
     wpLengths:
     - 0
-    - 5.938568
+    - 5.9385676
     - 5.9385676
     - 5.938568
     - 5.9385676
@@ -33729,15 +33729,15 @@ MonoBehaviour:
     subdivisionsXSegment: 10
     subdivisions: 50
     wps:
-    - {x: 100, y: 0.5, z: 0}
-    - {x: 104, y: 4.5, z: 0}
-    - {x: 108, y: 0.5, z: 0}
-    - {x: 104, y: -3.5, z: 0}
-    - {x: 100, y: 0.5, z: 0}
+    - {x: 100, y: 1.5, z: 0}
+    - {x: 104, y: 5.5, z: 0}
+    - {x: 108, y: 1.5, z: 0}
+    - {x: 104, y: -2.5, z: 0}
+    - {x: 100, y: 1.5, z: 0}
     controlPoints:
-    - a: {x: 104, y: -3.5, z: 0}
+    - a: {x: 104, y: -2.5, z: 0}
       b: {x: 0, y: 0, z: 0}
-    - a: {x: 104, y: 4.5, z: 0}
+    - a: {x: 104, y: 5.5, z: 0}
       b: {x: 0, y: 0, z: 0}
     length: 23.763302
     isFinalized: 1
@@ -33852,7 +33852,7 @@ MonoBehaviour:
   showIndexes: 1
   showWpLength: 0
   pathColor: {r: 1, g: 1, b: 1, a: 0.5}
-  lastSrcPosition: {x: 100, y: 0.5, z: 0}
+  lastSrcPosition: {x: 100, y: 1.5, z: 0}
   wpsDropdown: 1
   dropToFloorOffset: 0
 --- !u!114 &1197754712

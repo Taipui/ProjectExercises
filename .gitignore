@@ -83,3 +83,5 @@ Exe/Game_Data/Mono/etc/mono/2.0/settings.map
 Exe/Game_Data/Mono/etc/mono/2.0/machine.config
 Exe/Game_Data/Mono/etc/mono/2.0/DefaultWsdlHelpGenerator.aspx
 Exe/Game_Data/Mono/etc/mono/2.0/Browsers/Compat.browser
+Assets/Scripts/Sandbox.cs.meta
+Assets/Scripts/Sandbox.cs
