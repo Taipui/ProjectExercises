@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 /// <summary>
 /// Mainシーンを読み込む
@@ -41,9 +42,24 @@ public class SceneLoader : MonoBehaviour
 	[SerializeField]
 	bool IsLoad;
 
-	IEnumerator Start ()
+	/// <summary>
+	/// フェードアウトに使用するPanelのImage
+	/// </summary>
+	[SerializeField]
+	Image FadeImg;
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void init()
 	{
 		LoadDoneImgGo.SetActive(false);
+		FadeImg.color = Color.clear;
+	}
+
+	IEnumerator Start ()
+	{
+		init();
 
 		if (!IsLoad) {
 			yield break;
@@ -66,8 +82,19 @@ public class SceneLoader : MonoBehaviour
 
 			yield return new WaitForEndOfFrame();
 		}
+		StopCoroutine("animLoadTxt");
+		LoadDoneImgGo.SetActive(true);
+		LoadProgressSlider.value = 100.0f;
+		LoadTxt.text = "Done!";
 
-		async.allowSceneActivation = true;
+		DOTween.ToAlpha(
+			() => FadeImg.color,
+			color => FadeImg.color = color,
+			1.0f,
+			1.0f
+		).OnComplete(() => {
+			async.allowSceneActivation = true;
+		});
 	}
 
 	/// <summary>
