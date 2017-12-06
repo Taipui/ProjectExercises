@@ -12,10 +12,10 @@ using UniRx.Triggers;
 public class Main : MonoBehaviour
 {
 	/// <summary>
-	/// ゲームオーバー時に表示するGameObject
+	/// ゲームオーバー時に表示するGameObjectの配列
 	/// </summary>
 	[SerializeField]
-	GameObject GameOverGo;
+	GameObject[] GameOverGos;
 	/// <summary>
 	/// クリア時に表示するGameObject
 	/// </summary>
@@ -158,7 +158,7 @@ public class Main : MonoBehaviour
 	public void gameOver()
 	{
 		CurrentGameState = GameState.GameOver;
-		GameOverGo.SetActive(true);
+		GameOverGos[0].SetActive(true);
 		BGMAudioSource1.Stop();
 		BGMAudioSource2.Stop();
 	}
@@ -205,8 +205,8 @@ public class Main : MonoBehaviour
 	{
 		Common.setCursor();
 		CurrentGameState = GameState.Play;
-		if (GameOverGo != null) {
-			GameOverGo.SetActive(false);
+		for (var i = 0; i < GameOverGos.Length; ++i) {
+			GameOverGos[i].SetActive(false);
 		}
 		if (ClrGo != null) {
 			ClrGo.SetActive(false);
@@ -227,6 +227,7 @@ public class Main : MonoBehaviour
 
 		this.UpdateAsObservable().Where(x => CurrentGameState == GameState.GameOver && !!Input.anyKeyDown)
 			.Subscribe(_ => {
+				GameOverGos[1].SetActive(true);
 				SceneManager.LoadScene(Common.Title_Scene);
 			})
 			.AddTo(this);
