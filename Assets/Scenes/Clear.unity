@@ -7437,7 +7437,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1252054009
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7557,15 +7557,15 @@ MonoBehaviour:
   path:
     wpLengths:
     - 0
-    - 530.6465
+    - 548.9315
     type: 0
     subdivisionsXSegment: 10
     subdivisions: 20
     wps:
-    - {x: 469.35364, y: 74.273506, z: 0}
+    - {x: 451.0756, y: 71.38107, z: 0}
     - {x: 1000.0001, y: 74.14661, z: 0}
     controlPoints: []
-    length: 530.6465
+    length: 548.9315
     isFinalized: 1
     timesTable:
     - 0
@@ -7580,7 +7580,7 @@ MonoBehaviour:
   showIndexes: 1
   showWpLength: 0
   pathColor: {r: 1, g: 1, b: 1, a: 0.5}
-  lastSrcPosition: {x: 469.35364, y: 74.273506, z: 0}
+  lastSrcPosition: {x: 451.0756, y: 71.38107, z: 0}
   wpsDropdown: 1
   dropToFloorOffset: 0
 --- !u!114 &1252054011
@@ -7707,7 +7707,8 @@ MonoBehaviour:
   m_text: CLEAR!!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b7083220cfed21844bac2c9ca50412d8, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: d65098aea3ceffa4c857c7aaf7b1fe53, type: 2}
+  m_sharedMaterial: {fileID: 21125847559455664, guid: b7083220cfed21844bac2c9ca50412d8,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7715,12 +7716,12 @@ MonoBehaviour:
     serializedVersion: 2
     rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
-  m_enableVertexGradient: 0
+  m_enableVertexGradient: 1
   m_fontColorGradient:
-    topLeft: {r: 0.99215686, g: 0.105882354, b: 0.13333334, a: 1}
+    topLeft: {r: 1, g: 0.88965523, b: 0, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 0.3372549, g: 0.20392157, b: 0.7411765, a: 1}
+    bottomRight: {r: 1, g: 0.8901961, b: 0, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
@@ -7894,7 +7895,7 @@ Transform:
   m_GameObject: {fileID: 1491500136}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 10, y: 1, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -7977,6 +7978,7 @@ GameObject:
   - component: {fileID: 1876938818}
   - component: {fileID: 1876938817}
   - component: {fileID: 1876938822}
+  - component: {fileID: 1876938823}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -8071,6 +8073,14 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!45 &1876938823
+Skybox:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1876938816}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 2100000, guid: 20d4f77b9022eab48b4d94599ed4bf82, type: 2}
 --- !u!1 &1941367323
 GameObject:
   m_ObjectHideFlags: 0
