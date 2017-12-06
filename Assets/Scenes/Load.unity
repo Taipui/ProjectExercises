@@ -668,7 +668,7 @@ MonoBehaviour:
   LoadTxt: {fileID: 27196460}
   LoadingCircleImg: {fileID: 1666446395}
   LoadDoneImgGo: {fileID: 1293146477}
-  IsLoad: 1
+  IsLoad: 0
 --- !u!114 &1131158658
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -31,7 +31,7 @@ public class Piyo : MonoBehaviour
 	/// </summary>
 	void init()
 	{
-		ColIndex = -1;
+
 	}
 
 	void Start ()
