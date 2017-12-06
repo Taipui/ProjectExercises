@@ -203,7 +203,6 @@ public class Main : MonoBehaviour
 	/// </summary>
 	void init()
 	{
-		Common.setCursor();
 		CurrentGameState = GameState.Play;
 		for (var i = 0; i < GameOverGos.Length; ++i) {
 			GameOverGos[i].SetActive(false);

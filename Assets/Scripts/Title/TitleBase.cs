@@ -91,6 +91,7 @@ public class TitleBase : MonoBehaviour
 
 	void init()
 	{
+		Common.setCursor();
 		currentSelect.Value = 0;
 		for (var i = 0; i < Particles.Length; ++i) {
 			Particles[i].SetActive(false);
