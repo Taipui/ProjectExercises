@@ -47,23 +47,36 @@ public class SceneLoader : MonoBehaviour
 		StartCoroutine("animLoadTxt");
 		StartCoroutine("animLoadCircle");
 
-		LoadProgressTxt.text = "Initializing...";
+		//LoadProgressTxt.text = "Initializing...";
 
-		while (async.progress < 0.9f) {
-			LoadProgressSlider.value = async.progress;
-			LoadProgressTxt.text = ((int)(async.progress * 100)).ToString() + '%';
-			Debug.Log(async.progress);
-			Debug.Log((int)(async.progress * 100) + '%');
-			loadTimer += Time.deltaTime;
-			yield return new WaitForEndOfFrame();
-		}
+		//while (async.progress < 0.9f) {
+		//	LoadProgressSlider.value = async.progress;
+		//	LoadProgressTxt.text = ((int)(async.progress * 100)).ToString() + '%';
+		//	Debug.Log(async.progress);
+		//	Debug.Log((int)(async.progress * 100) + '%');
+		//	loadTimer += Time.deltaTime;
+		//	yield return new WaitForEndOfFrame();
+		//}
 
-		LoadProgressSlider.value = 1.0f;
-		LoadProgressTxt.text = "100%";
-		LoadDoneImgGo.SetActive(true);
+		//LoadProgressSlider.value = 1.0f;
+		//LoadProgressTxt.text = "100%";
+		//LoadDoneImgGo.SetActive(true);
 		//Debug.Log("SceneLoadTime:" + loadTimer);
 
 		//yield return new WaitForSeconds(1);
+
+		//async.allowSceneActivation = true;
+
+
+		var loadTime = 30.0f;
+
+		while (loadTimer < loadTime) {
+			loadTimer += Time.deltaTime;
+			var progress = (100 * loadTimer) / loadTime;
+			LoadProgressSlider.value = progress;
+			LoadProgressTxt.text = "<mspace=1.15em>" + progress.ToString("F1") + "%</mspace>";
+			yield return new WaitForEndOfFrame();
+		}
 
 		async.allowSceneActivation = true;
 	}
