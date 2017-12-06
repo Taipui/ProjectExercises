@@ -41,6 +41,12 @@ public class TitleBase : MonoBehaviour
 	Image FadePanel;
 
 	/// <summary>
+	/// ロード用のシーンへつなぐためのUIを表示するCanvasのPrefab
+	/// </summary>
+	[SerializeField]
+	GameObject LoadCanvasPrefab;
+
+	/// <summary>
 	/// SEの配列
 	/// </summary>
 	[SerializeField]
@@ -193,6 +199,8 @@ public class TitleBase : MonoBehaviour
 			1.0f
 		).OnComplete(() => {
 			if (currentSelect.Value == 0) {
+				Instantiate(LoadCanvasPrefab);
+				Cursor.visible = false;
 				SceneManager.LoadScene(Common.Load_Scene);
 			} else {
 				Application.Quit();

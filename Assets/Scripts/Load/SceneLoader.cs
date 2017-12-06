@@ -53,6 +53,7 @@ public class SceneLoader : MonoBehaviour
 	/// </summary>
 	void init()
 	{
+		Cursor.visible = true;
 		LoadDoneImgGo.SetActive(false);
 		FadeImg.color = Color.clear;
 	}
@@ -85,7 +86,7 @@ public class SceneLoader : MonoBehaviour
 		StopCoroutine("animLoadTxt");
 		LoadDoneImgGo.SetActive(true);
 		LoadProgressSlider.value = 100.0f;
-		LoadTxt.text = "Done!";
+		LoadTxt.text = "<align=center>Done!";
 
 		DOTween.ToAlpha(
 			() => FadeImg.color,

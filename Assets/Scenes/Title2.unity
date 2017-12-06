@@ -307,7 +307,7 @@ MonoBehaviour:
   - {fileID: 1225088053}
   - {fileID: 1566410761}
   FadePanel: {fileID: 1633103971}
-  LoadCanvasPrefab: {fileID: 1636090219599794, guid: 09ca3824e35931f40ab59e27da7bd1ed,
+  LoadCanvasPrefab: {fileID: 1507330104691176, guid: 09ca3824e35931f40ab59e27da7bd1ed,
     type: 2}
   SEs:
   - {fileID: 8300000, guid: 462af1a648d3917419f5115c062963fd, type: 3}
