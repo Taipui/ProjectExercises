@@ -56,27 +56,6 @@ public class SceneLoader : MonoBehaviour
 		StartCoroutine("animLoadTxt");
 		StartCoroutine("animLoadCircle");
 
-		//LoadProgressTxt.text = "Initializing...";
-
-		//while (async.progress < 0.9f) {
-		//	LoadProgressSlider.value = async.progress;
-		//	LoadProgressTxt.text = ((int)(async.progress * 100)).ToString() + '%';
-		//	Debug.Log(async.progress);
-		//	Debug.Log((int)(async.progress * 100) + '%');
-		//	loadTimer += Time.deltaTime;
-		//	yield return new WaitForEndOfFrame();
-		//}
-
-		//LoadProgressSlider.value = 1.0f;
-		//LoadProgressTxt.text = "100%";
-		//LoadDoneImgGo.SetActive(true);
-		//Debug.Log("SceneLoadTime:" + loadTimer);
-
-		//yield return new WaitForSeconds(1);
-
-		//async.allowSceneActivation = true;
-
-
 		var loadTime = 30.0f;
 
 		while (loadTimer < loadTime) {
@@ -85,9 +64,6 @@ public class SceneLoader : MonoBehaviour
 			LoadProgressSlider.value = progress;
 			LoadProgressTxt.text = "<mspace=1.15em>" + progress.ToString("F1") + "%</mspace>";
 
-			//if (async.progress >= 0.9f) {
-			//	LoadDoneImgGo.SetActive(true);
-			//}
 			yield return new WaitForEndOfFrame();
 		}
 
