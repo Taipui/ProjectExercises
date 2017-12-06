@@ -35,10 +35,19 @@ public class SceneLoader : MonoBehaviour
 	[SerializeField]
 	GameObject LoadDoneImgGo;
 
+	/// <summary>
+	/// シーンをロードするかどうか
+	/// </summary>
+	[SerializeField]
+	bool IsLoad;
+
 	IEnumerator Start ()
 	{
 		LoadDoneImgGo.SetActive(false);
 
+		if (!IsLoad) {
+			yield break;
+		}
 		var async = SceneManager.LoadSceneAsync(Common.Main_Scene);
 		async.allowSceneActivation = false;
 
@@ -75,6 +84,10 @@ public class SceneLoader : MonoBehaviour
 			var progress = (100 * loadTimer) / loadTime;
 			LoadProgressSlider.value = progress;
 			LoadProgressTxt.text = "<mspace=1.15em>" + progress.ToString("F1") + "%</mspace>";
+
+			//if (async.progress >= 0.9f) {
+			//	LoadDoneImgGo.SetActive(true);
+			//}
 			yield return new WaitForEndOfFrame();
 		}
 

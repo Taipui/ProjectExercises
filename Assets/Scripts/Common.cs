@@ -11,6 +11,10 @@ public static class Common
 	/// </summary>
 	public const string Title_Scene = "Title";
 	/// <summary>
+	/// Mainシーンをロードするためのシーン
+	/// </summary>
+	public const string Load_Scene = "Load";
+	/// <summary>
 	/// メイン
 	/// </summary>
 	public const string Main_Scene = "Main";

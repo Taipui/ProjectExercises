@@ -41,12 +41,6 @@ public class TitleBase : MonoBehaviour
 	Image FadePanel;
 
 	/// <summary>
-	/// ロード画面を表示するPrefab
-	/// </summary>
-	[SerializeField]
-	GameObject LoadCanvasPrefab;
-
-	/// <summary>
 	/// SEの配列
 	/// </summary>
 	[SerializeField]
@@ -198,32 +192,11 @@ public class TitleBase : MonoBehaviour
 			1.0f
 		).OnComplete(() => {
 			if (currentSelect.Value == 0) {
-				Instantiate(LoadCanvasPrefab);
+				SceneManager.LoadScene(Common.Load_Scene);
 			} else {
 				Application.Quit();
 			}
 		});
-	}
-
-	/// <summary>
-	/// 非同期でシーンを読み込む(画面が固まる)
-	/// </summary>
-	/// <returns></returns>
-	IEnumerator loadScene()
-	{
-		var async = SceneManager.LoadSceneAsync(Common.Main_Scene);
-		async.allowSceneActivation = false;
-
-		while (async.progress < 0.9f) {
-			Debug.Log(async.progress);
-			yield return new WaitForEndOfFrame();
-		}
-
-		Debug.Log("Scene Loaded");
-
-		yield return new WaitForSeconds(1);
-
-		async.allowSceneActivation = true;
 	}
 
 	/// <summary>

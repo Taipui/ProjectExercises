@@ -20913,6 +20913,8 @@ MonoBehaviour:
   FadePanel: {fileID: 1221937352}
   LoadCanvasPrefab: {fileID: 1636090219599794, guid: 09ca3824e35931f40ab59e27da7bd1ed,
     type: 2}
+  LoadGamePrefab: {fileID: 1477844420526304, guid: e40a2f219369b7941b38ff11a18382a4,
+    type: 2}
   SEs:
   - {fileID: 8300000, guid: 462af1a648d3917419f5115c062963fd, type: 3}
   - {fileID: 8300000, guid: d790586617f6cc342bc89ae8cfbeed27, type: 3}
