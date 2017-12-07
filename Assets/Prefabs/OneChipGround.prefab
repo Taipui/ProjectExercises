@@ -21,9 +21,9 @@ GameObject:
   - component: {fileID: 4538480500371342}
   - component: {fileID: 212265954139836546}
   - component: {fileID: 65355615889871540}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: OneChipGround
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
