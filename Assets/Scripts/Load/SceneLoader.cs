@@ -53,7 +53,6 @@ public class SceneLoader : MonoBehaviour
 	/// </summary>
 	void init()
 	{
-		Cursor.visible = true;
 		LoadDoneImgGo.SetActive(false);
 		FadeImg.color = Color.clear;
 	}
@@ -65,6 +64,8 @@ public class SceneLoader : MonoBehaviour
 		if (!IsLoad) {
 			yield break;
 		}
+		LoadProgressTxt.text = "<mspace=1.15em>0.0%</mspace>";
+		yield return new WaitForEndOfFrame();
 		var async = SceneManager.LoadSceneAsync(Common.Main_Scene);
 		async.allowSceneActivation = false;
 

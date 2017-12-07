@@ -41,12 +41,6 @@ public class TitleBase : MonoBehaviour
 	Image FadePanel;
 
 	/// <summary>
-	/// ロード用のシーンへつなぐためのUIを表示するCanvasのPrefab
-	/// </summary>
-	[SerializeField]
-	GameObject LoadCanvasPrefab;
-
-	/// <summary>
 	/// SEの配列
 	/// </summary>
 	[SerializeField]
@@ -185,12 +179,10 @@ public class TitleBase : MonoBehaviour
 		isDecided = true;
 		TxtGoRenderers[currentSelect.Value].enabled = false;
 		Particles[currentSelect.Value].SetActive(true);
-		//StartCoroutine("loadScene");
 		if (currentSelect.Value == 0) {
 			playSE((SE)System.Enum.ToObject(typeof(SE), Random.Range((int)SE.Start1, ((int)SE.Start2) + 1)));
 		} else {
 			playSE((SE)System.Enum.ToObject(typeof(SE), Random.Range((int)SE.Quit1, ((int)SE.Quit3) + 1)));
-			//playSE(SE.Quit4);
 		}
 		DOTween.ToAlpha(
 			() => FadePanel.color,
@@ -199,8 +191,6 @@ public class TitleBase : MonoBehaviour
 			1.0f
 		).OnComplete(() => {
 			if (currentSelect.Value == 0) {
-				Instantiate(LoadCanvasPrefab);
-				Cursor.visible = false;
 				SceneManager.LoadScene(Common.Load_Scene);
 			} else {
 				Application.Quit();
