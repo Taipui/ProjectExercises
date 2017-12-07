@@ -49,6 +49,27 @@ public class SceneLoader : MonoBehaviour
 	Image FadeImg;
 
 	/// <summary>
+	/// ロードの進捗を表す
+	/// </summary>
+	float tmpProgress;
+	public float TmpProgress {
+		get
+		{
+			return tmpProgress;
+		}
+		set
+		{
+			tmpProgress = value;
+			LoadProgressSlider.value = tmpProgress;
+			LoadProgressTxt.text = "<mspace=1.15em>" + tmpProgress.ToString("F1") + "</mspace>" + '%';
+		}
+	}
+	/// <summary>
+	/// ロードの進捗の%のアニメーションの速度
+	/// </summary>
+	const float Load_Progress_Anim_Speed = 2.0f;
+
+	/// <summary>
 	/// 初期化
 	/// </summary>
 	void init()
@@ -57,37 +78,58 @@ public class SceneLoader : MonoBehaviour
 		FadeImg.color = Color.clear;
 	}
 
-	IEnumerator Start ()
+	IEnumerator Start()
 	{
 		init();
 
 		if (!IsLoad) {
 			yield break;
 		}
-		LoadProgressTxt.text = "<mspace=1.15em>0.0%</mspace>";
+
+		var cnt = 0;
+		if (GameManager.Instance.BGMs_ == null) {
+			// BGMのロード
+			GameManager.Instance.BGMs_ = new AudioClip[20];
+			while (true) {
+				var resReq = Resources.LoadAsync<AudioClip>("BGM/bgm" + (cnt + 1).ToString());
+
+				LoadTxt.text = "Loading BGM(" + (cnt + 1).ToString() + '/' + GameManager.Instance.BGMs_.Length.ToString() + ")...";
+				DOTween.To(
+					() => TmpProgress,
+					(x) => TmpProgress = x,
+					//(100 * (cnt + 1)) / (GameManager.Instance.BGMs_.Length + 1),
+					(100 * (cnt + 1)) / GameManager.Instance.BGMs_.Length,
+					Load_Progress_Anim_Speed
+				).SetEase(Ease.Linear);
+
+				while (!resReq.isDone) {
+					yield return 0;
+				}
+
+				GameManager.Instance.BGMs_[cnt] = resReq.asset as AudioClip;
+			
+				if (++cnt >= GameManager.Instance.BGMs_.Length) {
+					break;
+				}
+			}
+		} else {
+			TmpProgress = 100.0f;
+			cnt = 20;
+		}
+
+		// シーンのロード
 		yield return new WaitForEndOfFrame();
 		var async = SceneManager.LoadSceneAsync(Common.Main_Scene);
 		async.allowSceneActivation = false;
 
-		var loadTimer = 0.0f;
-
-		StartCoroutine("animLoadTxt");
-		StartCoroutine("animLoadCircle");
-
-		var loadTime = 30.0f;
-
-		while (loadTimer < loadTime) {
-			loadTimer += Time.deltaTime;
-			var progress = (100 * loadTimer) / loadTime;
-			LoadProgressSlider.value = progress;
-			LoadProgressTxt.text = "<mspace=1.15em>" + progress.ToString("F1") + "%</mspace>";
-
-			yield return new WaitForEndOfFrame();
-		}
-		StopCoroutine("animLoadTxt");
+		//LoadTxt.text = "Loading scene...";
 		LoadDoneImgGo.SetActive(true);
-		LoadProgressSlider.value = 100.0f;
 		LoadTxt.text = "<align=center>Done!";
+		TmpProgress = 100.0f;
+
+		while (async.progress < 0.9f) {
+			yield return 0;
+		}
 
 		DOTween.ToAlpha(
 			() => FadeImg.color,
@@ -97,6 +139,25 @@ public class SceneLoader : MonoBehaviour
 		).OnComplete(() => {
 			async.allowSceneActivation = true;
 		});
+
+		//DOTween.To(
+		//	() => TmpProgress,
+		//	(x) => TmpProgress = x,
+		//	(100 * (cnt + 1)) / (GameManager.Instance.BGMs_.Length + 1),
+		//	Load_Progress_Anim_Speed
+		//	).SetEase(Ease.Linear)
+		//	.OnComplete(() => {
+		//		LoadTxt.text = "<align=center>Done!";
+
+		//		DOTween.ToAlpha(
+		//			() => FadeImg.color,
+		//			color => FadeImg.color = color,
+		//			1.0f,
+		//			1.0f
+		//		).OnComplete(() => {
+		//			async.allowSceneActivation = true;
+		//		});
+		//	});
 	}
 
 	/// <summary>

@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// ゲーム内で使用するリソースを管理するクラス
+/// </summary>
 public class GameManager
 {
 	static GameManager instance = new GameManager();
@@ -67,6 +70,21 @@ public class GameManager
 		set
 		{
 			ItemMatsUI = value;
+		}
+	}
+
+	/// <summary>
+	/// BGMの配列
+	/// </summary>
+	AudioClip[] BGMs;
+	public AudioClip[] BGMs_ {
+		get
+		{
+			return BGMs;
+		}
+		set
+		{
+			BGMs = value;
 		}
 	}
 }

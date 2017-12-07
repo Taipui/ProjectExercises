@@ -64,8 +64,6 @@ public class Main : MonoBehaviour
 	#endregion
 
 	#region BGM関連
-	[SerializeField]
-	AudioClip[] BGMs;
 	/// <summary>
 	/// BGMのAudioSource1
 	/// </summary>
@@ -216,7 +214,7 @@ public class Main : MonoBehaviour
 		audioMixer = BGMAudioSource1.outputAudioMixerGroup.audioMixer;
 		currentStage = 1;
 		selectedBGMIds = new List<int>();
-		BGMAudioSource1.clip = BGMs[chooseBGMID()];
+		BGMAudioSource1.clip = GameManager.Instance.BGMs_[chooseBGMID()];
 		BGMAudioSource1.Play();
 	}
 
@@ -271,7 +269,7 @@ public class Main : MonoBehaviour
 		var r = 0;
 		do {
 			isDuplication = false;
-			r = Random.Range(0, BGMs.Length);
+			r = Random.Range(0, GameManager.Instance.BGMs_.Length);
 			for (var i = 0; i < selectedBGMIds.Count; ++i) {
 				if (r == selectedBGMIds[i]) {
 					isDuplication = true;
@@ -300,7 +298,7 @@ public class Main : MonoBehaviour
 			mixerParam1 = mixerParam1.Insert(3, "1");
 			mixerParam2 = mixerParam2.Insert(3, "2");
 		}
-		var clip = BGMs[chooseBGMID()];
+		var clip = GameManager.Instance.BGMs_[chooseBGMID()];
 		if (!!useBGM1) {
 			BGMAudioSource1.clip = clip;
 			BGMAudioSource1.Play();
