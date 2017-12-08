@@ -8,6 +8,10 @@ public class SceneSelecter : MonoBehaviour
 {
 	void Start ()
 	{
+		if (GameManager.Instance.BGMs_ == null) {
+			Instantiate(Resources.Load("Prefabs/BGMLoader"));
+		}
+
 		var r = Random.Range(0, 3);
 		//r = 0;
 		switch (r) {

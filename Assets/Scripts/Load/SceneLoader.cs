@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Assertions;
 using TMPro;
 using DG.Tweening;
 
@@ -67,7 +68,7 @@ public class SceneLoader : MonoBehaviour
 	/// <summary>
 	/// ロードの進捗の%のアニメーションの速度
 	/// </summary>
-	const float Load_Progress_Anim_Speed = 2.0f;
+	const float Load_Progress_Anim_Speed = 1.5f;
 
 	/// <summary>
 	/// 初期化
@@ -86,36 +87,61 @@ public class SceneLoader : MonoBehaviour
 			yield break;
 		}
 
-		var cnt = 0;
-		if (GameManager.Instance.BGMs_ == null) {
-			// BGMのロード
-			GameManager.Instance.BGMs_ = new AudioClip[20];
-			while (true) {
-				var resReq = Resources.LoadAsync<AudioClip>("BGM/bgm" + (cnt + 1).ToString());
+		//var cnt = 0;
+		//if (GameManager.Instance.BGMs_ == null) {
+		//	// BGMのロード
+		//	GameManager.Instance.BGMs_ = new AudioClip[20];
+		//	while (true) {
+		//		var resReq = Resources.LoadAsync<AudioClip>("BGM/bgm" + (cnt + 1).ToString());
 
-				LoadTxt.text = "Loading BGM(" + (cnt + 1).ToString() + '/' + GameManager.Instance.BGMs_.Length.ToString() + ")...";
-				DOTween.To(
-					() => TmpProgress,
-					(x) => TmpProgress = x,
-					//(100 * (cnt + 1)) / (GameManager.Instance.BGMs_.Length + 1),
-					(100 * (cnt + 1)) / GameManager.Instance.BGMs_.Length,
-					Load_Progress_Anim_Speed
-				).SetEase(Ease.Linear);
+		//		LoadTxt.text = "Loading BGM(" + (cnt + 1).ToString() + '/' + GameManager.Instance.BGMs_.Length.ToString() + ")...";
+		//		DOTween.To(
+		//			() => TmpProgress,
+		//			(x) => TmpProgress = x,
+		//			//(100 * (cnt + 1)) / (GameManager.Instance.BGMs_.Length + 1),
+		//			(100 * (cnt + 1)) / GameManager.Instance.BGMs_.Length,
+		//			Load_Progress_Anim_Speed
+		//		).SetEase(Ease.Linear);
 
-				while (!resReq.isDone) {
-					yield return 0;
-				}
+		//		while (!resReq.isDone) {
+		//			yield return 0;
+		//		}
 
-				GameManager.Instance.BGMs_[cnt] = resReq.asset as AudioClip;
-			
-				if (++cnt >= GameManager.Instance.BGMs_.Length) {
-					break;
-				}
-			}
-		} else {
-			TmpProgress = 100.0f;
-			cnt = 20;
+		//		GameManager.Instance.BGMs_[cnt] = resReq.asset as AudioClip;
+
+		//		if (++cnt >= GameManager.Instance.BGMs_.Length) {
+		//			break;
+		//		}
+		//	}
+		//} else {
+		//	TmpProgress = 100.0f;
+		//	cnt = 20;
+		//}
+
+		Tween progressTween = null;
+
+		var bgmLoaderGo = GameObject.Find("BGMLoader");
+		if (bgmLoaderGo == null) {
+			yield break;
 		}
+		var bgmLoader = bgmLoaderGo.GetComponent<BGMLoader>();
+		Assert.IsNotNull(bgmLoader, "bgmLoader is not attached \"BGMLoader\" GameObject");
+		Assert.IsNotNull(GameManager.Instance.BGMs_, "BGMLoader is not generated");
+		//while (bgmLoader.CurrentLoadIndex < GameManager.Instance.BGMs_.Length) {
+		//	if (bgmLoader.PrevLoadIndex >= bgmLoader.CurrentLoadIndex) {
+		//		yield return 0;
+		//	}
+		//	progressTween = DOTween.To(
+		//		() => TmpProgress,
+		//		(x) => TmpProgress = x,
+		//		//(100 * (cnt + 1)) / (GameManager.Instance.BGMs_.Length + 1),
+		//		(100 * (bgmLoader.CurrentLoadIndex + 1)) / GameManager.Instance.BGMs_.Length,
+		//		Load_Progress_Anim_Speed
+		//	).SetEase(Ease.Linear);
+		//	LoadTxt.text = "Loading BGM(" + (bgmLoader.CurrentLoadIndex + 1).ToString() + '/' + GameManager.Instance.BGMs_.Length.ToString() + ")...";
+
+		//	yield return 0;
+		//}
 
 		// シーンのロード
 		yield return new WaitForEndOfFrame();
@@ -125,6 +151,7 @@ public class SceneLoader : MonoBehaviour
 		//LoadTxt.text = "Loading scene...";
 		LoadDoneImgGo.SetActive(true);
 		LoadTxt.text = "<align=center>Done!";
+		progressTween.Kill();
 		TmpProgress = 100.0f;
 
 		while (async.progress < 0.9f) {

@@ -87,4 +87,24 @@ public class GameManager
 			BGMs = value;
 		}
 	}
+
+	/// <summary>
+	/// 現在ロードしているBGMのインデックス
+	/// </summary>
+	int currentLoadBGMIndex;
+	public int CurrentLoadBGMIndex {
+		get
+		{
+			return currentLoadBGMIndex;
+		}
+		set
+		{
+			currentLoadBGMIndex = value;
+		}
+	}
+
+	GameManager()
+	{
+		currentLoadBGMIndex = 0;
+	}
 }

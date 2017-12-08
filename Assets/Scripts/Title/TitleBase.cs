@@ -41,6 +41,12 @@ public class TitleBase : MonoBehaviour
 	Image FadePanel;
 
 	/// <summary>
+	/// ロード画面
+	/// </summary>
+	[SerializeField]
+	GameObject LoadGo;
+
+	/// <summary>
 	/// SEの配列
 	/// </summary>
 	[SerializeField]
@@ -92,6 +98,7 @@ public class TitleBase : MonoBehaviour
 	void init()
 	{
 		Common.setCursor();
+		Cursor.visible = true;
 		currentSelect.Value = 0;
 		for (var i = 0; i < Particles.Length; ++i) {
 			Particles[i].SetActive(false);
@@ -104,6 +111,8 @@ public class TitleBase : MonoBehaviour
 			TxtGoRenderers[i].material = Mats[1];
 		}
 		TxtGoRenderers[currentSelect.Value].material = Mats[0];
+
+		LoadGo.SetActive(false);
 	}
 
 	protected virtual void Start ()
@@ -191,7 +200,9 @@ public class TitleBase : MonoBehaviour
 			1.0f
 		).OnComplete(() => {
 			if (currentSelect.Value == 0) {
-				SceneManager.LoadScene(Common.Load_Scene);
+				LoadGo.SetActive(true);
+				Cursor.visible = false;
+				SceneManager.LoadScene(Common.Main_Scene);
 			} else {
 				Application.Quit();
 			}

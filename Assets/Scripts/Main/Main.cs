@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using DG.Tweening;
 using UniRx;
 using UniRx.Triggers;
+using TMPro;
 
 /// <summary>
 /// ゲーム全般に関するクラス
@@ -12,10 +14,15 @@ using UniRx.Triggers;
 public class Main : MonoBehaviour
 {
 	/// <summary>
-	/// ゲームオーバー時に表示するGameObjectの配列
+	/// ゲームオーバー時に表示するGameObject
 	/// </summary>
 	[SerializeField]
-	GameObject[] GameOverGos;
+	GameObject GameOverGo;
+	/// <summary>
+	/// ロード画面
+	/// </summary>
+	[SerializeField]
+	GameObject LoadGo;
 	/// <summary>
 	/// クリア時に表示するGameObject
 	/// </summary>
@@ -74,13 +81,15 @@ public class Main : MonoBehaviour
 	/// </summary>
 	[SerializeField]
 	AudioSource BGMAudioSource2;
+	[SerializeField]
+	TextMeshProUGUI NowPlayingBGMTxt;
 
 	/// <summary>
 	/// 現在のステージ
 	/// </summary>
 	int currentStage;
 	/// <summary>
-	/// 既に選ばれたBGMのIDを格納する配列
+	/// 既に選ばれたBGMのIDを格納するリスト
 	/// </summary>
 	List<int> selectedBGMIds;
 	/// <summary>
@@ -156,9 +165,10 @@ public class Main : MonoBehaviour
 	public void gameOver()
 	{
 		CurrentGameState = GameState.GameOver;
-		GameOverGos[0].SetActive(true);
+		GameOverGo.SetActive(true);
 		BGMAudioSource1.Stop();
 		BGMAudioSource2.Stop();
+		Cursor.visible = false;
 	}
 
 	/// <summary>
@@ -202,9 +212,8 @@ public class Main : MonoBehaviour
 	void init()
 	{
 		CurrentGameState = GameState.Play;
-		for (var i = 0; i < GameOverGos.Length; ++i) {
-			GameOverGos[i].SetActive(false);
-		}
+		GameOverGo.SetActive(false);
+		LoadGo.SetActive(false);
 		if (ClrGo != null) {
 			ClrGo.SetActive(false);
 		}
@@ -216,6 +225,8 @@ public class Main : MonoBehaviour
 		selectedBGMIds = new List<int>();
 		BGMAudioSource1.clip = GameManager.Instance.BGMs_[chooseBGMID()];
 		BGMAudioSource1.Play();
+
+		Cursor.visible = true;
 	}
 
 	void Start ()
@@ -224,7 +235,7 @@ public class Main : MonoBehaviour
 
 		this.UpdateAsObservable().Where(x => CurrentGameState == GameState.GameOver && !!Input.anyKeyDown)
 			.Subscribe(_ => {
-				GameOverGos[1].SetActive(true);
+				LoadGo.SetActive(true);
 				SceneManager.LoadScene(Common.Title_Scene);
 			})
 			.AddTo(this);
@@ -253,7 +264,9 @@ public class Main : MonoBehaviour
 		}
 		++currentStage;
 		if (currentStage < 5) {
-			crossFade();
+			if (GameManager.Instance.BGMs_ != null) {
+				crossFade();
+			}
 		} else {
 			changeBossBGM();
 		}
@@ -269,7 +282,7 @@ public class Main : MonoBehaviour
 		var r = 0;
 		do {
 			isDuplication = false;
-			r = Random.Range(0, GameManager.Instance.BGMs_.Length);
+			r = Random.Range(0, GameManager.Instance.CurrentLoadBGMIndex);
 			for (var i = 0; i < selectedBGMIds.Count; ++i) {
 				if (r == selectedBGMIds[i]) {
 					isDuplication = true;
@@ -278,7 +291,33 @@ public class Main : MonoBehaviour
 			}
 		} while (!!isDuplication);
 		selectedBGMIds.Add(r);
+		StartCoroutine(showNowPlayingBGM(r));
 		return r;
+	}
+
+	/// <summary>
+	/// 現在流れている曲のタイトルを表示
+	/// </summary>
+	/// <param name="index">選ばれた曲のインデックス</param>
+	/// <param name="isBoss">ボス曲かどうか</param>
+	/// <returns></returns>
+	IEnumerator showNowPlayingBGM(int index, bool isBoss = false)
+	{
+		if (!!isBoss) {
+			yield return new WaitForSeconds(0.5f);
+		}
+
+		NowPlayingBGMTxt.color = new Color(NowPlayingBGMTxt.color.r, NowPlayingBGMTxt.color.g, NowPlayingBGMTxt.color.b, 1.0f);
+		NowPlayingBGMTxt.text = "<sprite=\"Note\" name=\"Note\">" + Common.BGM_Title_List[index];
+
+		yield return new WaitForSeconds(1.0f);
+
+		DOTween.ToAlpha(
+			() => NowPlayingBGMTxt.color,
+			color => NowPlayingBGMTxt.color = color,
+			0.0f,
+			3.0f
+		);
 	}
 
 	/// <summary>
@@ -372,6 +411,7 @@ public class Main : MonoBehaviour
 			} else {
 				BGMAudioSource2.Play();
 			}
+			StartCoroutine(showNowPlayingBGM(Common.BGM_Title_List.Count - 1, true));
 		});
 	}
 }
