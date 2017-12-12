@@ -55,7 +55,7 @@ public class Character : MonoBehaviour
 	/// <summary>
 	/// 無敵かどうか(弾の当たり判定が連続で来ないように)
 	/// </summary>
-	bool isInvinsible;
+	protected bool isInvincible;
 	/// <summary>
 	/// 無敵時に点滅する間隔
 	/// </summary>
@@ -102,7 +102,7 @@ public class Character : MonoBehaviour
 			rb = GetComponent<Rigidbody>();
 		}
 
-		isInvinsible = false;
+		isInvincible = false;
 
 		canInput = true;
 
@@ -143,7 +143,7 @@ public class Character : MonoBehaviour
 			yield break;
 		}
 
-		isInvinsible = true;
+		isInvincible = true;
 
 		if (anim != null) {
 			StartCoroutine("disableInput");
@@ -157,7 +157,7 @@ public class Character : MonoBehaviour
 
 		yield return new WaitForSeconds(Invincible_Time);
 
-		isInvinsible = false;
+		isInvincible = false;
 
 		stopFlick();
 	}
@@ -190,7 +190,7 @@ public class Character : MonoBehaviour
 	/// <param name="go">当たったもの</param>
 	IEnumerator chechBullet(GameObject go)
 	{
-		if (!!isInvinsible) {
+		if (!!isInvincible) {
 			yield break;
 		}
 

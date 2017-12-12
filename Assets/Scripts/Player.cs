@@ -764,7 +764,6 @@ public class Player : Character
 		MyBulletLayer = Common.PlayerBulletLayer;
 
 		hp = Default_Hp;
-		hp = 10000;
 
 		enableTeleportation = true;
 
@@ -1373,5 +1372,15 @@ public class Player : Character
 	void OnDestroy()
 	{
 		StopAllCoroutines();
+	}
+
+	/// <summary>
+	/// 無敵状態の切り替え
+	/// <returns>無敵ならtrue</returns>
+	/// </summary>
+	public bool changeInvincible()
+	{
+		isInvincible = !isInvincible;
+		return isInvincible;
 	}
 }

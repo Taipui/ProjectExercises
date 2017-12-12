@@ -159,6 +159,26 @@ public class Main : MonoBehaviour
 	AudioClip[] SEs;
 	#endregion
 
+	#region チート関連
+
+	/// <summary>
+	/// プレイヤーのスクリプト
+	/// </summary>
+	[SerializeField]
+	Player Player;
+	/// <summary>
+	/// HPを表すGameObject
+	/// </summary>
+	[SerializeField]
+	GameObject HPGo;
+	/// <summary>
+	/// 無敵を表すGameObject
+	/// </summary>
+	[SerializeField]
+	GameObject InvincibleTxtGo;
+
+	#endregion
+
 	/// <summary>
 	/// ゲームオーバーの処理
 	/// </summary>
@@ -222,6 +242,13 @@ public class Main : MonoBehaviour
 
 		audioMixer = BGMAudioSource1.outputAudioMixerGroup.audioMixer;
 		currentStage = 1;
+
+		HPGo.SetActive(true);
+		InvincibleTxtGo.SetActive(false);
+
+		if (GameManager.Instance.BGMs_ == null) {
+			return;
+		}
 		selectedBGMIds = new List<int>();
 		BGMAudioSource1.clip = GameManager.Instance.BGMs_[chooseBGMID()];
 		BGMAudioSource1.Play();
@@ -237,6 +264,14 @@ public class Main : MonoBehaviour
 			.Subscribe(_ => {
 				LoadGo.SetActive(true);
 				SceneManager.LoadScene(Common.Title_Scene);
+			})
+			.AddTo(this);
+
+		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.Alpha1))
+			.Subscribe(_ => {
+				var isInvincible = Player.changeInvincible();
+				HPGo.SetActive(!isInvincible);
+				InvincibleTxtGo.SetActive(!!isInvincible);
 			})
 			.AddTo(this);
 	}
