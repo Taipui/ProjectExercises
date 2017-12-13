@@ -27,6 +27,7 @@ public class Clear : MonoBehaviour
 	void init()
 	{
 		isTransition = false;
+		Cursor.visible = false;
 	}
 
 	void Start ()
