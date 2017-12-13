@@ -30,6 +30,7 @@ public class Title2 : TitleBase
 			.Subscribe(_ => {
 				var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 				instanceWindObj = Instantiate(WindObj, new Vector3(mousePos.x, mousePos.y), Quaternion.identity);
+				Destroy(instanceWindObj, 10.0f);
 			})
 			.AddTo(this);
 
