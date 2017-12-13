@@ -79,15 +79,15 @@ public class Option : MonoBehaviour
 	/// </summary>
 	void init()
 	{
-		var val = PlayerPrefs.GetInt("Master", 100);
+		var val = PlayerPrefs.GetFloat("Master", 100);
 		MasterSlider.value = val;
 		MasterValTxt.text = val.ToString();
 
-		val = PlayerPrefs.GetInt("BGM", 100);
+		val = PlayerPrefs.GetFloat("BGM", 100);
 		BGMSlider.value = val;
 		BGMValTxt.text = val.ToString();
 
-		val = PlayerPrefs.GetInt("SE", 100);
+		val = PlayerPrefs.GetFloat("SE", 100);
 		SESlider.value = val;
 		SEValTxt.text = val.ToString();
 	}
