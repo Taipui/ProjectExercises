@@ -77,7 +77,8 @@ public class DestroyCollider : MonoBehaviour
 				isDestroy = false;
 
 				for (var i = 0; i < 10; ++i) {
-					Launcher.launch(Bullet, randomVec(), 13, BulletParent, randomVec());
+					var go = Launcher.launch(Bullet, randomVec(), 13, BulletParent, randomVec());
+					Destroy(go, 5.0f);
 				}
 			})
 			.AddTo(this);

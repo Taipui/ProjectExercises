@@ -14,7 +14,8 @@ public class Launcher : MonoBehaviour
 	/// <param name="bulletParent">発射した弾を格納するGameObjectのTransform</param>
 	/// <param name="vec">弾に力を加えるベクトル</param>
 	/// <param name="scale">弾のスケール(倍)</param>
-	public void launch(GameObject bullet, Vector3 targetPos, int layerNo, Transform bulletParent, Vector3 vec, float scale = 1.0f)
+	/// <returns>発射した雪弾のGameObject</returns>
+	public GameObject launch(GameObject bullet, Vector3 targetPos, int layerNo, Transform bulletParent, Vector3 vec, float scale = 1.0f)
 	{
 		var go = Instantiate(bullet, bulletParent);
 		var rb = go.GetComponent<Rigidbody>();
@@ -28,5 +29,7 @@ public class Launcher : MonoBehaviour
 			rb.AddForce(force, ForceMode.Impulse);
 		}
 		go.layer = layerNo;
+
+		return go;
 	}
 }
