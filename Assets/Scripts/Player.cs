@@ -571,7 +571,7 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => (!!isJump() || !!isSpJump()) && !!enableJump(currentBaseState))
+		this.UpdateAsObservable().Where(x => (!!isJump() || !!isSpJump()) && !!enableJump(currentBaseState) && !IsTitle)
 			.Subscribe(_ => {
 				jump();
 			})
