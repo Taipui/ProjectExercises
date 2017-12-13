@@ -77,13 +77,34 @@ public class TitleBase : MonoBehaviour
 		Quit1,
 		Quit2,
 		Quit3,
-		Quit4
+		Quit4,
+		/// <summary>
+		/// オプション画面の表示/非表示
+		/// </summary>
+		Option
 	}
 
 	/// <summary>
 	/// 既に決定したかどうか
 	/// </summary>
 	bool isDecided;
+
+	#region オプション関連
+
+	/// <summary>
+	/// オプションのボタン
+	/// </summary>
+	[SerializeField]
+	Button OptionBtn;
+	/// <summary>
+	/// オプション画面のGameObject
+	/// </summary>
+	[SerializeField]
+	protected GameObject OptionCanvasGo;
+
+	public bool canInput { private set; get; }
+
+	#endregion
 
 	/// <summary>
 	/// 現在選択しているメニューの番号をセット
@@ -93,6 +114,11 @@ public class TitleBase : MonoBehaviour
 	{
 		currentSelect.Value = val;
 		decide();
+	}
+
+	public void setCanInput(bool val)
+	{
+		canInput = val;
 	}
 
 	void init()
@@ -113,19 +139,23 @@ public class TitleBase : MonoBehaviour
 		TxtGoRenderers[currentSelect.Value].material = Mats[0];
 
 		LoadGo.SetActive(false);
+
+		OptionCanvasGo.SetActive(false);
+
+		canInput = true;
 	}
 
 	protected virtual void Start ()
 	{
 		init();
 
-		this.UpdateAsObservable().Where(x => !!isNext() && currentSelect.Value > 0)
+		this.UpdateAsObservable().Where(x => !!isNext() && currentSelect.Value > 0 && !!canInput)
 			.Subscribe(_ => {
 				--currentSelect.Value;
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isPrev() && currentSelect.Value < TxtGoRenderers.Length - 1)
+		this.UpdateAsObservable().Where(x => !!isPrev() && currentSelect.Value < TxtGoRenderers.Length - 1 && !!canInput)
 			.Subscribe(_ => {
 				++currentSelect.Value;
 			})
@@ -141,11 +171,16 @@ public class TitleBase : MonoBehaviour
 		})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isEnter())
+		this.UpdateAsObservable().Where(x => !!isEnter() && !!canInput)
 			.Subscribe(_ => {
 				decide();
 			})
 			.AddTo(this);
+
+		OptionBtn.OnClickAsObservable().Subscribe(_ => {
+			onClickOptionBtn();
+		})
+		.AddTo(this);
 	}
 
 	/// <summary>
@@ -216,5 +251,24 @@ public class TitleBase : MonoBehaviour
 	public void playSE(SE se)
 	{
 		audioSource.PlayOneShot(SEs[(int)se]);
+	}
+
+	/// <summary>
+	/// オプションボタンを押されると呼ばれる
+	/// </summary>
+	protected virtual void onClickOptionBtn()
+	{
+		OptionCanvasGo.SetActive(true);
+		canInput = false;
+		audioSource.PlayOneShot(SEs[(int)SE.Option]);
+	}
+
+	/// <summary>
+	/// オプションを閉じると呼ばれる
+	/// </summary>
+	public virtual void endOption()
+	{
+		canInput = true;
+		audioSource.PlayOneShot(SEs[(int)SE.Option]);
 	}
 }

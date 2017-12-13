@@ -61,13 +61,13 @@ public class Title3 : TitleBase
 			UnityChanTfm.position = new Vector3(UnityChanTfm.position.x, Normal_Y_Pos, UnityChanTfm.position.z);
 		}
 
-		this.UpdateAsObservable().Where(x => !!checkMouseOverGo() && hitInfo.collider.tag == "Text")
+		this.UpdateAsObservable().Where(x => !!isTxtMouseOver() && !!canInput)
 			.Subscribe(_ => {
 				currentSelect.Value = hitInfo.collider.gameObject.transform.parent.transform.parent.GetComponent<Txt>().Index_;
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isLClk())
+		this.UpdateAsObservable().Where(x => !!isLClk() && !!isTxtMouseOver() && !!canInput)
 			.Subscribe(_ => {
 				decide();
 			})
@@ -110,5 +110,32 @@ public class Title3 : TitleBase
 		var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		var isHit = !!Physics.Raycast(ray, out hitInfo);
 		return isHit;
+	}
+
+	/// <summary>
+	/// マウスオーバーしたものがテキストかどうか
+	/// </summary>
+	/// <returns>テキストならtrue</returns>
+	bool isTxtMouseOver()
+	{
+		return !!checkMouseOverGo() && hitInfo.collider.tag == "Text";
+	}
+
+	/// <summary>
+	/// オプションボタンを押されると呼ばれる
+	/// </summary>
+	protected override void onClickOptionBtn()
+	{
+		base.onClickOptionBtn();
+		Time.timeScale = 0.0f;
+	}
+
+	/// <summary>
+	/// オプションを閉じると呼ばれる
+	/// </summary>
+	public override void endOption()
+	{
+		base.endOption();
+		Time.timeScale = 1.0f;
 	}
 }

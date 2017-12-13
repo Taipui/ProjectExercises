@@ -6,11 +6,21 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class SceneSelecter : MonoBehaviour
 {
+	/// <summary>
+	/// AudioMixer
+	/// </summary>
+	[SerializeField]
+	UnityEngine.Audio.AudioMixer AudioMixer;
+
 	void Start ()
 	{
 		if (GameManager.Instance.BGMs_ == null) {
 			Instantiate(Resources.Load("Prefabs/BGMLoader"));
 		}
+
+		AudioMixer.SetFloat("MasterVol", PlayerPrefs.GetFloat("Master", 100));
+		AudioMixer.SetFloat("BGMVol", PlayerPrefs.GetFloat("BGM", 100));
+		AudioMixer.SetFloat("SEVol", PlayerPrefs.GetFloat("SE", 100));
 
 		var r = Random.Range(0, 3);
 		//r = 0;

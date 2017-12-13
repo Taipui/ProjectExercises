@@ -41,6 +41,9 @@ public class Txt : MonoBehaviour
 		if (col.gameObject.tag != "Bullet") {
 			return;
 		}
+		if (!Title.canInput) {
+			return;
+		}
 		Title.setCurrentSelect(Index);
 		Destroy(col.gameObject);
 	}
