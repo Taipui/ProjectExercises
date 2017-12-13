@@ -458,6 +458,15 @@ public class Player : Character
 		EnableChange = val;
 	}
 
+	/// <summary>
+	/// canInputに値をセットする
+	/// </summary>
+	/// <param name="val">セットする値</param>
+	public void setCanInput(bool val)
+	{
+		canInput = val;
+	}
+
 	protected override void Start()
 	{
 		base.Start();
@@ -596,7 +605,7 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isPlay() && !!isLClk() && !isEmpty() && !!permitLaunchItemState() && !IsTitle)
+		this.UpdateAsObservable().Where(x => !!isPlay() && !!isLClk() && !isEmpty() && !!permitLaunchItemState() && !IsTitle && !!canInput)
 			.Subscribe(_ => {
 				--stock.Value;
 			})
@@ -684,7 +693,7 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isChange() && !!EnableChange)
+		this.UpdateAsObservable().Where(x => !!isChange() && !!EnableChange && !!canInput)
 			.Subscribe(_ => {
 				changeAvatar();
 				camMover.shake();

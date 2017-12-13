@@ -156,6 +156,8 @@ public class Tutorial : MonoBehaviour
 			0.5f,
 			0.5f
 			).SetUpdate(true);
+
+		Player.setCanInput(false);
 	}
 
 	/// <summary>
@@ -186,6 +188,8 @@ public class Tutorial : MonoBehaviour
 			0.0f,
 			0.5f
 			).SetUpdate(true);
+
+		Player.setCanInput(true);
 	}
 
 	/// <summary>
