@@ -20,7 +20,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4889579541184718}
   - component: {fileID: 212894466734025144}
-  - component: {fileID: 114215454249451988}
   - component: {fileID: 54459300884476818}
   m_Layer: 9
   m_Name: EffectBullet
@@ -57,21 +56,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 8
   m_CollisionDetection: 0
---- !u!114 &114215454249451988
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1349663083875726}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da77e1c2950809845973b745c2acfad0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GroundBullet: {fileID: 1643971426085178, guid: 4ee00385ffdb9c44785b595b08ab9a74,
-    type: 2}
-  BulletEffect: {fileID: 1216627828505754, guid: 2bfd3a3891524854485f64cb3acff0f9,
-    type: 2}
 --- !u!212 &212894466734025144
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -554,7 +554,7 @@ Prefab:
     - target: {fileID: 119086483432304296, guid: 07c96fbed8b46ee41b6804c2f8d8d36b,
         type: 2}
       propertyPath: m_IgnoreLayers.m_Bits
-      value: 65536
+      value: 589824
       objectReference: {fileID: 0}
     - target: {fileID: 1002914700583240, guid: 07c96fbed8b46ee41b6804c2f8d8d36b, type: 2}
       propertyPath: m_IsActive
@@ -19662,7 +19662,7 @@ Prefab:
     - target: {fileID: 119086483432304296, guid: 07c96fbed8b46ee41b6804c2f8d8d36b,
         type: 2}
       propertyPath: m_IgnoreLayers.m_Bits
-      value: 65536
+      value: 589824
       objectReference: {fileID: 0}
     - target: {fileID: 1002914700583240, guid: 07c96fbed8b46ee41b6804c2f8d8d36b, type: 2}
       propertyPath: m_IsActive
@@ -59345,7 +59345,7 @@ Prefab:
     - target: {fileID: 119086483432304296, guid: 07c96fbed8b46ee41b6804c2f8d8d36b,
         type: 2}
       propertyPath: m_IgnoreLayers.m_Bits
-      value: 65536
+      value: 589824
       objectReference: {fileID: 0}
     - target: {fileID: 1002914700583240, guid: 07c96fbed8b46ee41b6804c2f8d8d36b, type: 2}
       propertyPath: m_IsActive
