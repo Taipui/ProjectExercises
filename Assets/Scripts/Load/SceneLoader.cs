@@ -77,6 +77,7 @@ public class SceneLoader : MonoBehaviour
 	{
 		LoadDoneImgGo.SetActive(false);
 		FadeImg.color = Color.clear;
+		Cursor.visible = true;
 	}
 
 	IEnumerator Start()
@@ -120,13 +121,13 @@ public class SceneLoader : MonoBehaviour
 
 		Tween progressTween = null;
 
-		var bgmLoaderGo = GameObject.Find("BGMLoader");
-		if (bgmLoaderGo == null) {
-			yield break;
-		}
-		var bgmLoader = bgmLoaderGo.GetComponent<BGMLoader>();
-		Assert.IsNotNull(bgmLoader, "bgmLoader is not attached \"BGMLoader\" GameObject");
-		Assert.IsNotNull(GameManager.Instance.BGMs_, "BGMLoader is not generated");
+		//var bgmLoaderGo = GameObject.Find("BGMLoader");
+		//if (bgmLoaderGo == null) {
+		//	yield break;
+		//}
+		//var bgmLoader = bgmLoaderGo.GetComponent<BGMLoader>();
+		//Assert.IsNotNull(bgmLoader, "bgmLoader is not attached \"BGMLoader\" GameObject");
+		//Assert.IsNotNull(GameManager.Instance.BGMs_, "BGMLoader is not generated");
 		//while (bgmLoader.CurrentLoadIndex < GameManager.Instance.BGMs_.Length) {
 		//	if (bgmLoader.PrevLoadIndex >= bgmLoader.CurrentLoadIndex) {
 		//		yield return 0;
@@ -148,15 +149,24 @@ public class SceneLoader : MonoBehaviour
 		var async = SceneManager.LoadSceneAsync(Common.Main_Scene);
 		async.allowSceneActivation = false;
 
-		//LoadTxt.text = "Loading scene...";
+		LoadTxt.text = "Loading scene...";
+
+		progressTween = DOTween.To(
+			() => TmpProgress,
+			(x) => TmpProgress = x,
+			100.0f,
+			4.0f
+		).SetEase(Ease.Linear);
+
+		while (async.progress < 0.9f) {
+			//TmpProgress = async.progress;
+			yield return 0;
+		}
+
 		LoadDoneImgGo.SetActive(true);
 		LoadTxt.text = "<align=center>Done!";
 		progressTween.Kill();
 		TmpProgress = 100.0f;
-
-		while (async.progress < 0.9f) {
-			yield return 0;
-		}
 
 		DOTween.ToAlpha(
 			() => FadeImg.color,
