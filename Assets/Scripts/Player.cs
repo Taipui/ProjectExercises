@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UniRx;
 using UniRx.Triggers;
 using TMPro;
+using DG.Tweening;
 
 // 必要なコンポーネントの列記
 [RequireComponent(typeof(Animator))]
@@ -75,6 +76,7 @@ public class Player : Character
 	/// 着地モーションへの移項を許可する距離
 	/// </summary>
 	const float Landing_Dist = 1.05F;
+	//const float Landing_Dist = 2.5f;
 	#endregion
 
 	#region その他プレイヤー関連
@@ -86,7 +88,7 @@ public class Player : Character
 	/// <summary>
 	/// CapsuleColliderで設定されているコライダのHeightの初期値を収める変数(Normal)
 	/// </summary>
-	float orgColHightNormal;
+	float orgColHeightNormal;
 	/// <summary>
 	/// CapsuleColliderで設定されているコライダのCenterの初期値を収める変数(Normal)
 	/// </summary>
@@ -94,7 +96,7 @@ public class Player : Character
 	/// <summary>
 	/// CapsuleColliderで設定されているコライダのHeightの初期値を収める変数(Normal)
 	/// </summary>
-	float orgColHightSD;
+	float orgColHeightSD;
 	/// <summary>
 	/// CapsuleColliderで設定されているコライダのCenterの初期値を収める変数(Normal)
 	/// </summary>
@@ -534,7 +536,7 @@ public class Player : Character
 			if (currentBaseState.fullPathHash == locoState) {
 				//カーブでコライダ調整をしている時は、念のためにリセットする
 				if (!!Use_Curve) {
-					resetCollider();
+					//resetCollider();
 				}
 			}
 			// JUMP中の処理
@@ -560,14 +562,15 @@ public class Player : Character
 						// 高さが useCurvesHeight 以上ある時のみ、コライダーの高さと中心をJUMP00アニメーションについているカーブで調整する
 						if (!!Physics.Raycast(ray, out hitInfo) && !!canModifyCol) {
 							if (hitInfo.distance > Use_Curve_Height) {
-								var orgColHight = currentAvatar == 0 ? orgColHightNormal : orgColHightSD;
+								var orgColHight = currentAvatar == 0 ? orgColHeightNormal : orgColHeightSD;
 								var orgColCenter = currentAvatar == 0 ? orgVectColCenterNormal : orgVectColCenterSD;
 								col.height = orgColHight - jumpHeight;          // 調整されたコライダーの高さ
 								var adjCenterY = orgColCenter.y + jumpHeight;
+								var colCenterY = col.center.y;
 								col.center = new Vector3(0.0f, adjCenterY, 0.0f); // 調整されたコライダーのセンター
 							} else {
 								// 閾値よりも低い時には初期値に戻す（念のため）
-								resetCollider();
+								//resetCollider();
 							}
 						}
 					}
@@ -580,7 +583,7 @@ public class Player : Character
 			else if (currentBaseState.fullPathHash == idleState) {
 				//カーブでコライダ調整をしている時は、念のためにリセットする
 				if (!!Use_Curve) {
-					resetCollider();
+					//resetCollider();
 				}
 			}
 
@@ -789,10 +792,10 @@ public class Player : Character
 	void init()
 	{
 		col = GetComponent<CapsuleCollider>();
-		orgColHightNormal = col.height;
+		orgColHeightNormal = col.height;
 		orgVectColCenterNormal = col.center;
-		orgColHightSD = col.height * 0.7f;
-		orgVectColCenterSD = new Vector3(col.center.x, orgVectColCenterNormal.y - orgColHightSD / 4, col.center.z);
+		orgColHeightSD = col.height * 0.7f;
+		orgVectColCenterSD = new Vector3(col.center.x, orgVectColCenterNormal.y - orgColHeightSD / 4, col.center.z);
 		canModifyCol = false;
 		canInput = true;
 
@@ -898,8 +901,26 @@ public class Player : Character
 	void resetCollider()
 	{
 		// コンポーネントのHeight、Centerの初期値を戻す
-		col.height = currentAvatar == 0 ? orgColHightNormal : orgColHightSD;
-		col.center = currentAvatar == 0 ? orgVectColCenterNormal : orgVectColCenterSD;
+		var changeTime = 0.5f;
+		var orgColHeight = currentAvatar == 0 ? orgColHeightNormal : orgColHeightSD;
+		DOTween.To(
+			() => col.height,
+			val => col.height = val,
+			orgColHeight,
+			changeTime
+		);
+		//col.height = currentAvatar == 0 ? orgColHeightNormal : orgColHeightSD;
+		var colCenterY = currentAvatar == 0 ? orgVectColCenterNormal.y : orgVectColCenterSD.y;
+		var currentColCenterY = col.center.y;
+		DOTween.To(
+			() => currentColCenterY,
+			val => currentColCenterY = val,
+			colCenterY,
+			changeTime
+		).OnUpdate(() => {
+			col.center = new Vector3(col.center.x, currentColCenterY, col.center.z);
+		});
+		//col.center = currentAvatar == 0 ? orgVectColCenterNormal : orgVectColCenterSD;
 	}
 
 	/// <summary>
@@ -960,16 +981,20 @@ public class Player : Character
 		for (int count = 0; count < Landing_Check_Limit; count++) {
 			var raycastL = new RaycastHit();
 			var raycastR = new RaycastHit();
-			var rayOffset = 0.125f;
-			var raycastSuccessL = Physics.Raycast(transform.localPosition + new Vector3(-rayOffset, 0.0f), Vector3.down, out raycastL);
-			var raycastSuccessR = Physics.Raycast(transform.localPosition + new Vector3(rayOffset, 0.0f), Vector3.down, out raycastR);
-			//Debug.DrawRay(transform.localPosition + new Vector3(-rayOffset, 0.0f), Vector3.down, Color.red);
-			//Debug.DrawRay(transform.localPosition + new Vector3(rayOffset, 0.0f), Vector3.down, Color.red);
+			var rayInterval = 0.125f;
+			//var rayOffset = 1.7f;
+			var rayOffset = 0.0f;
+			var rayLen = 1.0f;
+			var raycastSuccessL = Physics.Raycast(transform.localPosition + new Vector3(-rayInterval, rayOffset), Vector3.down * rayLen, out raycastL);
+			var raycastSuccessR = Physics.Raycast(transform.localPosition + new Vector3(rayInterval, rayOffset), Vector3.down * rayLen, out raycastR);
+			//Debug.DrawRay(transform.localPosition + new Vector3(-rayInterval, rayOffset), Vector3.down * rayLen, Color.red);
+			//Debug.DrawRay(transform.localPosition + new Vector3(rayInterval, rayOffset), Vector3.down * rayLen, Color.red);
 			//Debug.Log(raycastL.distance);
 			//Debug.Log(anim.speed);
 			//Debug.Break();
 			// レイを飛ばして、成功且つ一定距離内であった場合、着地モーションへ移項させる
 			if ((!!raycastSuccessL || !!raycastSuccessR) && (raycastL.distance < Landing_Dist || raycastR.distance < Landing_Dist)) {
+				//Debug.Break();
 				break;
 			}
 			//yield return new WaitForSeconds(waitTime);
@@ -1333,7 +1358,7 @@ public class Player : Character
 		Models[currentAvatar].SetActive(true);
 		anim.avatar = Avatars[currentAvatar];
 		if (currentAvatar == 0) {
-			col.height = orgColHightNormal;
+			col.height = orgColHeightNormal;
 			col.center = orgVectColCenterNormal;
 		} else {
 			col.height /= 2;

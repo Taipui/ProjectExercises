@@ -23,11 +23,6 @@ public class Main : MonoBehaviour
 	/// </summary>
 	[SerializeField]
 	GameObject LoadGo;
-	/// <summary>
-	/// クリア時に表示するGameObject
-	/// </summary>
-	[SerializeField]
-	GameObject ClrGo;
 
 	/// <summary>
 	/// ゲームの状態
@@ -266,10 +261,6 @@ public class Main : MonoBehaviour
 		CurrentGameState = GameState.Play;
 		GameOverGo.SetActive(false);
 		LoadGo.SetActive(false);
-		if (ClrGo != null) {
-			ClrGo.SetActive(false);
-		}
-
 		FadeImg.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
 
 		audioMixer = BGMAudioSource1.outputAudioMixerGroup.audioMixer;

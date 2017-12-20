@@ -83,6 +83,7 @@ public class Enemy : Character
 	/// </summary>
 	public void permitLaunch()
 	{
+		//return;
 		enableLaunch = true;
 	}
 }
