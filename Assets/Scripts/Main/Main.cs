@@ -151,6 +151,18 @@ public class Main : MonoBehaviour
 		/// ページ送りのSE
 		/// </summary>
 		Feed,
+		/// <summary>
+		/// 風を置けない場所に風を置こうとした時のSE(1030)
+		/// </summary>
+		Ban1,
+		/// <summary>
+		/// 風を置けない場所に風を置こうとした時のSE(1031)
+		/// </summary>
+		Ban2,
+		/// <summary>
+		/// 風を置けない場所に風を置こうとした時のSE(1181)
+		/// </summary>
+		Ban3,
 	}
 	/// <summary>
 	/// SEの配列
@@ -158,6 +170,12 @@ public class Main : MonoBehaviour
 	[SerializeField]
 	AudioClip[] SEs;
 	#endregion
+
+	/// <summary>
+	/// 風が置けないことを表す画像のGameObject
+	/// </summary>
+	[SerializeField]
+	GameObject BanImgGo;
 
 	#region チート関連
 
@@ -247,11 +265,16 @@ public class Main : MonoBehaviour
 		InvincibleTxtGo.SetActive(false);
 
 		if (GameManager.Instance.BGMs_ == null) {
+			audioMixer.SetFloat("MasterVol", Mathf.Lerp(-80.0f, 0.0f, PlayerPrefs.GetFloat("Master", 100) / 100));
+			audioMixer.SetFloat("BGMVol", Mathf.Lerp(-80.0f, 0.0f, PlayerPrefs.GetFloat("BGM", 100) / 100));
+			audioMixer.SetFloat("SEVol", Mathf.Lerp(-80.0f, 0.0f, PlayerPrefs.GetFloat("SE", 100) / 100));
 			return;
 		}
 		selectedBGMIds = new List<int>();
 		BGMAudioSource1.clip = GameManager.Instance.BGMs_[chooseBGMID()];
 		BGMAudioSource1.Play();
+
+		BanImgGo.SetActive(false);
 
 		Cursor.visible = true;
 	}
@@ -448,5 +471,18 @@ public class Main : MonoBehaviour
 			}
 			StartCoroutine(showNowPlayingBGM(Common.BGM_Title_List.Count - 1, true));
 		});
+	}
+
+	/// <summary>
+	/// 風が置けないことを表す
+	/// </summary>
+	/// <returns></returns>
+	public IEnumerator banWind()
+	{
+		SEAudioSource.PlayOneShot(SEs[Random.Range((int)SE.Ban1, ((int)SE.Ban3) + 1)]);
+		BanImgGo.transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y);
+		BanImgGo.SetActive(true);
+		yield return new WaitForSeconds(1.0f);
+		BanImgGo.SetActive(false);
 	}
 }

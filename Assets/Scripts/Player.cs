@@ -467,6 +467,25 @@ public class Player : Character
 		canInput = val;
 	}
 
+	/// <summary>
+	/// 風をおける場所か
+	/// </summary>
+	/// <returns>置けるならtrue</returns>
+	bool enableSpawnWindArea()
+	{
+		var tapPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		var col = Physics2D.OverlapPoint(tapPos);
+		if (!!col) {
+			var hit = Physics2D.Raycast(tapPos, -Vector2.up);
+			if (!!hit && hit.collider.tag == "WindBanArea") {
+				StopCoroutine(Main.banWind());
+				StartCoroutine(Main.banWind());
+				return false;
+			}
+		}
+		return true;
+	}
+
 	protected override void Start()
 	{
 		base.Start();
@@ -666,7 +685,7 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isSp.Value && !!isShift() && instanceWindGo == null)
+		this.UpdateAsObservable().Where(x => !!isSp.Value && !!isShift() && instanceWindGo == null && !!enableSpawnWindArea())
 			.Subscribe(_ => {
 				var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 				instanceWindGo = Instantiate(WindGo, new Vector3(mousePos.x, mousePos.y), Quaternion.identity);

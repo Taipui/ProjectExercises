@@ -16,6 +16,7 @@ TagManager:
   - Item3
   - Item4
   - Item5
+  - WindBanArea
   layers:
   - Default
   - TransparentFX
