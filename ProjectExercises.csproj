@@ -146,7 +146,8 @@
     <Compile Include="Assets\Scripts\Main\Tutorial.cs" />
     <Compile Include="Assets\Scripts\Normal.cs" />
     <Compile Include="Assets\Scripts\Option.cs" />
-    <Compile Include="Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\Scripts\PlayerAct.cs" />
+    <Compile Include="Assets\Scripts\PlayerMove.cs" />
     <Compile Include="Assets\Scripts\Sandbox.cs" />
     <Compile Include="Assets\Scripts\Title\SceneSelecter.cs" />
     <Compile Include="Assets\Scripts\Title\Title1.cs" />

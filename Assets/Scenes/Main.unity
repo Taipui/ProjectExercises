@@ -22475,6 +22475,7 @@ GameObject:
   - component: {fileID: 1433481731}
   - component: {fileID: 715703362}
   - component: {fileID: 715703361}
+  - component: {fileID: 715703363}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -22618,6 +22619,26 @@ AudioListener:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 715703357}
   m_Enabled: 1
+--- !u!114 &715703363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 715703357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f22868b9bb8517146bfc64e0bf1a3ce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Bullet: {fileID: 1643971426085178, guid: 325224f187246bc44bf76f696688b0d5, type: 2}
+  BulletParentTfm: {fileID: 606872841}
+  Main: {fileID: 1495790034}
+  LauncherParent: {fileID: 1163637298}
+  Decals:
+  - {fileID: 661945065}
+  - {fileID: 880927155}
+  - {fileID: 1260341314}
+  LandParticle: {fileID: 545126069}
 --- !u!1 &723561020
 GameObject:
   m_ObjectHideFlags: 0
@@ -42853,7 +42874,6 @@ MonoBehaviour:
   - {fileID: 2027449401}
   Smoke: {fileID: 1894098624854406, guid: 5541fee140821b347bd254f36d314520, type: 2}
   Dc: {fileID: 1005302599}
-  IsTitle: 0
   ItemImg: {fileID: 264725851}
   ItemEffectRemainTxt: {fileID: 426950296}
   ShotgunYVecCurve:
@@ -42905,9 +42925,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 542adc815435145d5a9f6fa641352c6a, type: 3}
   TransformSEs:
   - {fileID: 8300000, guid: 145fb24c1947b4b3eaa88beb070aca86, type: 3}
-  LandParticle:
-  - {fileID: 545126069}
-  - {fileID: 1452814523}
+  ChangeParticle: {fileID: 1452814523}
 --- !u!1 &1437207892
 GameObject:
   m_ObjectHideFlags: 0
@@ -43574,7 +43592,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1218459190427132, guid: 42ba28fc0815de54c9921150ab676e20, type: 2}
       propertyPath: m_Name
-      value: LandParticle2
+      value: ChangeParticle
       objectReference: {fileID: 0}
     - target: {fileID: 4916440926227542, guid: 42ba28fc0815de54c9921150ab676e20, type: 2}
       propertyPath: m_LocalScale.x
@@ -44746,7 +44764,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d057fdd975ac543dd80c54a62a5d09a6, type: 3}
   BanImgGo: {fileID: 472046586}
   OptionCanvasGo: {fileID: 1686341247}
-  Player: {fileID: 1433481731}
+  PlayerAct: {fileID: 1433481731}
   HPGo: {fileID: 2003021955}
   InvincibleTxtGo: {fileID: 437287166}
 --- !u!82 &1495790035

@@ -11,7 +11,7 @@ public class Title1 : TitleBase
 	/// プレイヤーのスクリプト
 	/// </summary>
 	[SerializeField]
-	Player Player;
+	PlayerAct Player;
 
 	#endregion
 

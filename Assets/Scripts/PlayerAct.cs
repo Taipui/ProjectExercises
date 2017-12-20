@@ -7,112 +7,12 @@ using UniRx.Triggers;
 using TMPro;
 using DG.Tweening;
 
-// 必要なコンポーネントの列記
-[RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(CapsuleCollider))]
-[RequireComponent(typeof(Rigidbody))]
 
 /// <summary>
-/// プレイヤー関連のクラス
+/// プレイヤー移動以外のアクションに関するクラス
 /// </summary>
-public class Player : Character
+public class PlayerAct : Character
 {
-	#region アニメーション関連
-	/// <summary>
-	/// アニメーションの再生速度
-	/// </summary>
-	const float Anim_Speed = 1.5f;
-	/// <summary>
-	/// Mecanimでカーブ調整を使うかどうか
-	/// </summary>
-	const bool Use_Curve = true;
-	/// <summary>
-	/// カーブ補正の有効高さ(地面をすり抜けやすい時には大きくする)
-	/// </summary>
-	const float Use_Curve_Height = 0.25f;
-
-	/// <summary>
-	/// コライダの変更を可能にするかどうか
-	/// </summary>
-	bool canModifyCol;
-	#endregion
-
-	#region 各ステートの参照
-	/// <summary>
-	/// Idleステートの参照
-	/// </summary>
-	static int idleState = Animator.StringToHash("Base Layer.Idle");
-	/// <summary>
-	/// Locomotionステートの参照
-	/// </summary>
-	static int locoState = Animator.StringToHash("Base Layer.Locomotion");
-	/// <summary>
-	/// jumpステートの参照
-	/// </summary>
-	static int jumpState = Animator.StringToHash("Base Layer.Jump");
-	#endregion
-
-	#region プレイヤーのアクション関連
-	/// <summary>
-	/// 前進速度
-	/// </summary>
-	const float Forward_Speed = 7.0f;
-	#endregion
-
-	#region プレイヤーのジャンプ関連
-	/// <summary>
-	/// ジャンプ力
-	/// </summary>
-	const float Jump_Power = 5.0f;
-	/// <summary>
-	/// アニメーションのデフォルトの再生速度
-	/// </summary>
-	float defaultSpeed;
-	/// <summary>
-	/// 着地判定を調べる回数
-	/// </summary>
-	const int Landing_Check_Limit = 100;
-	/// <summary>
-	/// 着地モーションへの移項を許可する距離
-	/// </summary>
-	const float Landing_Dist = 1.05F;
-	//const float Landing_Dist = 2.5f;
-	#endregion
-
-	#region その他プレイヤー関連
-
-	/// <summary>
-	/// キャラクターのコライダ
-	/// </summary>
-	CapsuleCollider col;
-	/// <summary>
-	/// CapsuleColliderで設定されているコライダのHeightの初期値を収める変数(Normal)
-	/// </summary>
-	float orgColHeightNormal;
-	/// <summary>
-	/// CapsuleColliderで設定されているコライダのCenterの初期値を収める変数(Normal)
-	/// </summary>
-	Vector3 orgVectColCenterNormal;
-	/// <summary>
-	/// CapsuleColliderで設定されているコライダのHeightの初期値を収める変数(Normal)
-	/// </summary>
-	float orgColHeightSD;
-	/// <summary>
-	/// CapsuleColliderで設定されているコライダのCenterの初期値を収める変数(Normal)
-	/// </summary>
-	Vector3 orgVectColCenterSD;
-	/// <summary>
-	/// 横の移動量
-	/// </summary>
-	readonly ReactiveProperty<float> h = new ReactiveProperty<float>(0.0f);
-
-	/// <summary>
-	/// プレイヤーの向いている方向
-	/// </summary>
-	readonly ReactiveProperty<string> dir = new ReactiveProperty<string>("D");
-
-	#endregion
-
 	#region 雪弾関連
 	/// <summary>
 	/// 雪弾のストック数
@@ -151,6 +51,16 @@ public class Player : Character
 	/// 特殊能力を発動したかどうか
 	/// </summary>
 	readonly ReactiveProperty<bool> isSp = new ReactiveProperty<bool>(false);
+	public bool IsSp {
+		get
+		{
+			return isSp.Value;
+		}
+		set
+		{
+			isSp.Value = value;
+		}
+	}
 
 	#region HP関連
 	/// <summary>
@@ -226,7 +136,7 @@ public class Player : Character
 	/// <summary>
 	/// 現在のAvatar
 	/// </summary>
-	int currentAvatar = 0;
+	public int CurrentAvatar { private set; get; }
 	/// <summary>
 	/// 変身可能かどうか
 	/// </summary>
@@ -256,12 +166,6 @@ public class Player : Character
 	/// </summary>
 	[SerializeField]
 	DestroyCollider Dc;
-
-	/// <summary>
-	/// タイトル用かどうか
-	/// </summary>
-	[SerializeField]
-	bool IsTitle;
 
 	#region アイテム関連
 	/// <summary>
@@ -437,21 +341,25 @@ public class Player : Character
 	#endregion
 
 	/// <summary>
-	/// 着地時のパーティクルの配列
+	/// 変身時のパーティクルの配列
 	/// </summary>
 	[SerializeField]
-	ParticleSystem[] LandParticle;
+	ParticleSystem ChangeParticle;
+	
+	/// <summary>
+	/// PlayerMove
+	/// </summary>
+	PlayerMove playerMove;
 
 	/// <summary>
-	/// 雪弾を取りに行くアニメーションをするためのhiyoko
+	/// canInputに値をセットする
 	/// </summary>
-	//[SerializeField]
-	//GameObject EffectHiyoko;
-	/// <summary>
-	/// hiyokoのGameObject
-	/// </summary>
-	//[SerializeField]
-	//GameObject HiyokoGo;
+	/// <param name="val">セットする値</param>
+	public void setCanInput(bool val)
+	{
+		canInput = val;
+		playerMove.setCanInput(val);
+	}
 
 	/// <summary>
 	/// 変身可能かどうかのフラグをセット
@@ -463,16 +371,7 @@ public class Player : Character
 	}
 
 	/// <summary>
-	/// canInputに値をセットする
-	/// </summary>
-	/// <param name="val">セットする値</param>
-	public void setCanInput(bool val)
-	{
-		canInput = val;
-	}
-
-	/// <summary>
-	/// 風をおける場所か
+	/// 風を置ける場所か
 	/// </summary>
 	/// <returns>置けるならtrue</returns>
 	bool enableSpawnWindArea()
@@ -492,149 +391,29 @@ public class Player : Character
 
 	protected override void Start()
 	{
-		base.Start();
 		init();
-		var currentBaseState = anim.GetCurrentAnimatorStateInfo(0);
-		var velocity = Vector3.zero;
 		var prevStock = 0;
 		var stockBullets = new List<GameObject>();
 		GameObject instanceWindGo = null;
 		Tutorial contactSignboard = null;
-		var tfm = transform;
-		var cachedLocalPosition = tfm.localPosition;
 		var prevMousePos = Input.mousePosition;
 		var prevPlayerXPos = transform.localPosition.x;
+		var tfm = transform;
 
-		this.FixedUpdateAsObservable().Subscribe(_ => {
-			h.Value = !!canInput ? Input.GetAxis("Horizontal") : 0.0f;
-			anim.SetFloat("Speed", Mathf.Abs(h.Value));
-			//anim.speed = Anim_Speed;
-			currentBaseState = anim.GetCurrentAnimatorStateInfo(0);
-			rb.useGravity = true;
-
-			// 以下、キャラクターの移動処理
-			velocity = new Vector3(h.Value, 0, 0);
-			anim.SetBool("IsIdle", h.Value == 0);
-
-			//以下のvの閾値は、Mecanim側のトランジションと一緒に調整する
-			if (Mathf.Abs(h.Value) > 0.1f) {
-				velocity.x *= Forward_Speed;
-				velocity.y *= Forward_Speed;
-				velocity.z *= Forward_Speed;
-			}
-
-			tfm.localPosition += velocity * Time.fixedDeltaTime;
-			// 以下のようにするとおかしくなる
-			//cachedLocalPosition.x += velocity.x * Time.fixedDeltaTime;
-			//cachedLocalPosition.y += velocity.y * Time.fixedDeltaTime;
-			//cachedLocalPosition.z += velocity.z * Time.fixedDeltaTime;
-			//tfm.localPosition = cachedLocalPosition;
-
-			// 以下、Animatorの各ステート中での処理
-			// Locomotion中
-			// 現在のベースレイヤーがlocoStateの時
-			if (currentBaseState.fullPathHash == locoState) {
-				//カーブでコライダ調整をしている時は、念のためにリセットする
-				if (!!Use_Curve) {
-					//resetCollider();
-				}
-			}
-			// JUMP中の処理
-			// 現在のベースレイヤーがjumpStateの時
-			else if (currentBaseState.fullPathHash == jumpState) {
-				// ステートがトランジション中でない場合
-				if (!anim.IsInTransition(0)) {
-
-					// 以下、カーブ調整をする場合の処理
-					if (!!Use_Curve) {
-						// 以下JUMP00アニメーションについているカーブJumpHeightとGravityControl
-						// JumpHeight:JUMP00でのジャンプの高さ（0〜1）
-						// GravityControl:1⇒ジャンプ中（重力無効）、0⇒重力有効
-						var jumpHeight = anim.GetFloat("JumpHeight");
-						var gravityControl = anim.GetFloat("GravityControl");
-						if (gravityControl > 0.0f) {
-							//rb.useGravity = false;  //ジャンプ中の重力の影響を切る
-						}
-
-						// レイキャストをキャラクターのセンターから落とす
-						var ray = new Ray(transform.position + Vector3.up, -Vector3.up);
-						var hitInfo = new RaycastHit();
-						// 高さが useCurvesHeight 以上ある時のみ、コライダーの高さと中心をJUMP00アニメーションについているカーブで調整する
-						if (!!Physics.Raycast(ray, out hitInfo) && !!canModifyCol) {
-							if (hitInfo.distance > Use_Curve_Height) {
-								var orgColHight = currentAvatar == 0 ? orgColHeightNormal : orgColHeightSD;
-								var orgColCenter = currentAvatar == 0 ? orgVectColCenterNormal : orgVectColCenterSD;
-								col.height = orgColHight - jumpHeight;          // 調整されたコライダーの高さ
-								var adjCenterY = orgColCenter.y + jumpHeight;
-								var colCenterY = col.center.y;
-								col.center = new Vector3(0.0f, adjCenterY, 0.0f); // 調整されたコライダーのセンター
-							} else {
-								// 閾値よりも低い時には初期値に戻す（念のため）
-								//resetCollider();
-							}
-						}
-					}
-					// Jump bool値をリセットする（ループしないようにする）				
-					anim.SetBool("Jump", false);
-				}
-			}
-			// IDLE中の処理
-			// 現在のベースレイヤーがidleStateの時
-			else if (currentBaseState.fullPathHash == idleState) {
-				//カーブでコライダ調整をしている時は、念のためにリセットする
-				if (!!Use_Curve) {
-					//resetCollider();
-				}
-			}
-
-			// 段差で浮かないようジャンプ時以外は下方向に力を加える
-			if (currentBaseState.fullPathHash != jumpState) {
-				rb.AddForce(new Vector3(0.0f, -200.0f));
-			}
-		})
-		.AddTo(this);
-
-		this.UpdateAsObservable().Where(x => !!isSpJump() && !!enableJump(currentBaseState) && !IsTitle)
+		this.UpdateAsObservable().Where(x => !!isSpJump() && !!playerMove.enableJump() && !playerMove.IsTitle)
 			.Subscribe(_ => {
+				playerMove.jump();
 				isSp.Value = true;
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => (!!isJump() || !!isSpJump()) && !!enableJump(currentBaseState) && !IsTitle)
-			.Subscribe(_ => {
-				jump();
-			})
-			.AddTo(this);
-
-		h.AsObservable().Where(val => val < 0)
-			.Subscribe(_ => {
-				dir.Value = "A";
-			})
-			.AddTo(this);
-
-		h.AsObservable().Where(val => val > 0)
-			.Subscribe(_ => {
-				dir.Value = "D";
-			})
-			.AddTo(this);
-
-		dir.SkipLatestValueOnSubscribe().AsObservable()
-			.Where(dir_ => dir_ == "D" || dir_ == "A")
-			.Subscribe(dir_ => {
-				transform.Rotate(0, 180.0f, 0);
-				Mes.transform.localScale = new Vector3(-Mes.transform.localScale.x, Mes.transform.localScale.y, Mes.transform.localScale.z);
-			})
-			.AddTo(this);
-
-		this.UpdateAsObservable().Where(x => !!isPlay() && !!isRClk() && !isMaxStock() && !!enableJump(currentBaseState) && !IsTitle)
+		this.UpdateAsObservable().Where(x => !!isPlay() && !!isRClk() && !isMaxStock() && !!playerMove.enableJump() && !playerMove.IsTitle)
 			.Subscribe(_ => {
 				Gce.checkGroundChip();
-				//EffectHiyoko.SetActive(true);
-				//HiyokoGo.SetActive(false);
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isPlay() && !!isLClk() && !!permitLaunchItemState() && !IsTitle && !!canInput && !isEmpty())
+		this.UpdateAsObservable().Where(x => !!isPlay() && !!isLClk() && !!permitLaunchItemState() && !playerMove.IsTitle && !!canInput && !isEmpty())
 			.Subscribe(_ => {
 				--stock.Value;
 			})
@@ -671,7 +450,7 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isLClk() && !!IsTitle)
+		this.UpdateAsObservable().Where(x => !!isLClk() && !!playerMove.IsTitle)
 			.Subscribe(_ => {
 				launch();
 			})
@@ -741,13 +520,13 @@ public class Player : Character
 			})
 			.AddTo(this);
 
-		col.OnTriggerEnterAsObservable().Where(colGo => !!isSignboard(colGo))
+		playerMove.Col.OnTriggerEnterAsObservable().Where(colGo => !!isSignboard(colGo))
 			.Subscribe(colGo => {
 				contactSignboard = colGo.GetComponent<Tutorial>();
 			})
 			.AddTo(this);
 
-		col.OnTriggerExitAsObservable().Where(colGo => !!isSignboard(colGo))
+		playerMove.Col.OnTriggerExitAsObservable().Where(colGo => !!isSignboard(colGo))
 			.Subscribe(_ => {
 				contactSignboard = null;
 			})
@@ -791,14 +570,6 @@ public class Player : Character
 	/// </summary>
 	void init()
 	{
-		col = GetComponent<CapsuleCollider>();
-		orgColHeightNormal = col.height;
-		orgVectColCenterNormal = col.center;
-		orgColHeightSD = col.height * 0.7f;
-		orgVectColCenterSD = new Vector3(col.center.x, orgVectColCenterNormal.y - orgColHeightSD / 4, col.center.z);
-		canModifyCol = false;
-		canInput = true;
-
 		MyBulletLayer = Common.PlayerBulletLayer;
 
 		hp = Default_Hp;
@@ -830,15 +601,17 @@ public class Player : Character
 		//HiyokoGo.SetActive(true);
 
 		camMover = Camera.main.GetComponent<CameraMover>();
+		CurrentAvatar = 0;
+		playerMove = GetComponent<PlayerMove>();
+		canInput = true;
 	}
 
 	/// <summary>
-	/// ジャンプキーを押したかどうか
+	/// 看板の近くにいる時に表示されるメッセージを反転させる
 	/// </summary>
-	/// <returns>押したらtrue</returns>
-	bool isJump()
+	public void flipMes()
 	{
-		return !!Input.GetKeyDown(KeyCode.W);
+		Mes.transform.localScale = new Vector3(-Mes.transform.localScale.x, Mes.transform.localScale.y, Mes.transform.localScale.z);
 	}
 
 	/// <summary>
@@ -850,23 +623,7 @@ public class Player : Character
 		return !!Input.GetButtonDown("Jump");
 	}
 
-	/// <summary>
-	/// ジャンプ可能かどうか
-	/// </summary>
-	/// <returns>可能ならtrue</returns>
-	bool enableJump(AnimatorStateInfo animStateInfo)
-	{
-		return animStateInfo.fullPathHash != jumpState && !anim.IsInTransition(0);
-	}
 
-	/// <summary>
-	/// ジャンプ処理
-	/// </summary>
-	void jump()
-	{
-		anim.SetBool("Jump", true);
-		StartCoroutine("disableInput");
-	}
 
 	/// <summary>
 	/// 左のShiftキーを押したかどうか
@@ -895,115 +652,7 @@ public class Player : Character
 		return !!Input.GetKeyDown(KeyCode.F);
 	}
 	
-	/// <summary>
-	/// プレイヤーのコライダーサイズをリセットする
-	/// </summary>
-	void resetCollider()
-	{
-		// コンポーネントのHeight、Centerの初期値を戻す
-		var changeTime = 0.5f;
-		var orgColHeight = currentAvatar == 0 ? orgColHeightNormal : orgColHeightSD;
-		DOTween.To(
-			() => col.height,
-			val => col.height = val,
-			orgColHeight,
-			changeTime
-		);
-		//col.height = currentAvatar == 0 ? orgColHeightNormal : orgColHeightSD;
-		var colCenterY = currentAvatar == 0 ? orgVectColCenterNormal.y : orgVectColCenterSD.y;
-		var currentColCenterY = col.center.y;
-		DOTween.To(
-			() => currentColCenterY,
-			val => currentColCenterY = val,
-			colCenterY,
-			changeTime
-		).OnUpdate(() => {
-			col.center = new Vector3(col.center.x, currentColCenterY, col.center.z);
-		});
-		//col.center = currentAvatar == 0 ? orgVectColCenterNormal : orgVectColCenterSD;
-	}
 
-	/// <summary>
-	/// ジャンプアニメーションのイベント(地面から足が離れる瞬間に呼ばれる)
-	/// </summary>
-	void OnJumpStart()
-	{
-		defaultSpeed = anim.speed;
-		rb.AddForce(Vector3.up * Jump_Power, ForceMode.VelocityChange);
-	}
-
-	/// <summary>
-	/// 脚の曲げ始め
-	/// </summary>
-	void OnStartLegCurve()
-	{
-		canModifyCol = true;
-	}
-
-	/// <summary>
-	/// ジャンプアニメーションのイベント(ジャンプの最高点に到達した瞬間に呼ばれる)
-	/// </summary>
-	void OnJumpTopPoint()
-	{
-		// アニメーションを停止して、着地判定のチェックを行う
-		anim.speed = 0;
-		StartCoroutine(CheckLanding());
-		//Debug.Break();
-	}
-
-	/// <summary>
-	/// 脚の曲げ終わり
-	/// </summary>
-	void OnEndLegCurve()
-	{
-		resetCollider();
-		canModifyCol = false;
-	}
-
-	/// <summary>
-	/// ジャンプアニメーションのイベント(着地時に呼ばれる)
-	/// </summary>
-	void OnJumpEnd()
-	{
-		isSp.Value = false;
-		StartCoroutine("disableInput");
-		//Debug.Break();
-		LandParticle[0].Play();
-	}
-
-	/// <summary>
-	/// 足下との距離を計算して、一定距離まで近づいたらアニメーションを再会させる
-	/// </summary>
-	/// <returns>The landing.</returns>
-	IEnumerator CheckLanding()
-	{
-		// 規定回数チェックして成功しない場合も着地モーションに移行する
-		for (int count = 0; count < Landing_Check_Limit; count++) {
-			var raycastL = new RaycastHit();
-			var raycastR = new RaycastHit();
-			var rayInterval = 0.125f;
-			//var rayOffset = 1.7f;
-			var rayOffset = 0.0f;
-			var rayLen = 1.0f;
-			var raycastSuccessL = Physics.Raycast(transform.localPosition + new Vector3(-rayInterval, rayOffset), Vector3.down * rayLen, out raycastL);
-			var raycastSuccessR = Physics.Raycast(transform.localPosition + new Vector3(rayInterval, rayOffset), Vector3.down * rayLen, out raycastR);
-			//Debug.DrawRay(transform.localPosition + new Vector3(-rayInterval, rayOffset), Vector3.down * rayLen, Color.red);
-			//Debug.DrawRay(transform.localPosition + new Vector3(rayInterval, rayOffset), Vector3.down * rayLen, Color.red);
-			//Debug.Log(raycastL.distance);
-			//Debug.Log(anim.speed);
-			//Debug.Break();
-			// レイを飛ばして、成功且つ一定距離内であった場合、着地モーションへ移項させる
-			if ((!!raycastSuccessL || !!raycastSuccessR) && (raycastL.distance < Landing_Dist || raycastR.distance < Landing_Dist)) {
-				//Debug.Break();
-				break;
-			}
-			//yield return new WaitForSeconds(waitTime);
-			yield return new WaitForEndOfFrame();
-		}
-		anim.speed = defaultSpeed;
-		//Debug.Log("break");
-		//Debug.Break();
-	}
 
 	/// <summary>
 	/// 左クリックしたかどうか
@@ -1042,13 +691,13 @@ public class Player : Character
 			yield break;
 		}
 		enableTeleportation = false;
-		foreach (Transform tfm in ParticleParents[currentAvatar]) {
+		foreach (Transform tfm in ParticleParents[CurrentAvatar]) {
 			tfm.gameObject.SetActive(true);
 		}
 		StartCoroutine("teleportation");
 		yield return new WaitForSeconds(0.5f);
 		enableTeleportation = true;
-		foreach (Transform tfm in ParticleParents[currentAvatar]) {
+		foreach (Transform tfm in ParticleParents[CurrentAvatar]) {
 			tfm.gameObject.SetActive(false);
 		}
 	}
@@ -1062,9 +711,9 @@ public class Player : Character
 		Main.playSE(Main.SE.Teleportation, null);
 
 		var power = 200.0f;
-		if (dir.Value == "D") {
+		if (playerMove.Dir == "D") {
 			rb.AddForce(Vector3.right * power, ForceMode.Impulse);
-		} else if (dir.Value == "A") {
+		} else if (playerMove.Dir == "A") {
 			rb.AddForce(Vector3.left * power, ForceMode.Impulse);
 		}
 		yield return new WaitForSeconds(0.1f);
@@ -1086,7 +735,7 @@ public class Player : Character
 	/// <returns>空ならtrue</returns>
 	bool isEmpty()
 	{
-		if (!!IsTitle) {
+		if (!!playerMove.IsTitle) {
 			return false;
 		}
 		if (stock.Value <= 0) {
@@ -1103,7 +752,7 @@ public class Player : Character
 	void launch()
 	{
 		var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-		if (!!IsTitle) {
+		if (!!playerMove.IsTitle) {
 			launchVec = calcLaunchVec();
 		}
 		var scale = 1.0f;
@@ -1176,7 +825,7 @@ public class Player : Character
 	/// </summary>
 	void drawLocus()
 	{
-		if (!!IsTitle) {
+		if (!!playerMove.IsTitle) {
 			return;
 		}
 		Lr.positionCount = locusPoses.Count;
@@ -1318,7 +967,7 @@ public class Player : Character
 	/// </summary>
 	protected override void startFlick()
 	{
-		flickCoroutine = StartCoroutine(flick(Models[currentAvatar]));
+		flickCoroutine = StartCoroutine(flick(Models[CurrentAvatar]));
 	}
 
 	/// <summary>
@@ -1327,7 +976,7 @@ public class Player : Character
 	protected override void stopFlick()
 	{
 		StopCoroutine(flickCoroutine);
-		Models[currentAvatar].SetActive(true);
+		Models[CurrentAvatar].SetActive(true);
 	}
 
 	/// <summary>
@@ -1348,21 +997,21 @@ public class Player : Character
 	/// </summary>
 	void changeAvatar()
 	{
-		LandParticle[1].Play();
+		ChangeParticle.Play();
 		audioSource.PlayOneShot(TransformSEs[Random.Range(0, TransformSEs.Length)]);
 		Main.playSE(Main.SE.Transform, null);
-		currentAvatar = (currentAvatar + 1) % Avatars.Length;
+		CurrentAvatar = (CurrentAvatar + 1) % Avatars.Length;
 		foreach (GameObject go in Models) {
 			go.SetActive(false);
 		}
-		Models[currentAvatar].SetActive(true);
-		anim.avatar = Avatars[currentAvatar];
-		if (currentAvatar == 0) {
-			col.height = orgColHeightNormal;
-			col.center = orgVectColCenterNormal;
+		Models[CurrentAvatar].SetActive(true);
+		anim.avatar = Avatars[CurrentAvatar];
+		if (CurrentAvatar == 0) {
+			playerMove.Col.height = playerMove.OrgColHeightNormal;
+			playerMove.Col.center = playerMove.OrgVectColCenterNormal;
 		} else {
-			col.height /= 2;
-			col.center = new Vector3(col.center.x, col.center.y - col.height / 2, col.center.z);
+			playerMove.Col.height /= 2;
+			playerMove.Col.center = new Vector3(playerMove.Col.center.x, playerMove.Col.center.y - playerMove.Col.height / 2, playerMove.Col.center.z);
 		}
 		var smoke = Instantiate(Smoke, new Vector3(transform.position.x, transform.position.y + 1.0f, -1.0f), Quaternion.identity);
 		Destroy(smoke, 5.0f);

@@ -11,7 +11,7 @@ public class LocusDrawCollider : MonoBehaviour
 	/// Player
 	/// </summary>
 	[SerializeField]
-	Player Player;
+	PlayerAct Player;
 	/// <summary>
 	/// 自身のコライダ
 	/// </summary>

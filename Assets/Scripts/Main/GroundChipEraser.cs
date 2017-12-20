@@ -16,7 +16,7 @@ public class GroundChipEraser : MonoBehaviour
 	/// Player
 	/// </summary>
 	[SerializeField]
-	Player Player;
+	PlayerAct Player;
 
 	/// <summary>
 	/// 地面のチップを消す用のCollider

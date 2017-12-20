@@ -192,7 +192,7 @@ public class Main : MonoBehaviour
 	/// プレイヤーのスクリプト
 	/// </summary>
 	[SerializeField]
-	Player Player;
+	PlayerAct PlayerAct;
 	/// <summary>
 	/// HPを表すGameObject
 	/// </summary>
@@ -299,7 +299,7 @@ public class Main : MonoBehaviour
 
 		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.Alpha1))
 			.Subscribe(_ => {
-				var isInvincible = Player.changeInvincible();
+				var isInvincible = PlayerAct.changeInvincible();
 				HPGo.SetActive(!isInvincible);
 				InvincibleTxtGo.SetActive(!!isInvincible);
 			})
@@ -311,11 +311,11 @@ public class Main : MonoBehaviour
 					OptionCanvasGo.SetActive(true);
 					prevTimeScale = Time.timeScale;
 					Time.timeScale = 0.0f;
-					Player.setCanInput(false);
+					PlayerAct.setCanInput(false);
 				} else {
 					OptionCanvasGo.SetActive(false);
 					Time.timeScale = prevTimeScale;
-					Player.setCanInput(true);
+					PlayerAct.setCanInput(true);
 				}
 			})
 			.AddTo(this);
@@ -514,6 +514,6 @@ public class Main : MonoBehaviour
 	public void endOption()
 	{
 		Time.timeScale = prevTimeScale;
-		Player.setCanInput(true);
+		PlayerAct.setCanInput(true);
 	}
 }

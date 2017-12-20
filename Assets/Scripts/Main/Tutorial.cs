@@ -38,7 +38,7 @@ public class Tutorial : MonoBehaviour
 	/// Player
 	/// </summary>
 	[SerializeField]
-	Player Player;
+	PlayerAct Player;
 
 	/// <summary>
 	/// ページ送りをするかどうか
