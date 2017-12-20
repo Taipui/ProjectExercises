@@ -177,6 +177,20 @@ public class Main : MonoBehaviour
 	[SerializeField]
 	GameObject BanImgGo;
 
+	#region オプション関連
+
+	/// <summary>
+	/// オプション画面
+	/// </summary>
+	[SerializeField]
+	GameObject OptionCanvasGo;
+	/// <summary>
+	/// オプションを開く前のtimeScale;
+	/// </summary>
+	float prevTimeScale;
+
+	#endregion
+
 	#region チート関連
 
 	/// <summary>
@@ -264,6 +278,10 @@ public class Main : MonoBehaviour
 		HPGo.SetActive(true);
 		InvincibleTxtGo.SetActive(false);
 
+		BanImgGo.SetActive(false);
+
+		OptionCanvasGo.SetActive(false);
+
 		if (GameManager.Instance.BGMs_ == null) {
 			audioMixer.SetFloat("MasterVol", Mathf.Lerp(-80.0f, 0.0f, PlayerPrefs.GetFloat("Master", 100) / 100));
 			audioMixer.SetFloat("BGMVol", Mathf.Lerp(-80.0f, 0.0f, PlayerPrefs.GetFloat("BGM", 100) / 100));
@@ -273,8 +291,6 @@ public class Main : MonoBehaviour
 		selectedBGMIds = new List<int>();
 		BGMAudioSource1.clip = GameManager.Instance.BGMs_[chooseBGMID()];
 		BGMAudioSource1.Play();
-
-		BanImgGo.SetActive(false);
 
 		Cursor.visible = true;
 	}
@@ -295,6 +311,21 @@ public class Main : MonoBehaviour
 				var isInvincible = Player.changeInvincible();
 				HPGo.SetActive(!isInvincible);
 				InvincibleTxtGo.SetActive(!!isInvincible);
+			})
+			.AddTo(this);
+
+		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.O))
+			.Subscribe(_ => {
+				if (!OptionCanvasGo.activeSelf) {
+					OptionCanvasGo.SetActive(true);
+					prevTimeScale = Time.timeScale;
+					Time.timeScale = 0.0f;
+					Player.setCanInput(false);
+				} else {
+					OptionCanvasGo.SetActive(false);
+					Time.timeScale = prevTimeScale;
+					Player.setCanInput(true);
+				}
 			})
 			.AddTo(this);
 	}
@@ -484,5 +515,14 @@ public class Main : MonoBehaviour
 		BanImgGo.SetActive(true);
 		yield return new WaitForSeconds(1.0f);
 		BanImgGo.SetActive(false);
+	}
+
+	/// <summary>
+	/// オプションを閉じると呼ばれる
+	/// </summary>
+	public void endOption()
+	{
+		Time.timeScale = prevTimeScale;
+		Player.setCanInput(true);
 	}
 }

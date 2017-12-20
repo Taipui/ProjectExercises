@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Assertions;
 using UniRx;
 using UniRx.Triggers;
 using TMPro;
@@ -16,6 +17,11 @@ public class Option : MonoBehaviour
 	/// </summary>
 	[SerializeField]
 	TitleBase Title;
+	/// <summary>
+	/// メインシーンのスクリプト
+	/// </summary>
+	[SerializeField]
+	Main Main;
 
 	/// <summary>
 	/// 戻るボタン
@@ -92,13 +98,27 @@ public class Option : MonoBehaviour
 		SEValTxt.text = val.ToString();
 	}
 
+	/// <summary>
+	/// アサートチェック
+	/// </summary>
+	void checkAssert()
+	{
+		Assert.IsFalse(Title == null && Main == null, "Both Title and Main, both null");
+	}
+
 	void Start ()
 	{
 		init();
 
+		checkAssert();
+
 		BackBtn.OnClickAsObservable().Subscribe(_ => {
 			gameObject.SetActive(false);
-			Title.endOption();
+			if (Title != null) {
+				Title.endOption();
+			} else {
+				Main.endOption();
+			}
 		})
 		.AddTo(this);
 
