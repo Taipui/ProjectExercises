@@ -78,6 +78,7 @@ public class Player : Character
 	#endregion
 
 	#region その他プレイヤー関連
+
 	/// <summary>
 	/// キャラクターのコライダ
 	/// </summary>
@@ -107,6 +108,7 @@ public class Player : Character
 	/// プレイヤーの向いている方向
 	/// </summary>
 	readonly ReactiveProperty<string> dir = new ReactiveProperty<string>("D");
+
 	#endregion
 
 	#region 雪弾関連
@@ -580,6 +582,11 @@ public class Player : Character
 				if (!!Use_Curve) {
 					resetCollider();
 				}
+			}
+
+			// 段差で浮かないようジャンプ時以外は下方向に力を加える
+			if (currentBaseState.fullPathHash != jumpState) {
+				rb.AddForce(new Vector3(0.0f, -200.0f));
 			}
 		})
 		.AddTo(this);
