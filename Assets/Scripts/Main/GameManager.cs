@@ -103,8 +103,24 @@ public class GameManager
 		}
 	}
 
+	/// <summary>
+	/// 前回までロードしていたBGMのインデックス
+	/// </summary>
+	int prevLoadBGMIndex;
+	public int PrevLoadBGMIndex {
+		get
+		{
+			return prevLoadBGMIndex;
+		}
+		set
+		{
+			prevLoadBGMIndex = value;
+		}
+	}
+
 	GameManager()
 	{
 		currentLoadBGMIndex = 0;
+		prevLoadBGMIndex = 0;
 	}
 }

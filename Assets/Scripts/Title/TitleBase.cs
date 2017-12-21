@@ -237,7 +237,12 @@ public class TitleBase : MonoBehaviour
 			if (currentSelect.Value == 0) {
 				LoadGo.SetActive(true);
 				Cursor.visible = false;
-				SceneManager.LoadScene(Common.Main_Scene);
+				if (GameObject.Find("BGMLoader(Clone)") == null) {
+					SceneManager.LoadScene(Common.Main_Scene);
+				} else {
+
+					SceneManager.LoadScene(Common.Load_Scene);
+				}
 			} else {
 				Application.Quit();
 			}

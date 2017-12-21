@@ -30,6 +30,8 @@ public class BGMLoader : MonoBehaviour
 	{
 		GameManager.Instance.BGMs_ = new AudioClip[20];
 		while (true) {
+			GameManager.Instance.PrevLoadBGMIndex = GameManager.Instance.CurrentLoadBGMIndex;
+
 			var resReq = Resources.LoadAsync<AudioClip>("BGM/bgm" + (GameManager.Instance.CurrentLoadBGMIndex + 1).ToString());
 
 			while (!resReq.isDone) {

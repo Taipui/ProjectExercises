@@ -121,51 +121,54 @@ public class SceneLoader : MonoBehaviour
 
 		Tween progressTween = null;
 
-		//var bgmLoaderGo = GameObject.Find("BGMLoader");
-		//if (bgmLoaderGo == null) {
-		//	yield break;
-		//}
-		//var bgmLoader = bgmLoaderGo.GetComponent<BGMLoader>();
-		//Assert.IsNotNull(bgmLoader, "bgmLoader is not attached \"BGMLoader\" GameObject");
-		//Assert.IsNotNull(GameManager.Instance.BGMs_, "BGMLoader is not generated");
-		//while (bgmLoader.CurrentLoadIndex < GameManager.Instance.BGMs_.Length) {
-		//	if (bgmLoader.PrevLoadIndex >= bgmLoader.CurrentLoadIndex) {
-		//		yield return 0;
-		//	}
-		//	progressTween = DOTween.To(
-		//		() => TmpProgress,
-		//		(x) => TmpProgress = x,
-		//		//(100 * (cnt + 1)) / (GameManager.Instance.BGMs_.Length + 1),
-		//		(100 * (bgmLoader.CurrentLoadIndex + 1)) / GameManager.Instance.BGMs_.Length,
-		//		Load_Progress_Anim_Speed
-		//	).SetEase(Ease.Linear);
-		//	LoadTxt.text = "Loading BGM(" + (bgmLoader.CurrentLoadIndex + 1).ToString() + '/' + GameManager.Instance.BGMs_.Length.ToString() + ")...";
+		// BGMのロード
+		var bgmLoaderGo = GameObject.Find("BGMLoader(Clone)");
+		if (bgmLoaderGo == null) {
+			yield break;
+		}
+		var bgmLoader = bgmLoaderGo.GetComponent<BGMLoader>();
+		Assert.IsNotNull(bgmLoader, "bgmLoader is not attached \"BGMLoader\" GameObject");
+		Assert.IsNotNull(GameManager.Instance.BGMs_, "BGMLoader is not generated");
+		while (GameManager.Instance.CurrentLoadBGMIndex < GameManager.Instance.BGMs_.Length) {
+			if (GameManager.Instance.PrevLoadBGMIndex >= GameManager.Instance.CurrentLoadBGMIndex) {
+				yield return 0;
+			}
+			progressTween.Kill();
+			progressTween = DOTween.To(
+				() => TmpProgress,
+				(x) => TmpProgress = x,
+				//(100 * (cnt + 1)) / (GameManager.Instance.BGMs_.Length + 1),
+				(100 * (GameManager.Instance.CurrentLoadBGMIndex + 1)) / GameManager.Instance.BGMs_.Length,
+				Load_Progress_Anim_Speed
+			).SetEase(Ease.Linear);
+			LoadTxt.text = "Loading BGM(" + (GameManager.Instance.CurrentLoadBGMIndex + 1).ToString() + '/' + GameManager.Instance.BGMs_.Length.ToString() + ")...";
 
-		//	yield return 0;
-		//}
-
-		// シーンのロード
-		yield return new WaitForEndOfFrame();
-		var async = SceneManager.LoadSceneAsync(Common.Main_Scene);
-		async.allowSceneActivation = false;
-
-		LoadTxt.text = "Loading scene...";
-
-		progressTween = DOTween.To(
-			() => TmpProgress,
-			(x) => TmpProgress = x,
-			100.0f,
-			4.0f
-		).SetEase(Ease.Linear);
-
-		while (async.progress < 0.9f) {
-			//TmpProgress = async.progress;
 			yield return 0;
 		}
+
+		// シーンのロード
+		//yield return new WaitForEndOfFrame();
+		//var async = SceneManager.LoadSceneAsync(Common.Main_Scene);
+		//async.allowSceneActivation = false;
+
+		//LoadTxt.text = "Loading scene...";
+
+		//progressTween = DOTween.To(
+		//	() => TmpProgress,
+		//	(x) => TmpProgress = x,
+		//	100.0f,
+		//	4.0f
+		//).SetEase(Ease.Linear);
+
+		//while (async.progress < 0.9f) {
+		//	//TmpProgress = async.progress;
+		//	yield return 0;
+		//}
 
 		LoadDoneImgGo.SetActive(true);
 		LoadTxt.text = "<align=center>Done!";
 		progressTween.Kill();
+		Debug.Log(progressTween);
 		TmpProgress = 100.0f;
 
 		DOTween.ToAlpha(
@@ -174,7 +177,8 @@ public class SceneLoader : MonoBehaviour
 			1.0f,
 			1.0f
 		).OnComplete(() => {
-			async.allowSceneActivation = true;
+			//async.allowSceneActivation = true;
+			SceneManager.LoadScene(Common.Main_Scene);
 		});
 
 		//DOTween.To(
