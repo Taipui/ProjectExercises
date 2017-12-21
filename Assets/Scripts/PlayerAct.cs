@@ -391,6 +391,7 @@ public class PlayerAct : Character
 
 	protected override void Start()
 	{
+		base.Start();
 		init();
 		var prevStock = 0;
 		var stockBullets = new List<GameObject>();
@@ -400,20 +401,20 @@ public class PlayerAct : Character
 		var prevPlayerXPos = transform.localPosition.x;
 		var tfm = transform;
 
-		this.UpdateAsObservable().Where(x => !!isSpJump() && !!playerMove.enableJump() && !playerMove.IsTitle)
+		this.UpdateAsObservable().Where(x => !!isSpJump() && !!playerMove.enableJump() && !playerMove.IsTitle_)
 			.Subscribe(_ => {
 				playerMove.jump();
 				isSp.Value = true;
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isPlay() && !!isRClk() && !isMaxStock() && !!playerMove.enableJump() && !playerMove.IsTitle)
+		this.UpdateAsObservable().Where(x => !!isPlay() && !!isRClk() && !isMaxStock() && !!playerMove.enableJump() && !playerMove.IsTitle_)
 			.Subscribe(_ => {
 				Gce.checkGroundChip();
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isPlay() && !!isLClk() && !!permitLaunchItemState() && !playerMove.IsTitle && !!canInput && !isEmpty())
+		this.UpdateAsObservable().Where(x => !!isPlay() && !!isLClk() && !!permitLaunchItemState() && !playerMove.IsTitle_ && !!canInput && !isEmpty())
 			.Subscribe(_ => {
 				--stock.Value;
 			})
@@ -450,7 +451,7 @@ public class PlayerAct : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isLClk() && !!playerMove.IsTitle)
+		this.UpdateAsObservable().Where(x => !!isLClk() && !!playerMove.IsTitle_)
 			.Subscribe(_ => {
 				launch();
 			})
@@ -558,11 +559,6 @@ public class PlayerAct : Character
 				launchLocusDrawCol();
 			})
 			.AddTo(this);
-
-		this.UpdateAsObservable().Subscribe(_ => {
-			//Debug.Log(rb.useGravity);
-		})
-		.AddTo(this);
 	}
 
 	/// <summary>
@@ -578,6 +574,10 @@ public class PlayerAct : Character
 
 		windLifespanSlider = WindLifespanSliderGo.GetComponent<Slider>();
 		WindLifespanSliderGo.SetActive(false);
+
+		CurrentAvatar = 0;
+		playerMove = GetComponent<PlayerMove>();
+		canInput = true;
 
 		foreach (Transform parentTfm in ParticleParents) {
 			if (parentTfm == null) {
@@ -597,13 +597,7 @@ public class PlayerAct : Character
 		locusPoses = new List<Vector3>();
 		launchLocusDrawCol();
 
-		//		EffectHiyoko.SetActive(false);
-		//HiyokoGo.SetActive(true);
-
 		camMover = Camera.main.GetComponent<CameraMover>();
-		CurrentAvatar = 0;
-		playerMove = GetComponent<PlayerMove>();
-		canInput = true;
 	}
 
 	/// <summary>
@@ -651,8 +645,6 @@ public class PlayerAct : Character
 	{
 		return !!Input.GetKeyDown(KeyCode.F);
 	}
-	
-
 
 	/// <summary>
 	/// 左クリックしたかどうか
@@ -735,7 +727,7 @@ public class PlayerAct : Character
 	/// <returns>空ならtrue</returns>
 	bool isEmpty()
 	{
-		if (!!playerMove.IsTitle) {
+		if (!!playerMove.IsTitle_) {
 			return false;
 		}
 		if (stock.Value <= 0) {
@@ -752,7 +744,7 @@ public class PlayerAct : Character
 	void launch()
 	{
 		var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-		if (!!playerMove.IsTitle) {
+		if (!!playerMove.IsTitle_) {
 			launchVec = calcLaunchVec();
 		}
 		var scale = 1.0f;
@@ -772,7 +764,7 @@ public class PlayerAct : Character
 			Title.playSE(TitleBase.SE.Launch);
 		}
 
-		audioSource.PlayOneShot(LaunchSEs[Random.Range(0, LaunchSEs.Length)]);
+		//audioSource.PlayOneShot(LaunchSEs[Random.Range(0, LaunchSEs.Length)]);
 	}
 
 	/// <summary>
@@ -825,7 +817,7 @@ public class PlayerAct : Character
 	/// </summary>
 	void drawLocus()
 	{
-		if (!!playerMove.IsTitle) {
+		if (!!playerMove.IsTitle_) {
 			return;
 		}
 		Lr.positionCount = locusPoses.Count;

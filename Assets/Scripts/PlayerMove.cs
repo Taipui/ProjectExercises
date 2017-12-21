@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
@@ -144,7 +143,13 @@ public class PlayerMove : Character
 	/// タイトル用かどうか
 	/// </summary>
 	[SerializeField]
-	public bool IsTitle { private set; get; }
+	bool IsTitle;
+	public bool IsTitle_ {
+		get
+		{
+			return IsTitle;
+		}
+	}
 
 	/// <summary>
 	/// 現在のステート
@@ -250,7 +255,6 @@ public class PlayerMove : Character
 								var orgColCenter = playerAct.CurrentAvatar == 0 ? OrgVectColCenterNormal : orgVectColCenterSD;
 								Col.height = orgColHight - jumpHeight;          // 調整されたコライダーの高さ
 								var adjCenterY = orgColCenter.y + jumpHeight;
-								var colCenterY = Col.center.y;
 								Col.center = new Vector3(0.0f, adjCenterY, 0.0f); // 調整されたコライダーのセンター
 							} else {
 								// 閾値よりも低い時には初期値に戻す（念のため）
@@ -440,5 +444,14 @@ public class PlayerMove : Character
 		anim.speed = defaultSpeed;
 		//Debug.Log("break");
 		//Debug.Break();
+	}
+
+	/// <summary>
+	/// ダメージ処理
+	/// </summary>
+	protected override IEnumerator dmg()
+	{
+		// PlayerActが処理するためここでは何もしない
+		yield return 0;
 	}
 }
