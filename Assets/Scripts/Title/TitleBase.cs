@@ -221,6 +221,7 @@ public class TitleBase : MonoBehaviour
 	protected void decide()
 	{
 		isDecided = true;
+		canInput = false;
 		TxtGoRenderers[currentSelect.Value].enabled = false;
 		Particles[currentSelect.Value].SetActive(true);
 		if (currentSelect.Value == 0) {
@@ -240,11 +241,9 @@ public class TitleBase : MonoBehaviour
 				if (GameObject.Find("BGMLoader(Clone)") == null) {
 					SceneManager.LoadScene(Common.Main_Scene);
 				} else {
-
 					SceneManager.LoadScene(Common.Load_Scene);
 				}
 			} else {
-				Debug.Log("Decide");
 				Application.Quit();
 			}
 		});
