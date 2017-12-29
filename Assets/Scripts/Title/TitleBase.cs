@@ -69,8 +69,7 @@ public class TitleBase : MonoBehaviour
 		/// <summary>
 		/// STARTが選択された時のSE
 		/// </summary>
-		Start1,
-		Start2,
+		Start,
 		/// <summary>
 		/// QUITが選択された時のSE(
 		/// </summary>
@@ -225,7 +224,7 @@ public class TitleBase : MonoBehaviour
 		TxtGoRenderers[currentSelect.Value].enabled = false;
 		Particles[currentSelect.Value].SetActive(true);
 		if (currentSelect.Value == 0) {
-			playSE((SE)System.Enum.ToObject(typeof(SE), Random.Range((int)SE.Start1, ((int)SE.Start2) + 1)));
+			playSE(SE.Start);
 		} else {
 			playSE((SE)System.Enum.ToObject(typeof(SE), Random.Range((int)SE.Quit1, ((int)SE.Quit3) + 1)));
 		}
