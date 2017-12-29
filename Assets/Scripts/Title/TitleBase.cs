@@ -112,6 +112,10 @@ public class TitleBase : MonoBehaviour
 	/// <param name="val">セットする番号</param>
 	public void setCurrentSelect(int val)
 	{
+		if (!!isDecided) {
+			return;
+		}
+
 		currentSelect.Value = val;
 		decide();
 	}
@@ -217,9 +221,6 @@ public class TitleBase : MonoBehaviour
 	/// </summary>
 	protected void decide()
 	{
-		if (!!isDecided) {
-			return;
-		}
 		isDecided = true;
 		TxtGoRenderers[currentSelect.Value].enabled = false;
 		Particles[currentSelect.Value].SetActive(true);
@@ -244,6 +245,7 @@ public class TitleBase : MonoBehaviour
 					SceneManager.LoadScene(Common.Load_Scene);
 				}
 			} else {
+				Debug.Log("Decide");
 				Application.Quit();
 			}
 		});
