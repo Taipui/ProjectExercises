@@ -152,7 +152,6 @@ public class StaffRollPlayerAct : Character
 	public void setCanInput(bool val)
 	{
 		canInput = val;
-		Debug.Log("hoge");
 	}
 
 	void init()

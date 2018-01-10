@@ -97,6 +97,9 @@
     <Reference Include="TextMeshPro-1.0.55.2017.1.0b12">
       <HintPath>Assets\TextMesh Pro\Plugins\TextMeshPro-1.0.55.2017.1.0b12.dll</HintPath>
     </Reference>
+    <Reference Include="FlyingText3D">
+      <HintPath>Assets\FlyingText3D\Plugins\FlyingText3D.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="ProjectExercises.Plugins.csproj">
@@ -109,6 +112,11 @@
     <Compile Include="Assets\Demigiant\DOTween\Examples\Sequences.cs" />
     <Compile Include="Assets\Demigiant\DOTweenPro\DOTweenAnimation.cs" />
     <Compile Include="Assets\Demigiant\DOTweenPro\DOTweenTextMeshPro.cs" />
+    <Compile Include="Assets\FlyingText3D\Demos\GameOver Demo\Explosion\Scripts\LightFade.cs" />
+    <Compile Include="Assets\FlyingText3D\Demos\GameOver Demo\GameOverControl.cs" />
+    <Compile Include="Assets\FlyingText3D\Demos\Input Demo\InputDemo.cs" />
+    <Compile Include="Assets\FlyingText3D\Demos\Menu Demo\MenuControl.cs" />
+    <Compile Include="Assets\FlyingText3D\Demos\Menu Demo\MenuObject.cs" />
     <Compile Include="Assets\SAColliderBuilder\Scripts\Internal\SABoneColliderCommon.cs" />
     <Compile Include="Assets\SAColliderBuilder\Scripts\Internal\SAColliderBuilderCommon.cs" />
     <Compile Include="Assets\SAColliderBuilder\Scripts\Internal\SAMeshColliderCommon.cs" />
@@ -151,10 +159,12 @@
     <Compile Include="Assets\Scripts\PlayerAct.cs" />
     <Compile Include="Assets\Scripts\PlayerMove.cs" />
     <Compile Include="Assets\Scripts\Sandbox.cs" />
+    <Compile Include="Assets\Scripts\StaffRoll\StaffRoll.cs" />
     <Compile Include="Assets\Scripts\StaffRoll\StaffRollCameraMover.cs" />
     <Compile Include="Assets\Scripts\StaffRoll\StaffRollGroundCreater.cs" />
     <Compile Include="Assets\Scripts\StaffRoll\StaffRollPlayerAct.cs" />
     <Compile Include="Assets\Scripts\StaffRoll\StaffRollPlayerMove.cs" />
+    <Compile Include="Assets\Scripts\StaffRoll\StaffRollText.cs" />
     <Compile Include="Assets\Scripts\Tiling.cs" />
     <Compile Include="Assets\Scripts\Title\SceneSelecter.cs" />
     <Compile Include="Assets\Scripts\Title\Title1.cs" />
@@ -190,6 +200,8 @@
     <None Include="Assets\Demigiant\DOTweenPro\readme.txt" />
     <None Include="Assets\Demigiant\DemiLib\Core\DemiLib.xml" />
     <None Include="Assets\Demigiant\DemiLib\Core\Editor\DemiEditor.xml" />
+    <None Include="Assets\FlyingText3D\Extras\FlyingText3D changelog.txt" />
+    <None Include="Assets\FlyingText3D\Resources\VertexLitColor.shader" />
     <None Include="Assets\Shaders\Gradation.shader" />
     <None Include="Assets\Shaders\Masked.shader" />
     <None Include="Assets\Shaders\MaskedUI.shader" />

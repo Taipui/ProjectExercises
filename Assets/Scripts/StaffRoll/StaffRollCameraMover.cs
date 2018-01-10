@@ -15,6 +15,9 @@ public class StaffRollCameraMover : MonoBehaviour
 	[SerializeField]
 	StaffRollPlayerAct PlayerAct;
 
+	[SerializeField]
+	StaffRoll StaffRoll;
+
 	const float Offset = 8.0f;
 
 	void Start ()
@@ -30,6 +33,7 @@ public class StaffRollCameraMover : MonoBehaviour
 			.First()
 			.Subscribe(_ => {
 				PlayerAct.setCanInput(true);
+				StaffRoll.startStaffRoll();
 			})
 			.AddTo(this);
 	}
