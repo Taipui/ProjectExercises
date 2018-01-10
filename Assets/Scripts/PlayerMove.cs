@@ -263,12 +263,14 @@ public class PlayerMove : Character
 						// 高さが useCurvesHeight 以上ある時のみ、コライダーの高さと中心をJUMP00アニメーションについているカーブで調整する
 						if (!!Physics.Raycast(ray, out hitInfo) && !!canModifyCol) {
 							if (hitInfo.distance > Use_Curve_Height) {
-								var orgColHight = playerAct.CurrentAvatar == 0 ? OrgColHeightNormal : orgColHeightSD;
+								var orgColHeight = playerAct.CurrentAvatar == 0 ? OrgColHeightNormal : orgColHeightSD;
 								var orgColCenter = playerAct.CurrentAvatar == 0 ? OrgVectColCenterNormal : orgVectColCenterSD;
-								Col.height = orgColHight - jumpHeight;          // 調整されたコライダーの高さ
+								var colHeightBias = 0.0f;
 								if (playerAct.CurrentAvatar == 1) {
 									jumpHeight *= 0.7f;
+									colHeightBias = 0.5f;
 								}
+								Col.height = orgColHeight - jumpHeight + colHeightBias;          // 調整されたコライダーの高さ
 								var adjCenterY = orgColCenter.y + jumpHeight;
 								Col.center = new Vector3(0.0f, adjCenterY, 0.0f); // 調整されたコライダーのセンター
 							} else {
