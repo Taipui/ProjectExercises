@@ -124,6 +124,7 @@
     <Compile Include="Assets\Scripts\Clear\Clear.cs" />
     <Compile Include="Assets\Scripts\Common.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
+    <Compile Include="Assets\Scripts\GroundBullet.cs" />
     <Compile Include="Assets\Scripts\GroundCreater.cs" />
     <Compile Include="Assets\Scripts\Launcher.cs" />
     <Compile Include="Assets\Scripts\Load\LoadGame.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Assets\Scripts\PlayerAct.cs" />
     <Compile Include="Assets\Scripts\PlayerMove.cs" />
     <Compile Include="Assets\Scripts\Sandbox.cs" />
+    <Compile Include="Assets\Scripts\Tiling.cs" />
     <Compile Include="Assets\Scripts\Title\SceneSelecter.cs" />
     <Compile Include="Assets\Scripts\Title\Title1.cs" />
     <Compile Include="Assets\Scripts\Title\Title2.cs" />
