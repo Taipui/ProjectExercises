@@ -92,10 +92,22 @@ public class PlayerMove : Character
 	/// </summary>
 	const int Landing_Check_Limit = 100;
 	/// <summary>
-	/// 着地モーションへの移項を許可する距離
+	/// 着地モーションへの移項を許可する距離(通常のUnityちゃん)
 	/// </summary>
-	const float Landing_Dist = 1.05F;
-	//const float Landing_Dist = 2.5f;
+	const float Landing_Dist_Normal = 1.05f;
+	/// <summary>
+	/// 着地モーションへの移項を許可する距離(SDUnityちゃん)
+	/// 値を大きくしすぎると着地前に着地モーションに入ってしまう
+	/// </summary>
+	const float Landing_Dist_SD = 1.1f;
+	/// <summary>
+	/// レイの長さ(通常のUnityちゃん)
+	/// </summary>
+	const float Ray_Length_Normal = 1.0f;
+	/// <summary>
+	/// レイの長さ(SDUnityちゃん)
+	/// </summary>
+	const float Ray_Length_SD = 1.1f;
 
 	#endregion
 
@@ -254,6 +266,9 @@ public class PlayerMove : Character
 								var orgColHight = playerAct.CurrentAvatar == 0 ? OrgColHeightNormal : orgColHeightSD;
 								var orgColCenter = playerAct.CurrentAvatar == 0 ? OrgVectColCenterNormal : orgVectColCenterSD;
 								Col.height = orgColHight - jumpHeight;          // 調整されたコライダーの高さ
+								if (playerAct.CurrentAvatar == 1) {
+									jumpHeight *= 0.7f;
+								}
 								var adjCenterY = orgColCenter.y + jumpHeight;
 								Col.center = new Vector3(0.0f, adjCenterY, 0.0f); // 調整されたコライダーのセンター
 							} else {
@@ -425,17 +440,19 @@ public class PlayerMove : Character
 			var rayInterval = 0.125f;
 			//var rayOffset = 1.7f;
 			var rayOffset = 0.0f;
-			var rayLen = 1.0f;
+			var rayLen = playerAct.CurrentAvatar == 0 ? Ray_Length_Normal : Ray_Length_SD;
 			var raycastSuccessL = Physics.Raycast(transform.localPosition + new Vector3(-rayInterval, rayOffset), Vector3.down * rayLen, out raycastL);
 			var raycastSuccessR = Physics.Raycast(transform.localPosition + new Vector3(rayInterval, rayOffset), Vector3.down * rayLen, out raycastR);
-			//Debug.DrawRay(transform.localPosition + new Vector3(-rayInterval, rayOffset), Vector3.down * rayLen, Color.red);
-			//Debug.DrawRay(transform.localPosition + new Vector3(rayInterval, rayOffset), Vector3.down * rayLen, Color.red);
+			Debug.DrawRay(transform.localPosition + new Vector3(-rayInterval, rayOffset), Vector3.down * rayLen, Color.red);
+			Debug.DrawRay(transform.localPosition + new Vector3(rayInterval, rayOffset), Vector3.down * rayLen, Color.red);
 			//Debug.Log(raycastL.distance);
 			//Debug.Log(anim.speed);
 			//Debug.Break();
+			var landingDist = playerAct.CurrentAvatar == 0 ? Landing_Dist_Normal : Landing_Dist_SD;
 			// レイを飛ばして、成功且つ一定距離内であった場合、着地モーションへ移項させる
-			if ((!!raycastSuccessL || !!raycastSuccessR) && (raycastL.distance < Landing_Dist || raycastR.distance < Landing_Dist)) {
+			if ((!!raycastSuccessL || !!raycastSuccessR) && (raycastL.distance < landingDist || raycastR.distance < landingDist)) {
 				//Debug.Break();
+				//Debug.Log(raycastL.collider.name);
 				break;
 			}
 			//yield return new WaitForSeconds(waitTime);
