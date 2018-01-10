@@ -11,6 +11,9 @@ public class StaffRollText : MonoBehaviour
 
 	void Start ()
 	{
+		var col = gameObject.AddComponent<MeshCollider>();
+		col.convex = true;
+
 		transform.localPosition = new Vector3(25.0f, 6.0f);
 
 		this.UpdateAsObservable().Subscribe(_ => {
