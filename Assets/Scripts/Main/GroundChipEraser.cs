@@ -17,6 +17,8 @@ public class GroundChipEraser : MonoBehaviour
 	/// </summary>
 	[SerializeField]
 	PlayerAct Player;
+	[SerializeField]
+	StaffRollPlayerAct StaffRollPlayer;
 
 	/// <summary>
 	/// 地面のチップを消す用のCollider
@@ -62,6 +64,10 @@ public class GroundChipEraser : MonoBehaviour
 		isMove = false;
 		groundChipEraserCollider.enabled = false;
 		transform.localPosition = new Vector3(transform.localPosition.x, defaultYPos);
-		Player.onErased();
+		if (Player != null) {
+			Player.onErased();
+			return;
+		}
+		StaffRollPlayer.onErased();
 	}
 }
