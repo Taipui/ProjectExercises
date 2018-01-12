@@ -22,6 +22,11 @@ public class Option : MonoBehaviour
 	/// </summary>
 	[SerializeField]
 	Main Main;
+	/// <summary>
+	/// スタッフロールのスクリプト
+	/// </summary>
+	[SerializeField]
+	StaffRoll StaffRoll;
 
 	/// <summary>
 	/// 戻るボタン
@@ -103,7 +108,7 @@ public class Option : MonoBehaviour
 	/// </summary>
 	void checkAssert()
 	{
-		Assert.IsFalse(Title == null && Main == null, "Both Title and Main, both null");
+		//Assert.IsFalse(Title == null && Main == null, "Both Title and Main, both null");
 	}
 
 	void Start ()
@@ -116,8 +121,10 @@ public class Option : MonoBehaviour
 			gameObject.SetActive(false);
 			if (Title != null) {
 				Title.endOption();
-			} else {
+			} else if (Main != null) {
 				Main.endOption();
+			} else {
+				StaffRoll.endOption();
 			}
 		})
 		.AddTo(this);

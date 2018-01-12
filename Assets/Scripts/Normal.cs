@@ -38,11 +38,6 @@ public class Normal : Enemy
 
 	#region アイテム関連
 	/// <summary>
-	/// ドロップするアイテムのGameObject
-	/// </summary>
-	[SerializeField]
-	GameObject ItemGo;
-	/// <summary>
 	/// アイテムをドロップする力
 	/// </summary>
 	const float Item_Launch_Power = 2.0f;
@@ -151,15 +146,12 @@ public class Normal : Enemy
 
 		Main.playSE(Main.SE.Kill, null);
 
-		if (ItemGo == null) {
-			return;
-		}
 		var r = Random.Range(0, GameManager.Instance.ItemSprites_.Length + 1);
 		//r = 4;
 		if (r <= 0) {
 			return;
 		}
-		go = Instantiate(ItemGo, transform.position, Quaternion.identity);
+		go = Instantiate(Resources.Load("Prefabs/Item") as GameObject, transform.position, Quaternion.identity);
 		var vec = Vector3.up * Item_Launch_Power;
 		vec = Quaternion.Euler(new Vector3(0.0f, 0.0f, Random.Range(-Item_Launch_Angle_Range, Item_Launch_Angle_Range))) * vec;
 		go.GetComponent<Rigidbody>().AddForce(vec, ForceMode.Impulse);

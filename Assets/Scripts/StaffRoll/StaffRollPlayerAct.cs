@@ -11,6 +11,12 @@ using TMPro;
 /// </summary>
 public class StaffRollPlayerAct : Character
 {
+	/// <summary>
+	/// StaffRoll
+	/// </summary>
+	[SerializeField]
+	StaffRoll StaffRoll;
+
 	#region 雪弾関連
 
 	/// <summary>
@@ -149,9 +155,16 @@ public class StaffRollPlayerAct : Character
 
 	#endregion
 
+	StaffRollPlayerMove playerMove;
+
+	/// <summary>
+	/// canInputに値をセットする
+	/// </summary>
+	/// <param name="val">セットする値</param>
 	public void setCanInput(bool val)
 	{
 		canInput = val;
+		playerMove.setCanInput(val);
 	}
 
 	void init()
@@ -159,6 +172,8 @@ public class StaffRollPlayerAct : Character
 		ItemImg.sprite = null;
 		ItemEffectRemainTxt.text = "";
 		currentItemState = ItemState.NoItem;
+
+		playerMove = GetComponent<StaffRollPlayerMove>();
 
 		canInput = false;
 	}
@@ -278,9 +293,7 @@ public class StaffRollPlayerAct : Character
 			child.GetComponent<Launcher>().launch(Bullet, mousePos, 13, BulletParentTfm, launchVec, scale);
 		}
 
-		if (Main != null) {
-			Main.playSE(Main.SE.Launch, audioSource);
-		}
+		StaffRoll.playSE(StaffRoll.SE.Launch, audioSource);
 	}
 
 	/// <summary>
@@ -303,7 +316,7 @@ public class StaffRollPlayerAct : Character
 	/// </summary>
 	void shotgunLaunch()
 	{
-		Main.playSE(Main.SE.ShotgunLaunch, null);
+		StaffRoll.playSE(StaffRoll.SE.ShotgunLaunch, null);
 
 		var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		var direction = Vector3.zero;
@@ -419,7 +432,7 @@ public class StaffRollPlayerAct : Character
 		if (tag.IndexOf("Item") < 0) {
 			return;
 		}
-		Main.playSE(Main.SE.Item, null);
+		StaffRoll.playSE(StaffRoll.SE.Item, null);
 		var index = System.Convert.ToInt32(tag.Substring(tag.Length - 1, 1));
 		Destroy(col.gameObject);
 		switch (index) {

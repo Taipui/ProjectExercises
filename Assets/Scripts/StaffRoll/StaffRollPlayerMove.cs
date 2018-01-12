@@ -20,8 +20,17 @@ public class StaffRollPlayerMove : Character
 	/// 歩く速度
 	/// </summary>
 	const float Walk_Speed = 0.7f;
-	
+
 	#endregion
+
+	/// <summary>
+	/// canInputに値をセットする
+	/// </summary>
+	/// <param name="val">セットする値</param>
+	public void setCanInput(bool val)
+	{
+		canInput = val;
+	}
 
 	protected override void Start ()
 	{
