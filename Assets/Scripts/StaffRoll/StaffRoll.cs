@@ -1,16 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 
+/// <summary>
+/// スタッフロールに関するクラス
+/// </summary>
 public class StaffRoll : MonoBehaviour
 {
-	const float Create_Word_Interval = 1.0f;
+	#region スタッフロール関連
 
-	int strCnt;
+	/// <summary>
+	/// 最初の文字のX座標
+	/// </summary>
+	const float First_Word_Pos_X = 25.0f;
+	/// <summary>
+	/// 文字の間隔
+	/// </summary>
+	const float Word_Interval = 2.0f;
+	/// <summary>
+	/// 文の間隔
+	/// </summary>
+	const float Txt_Interval = 2.0f;
 
-	StaffRollCameraMover staffRollCamMover;
+	#endregion
 
 	#region SE関連
 
@@ -51,8 +63,6 @@ public class StaffRoll : MonoBehaviour
 	[SerializeField]
 	AudioClip[] SEs;
 
-	UnityEngine.Audio.AudioMixer audioMixer;
-
 	#endregion
 
 	#region オプション関連
@@ -77,11 +87,7 @@ public class StaffRoll : MonoBehaviour
 
 	void init()
 	{
-		strCnt = 0;
-
-		staffRollCamMover = Camera.main.GetComponent<StaffRollCameraMover>();
-
-		audioMixer = SEAudioSource.outputAudioMixerGroup.audioMixer;
+		var audioMixer = SEAudioSource.outputAudioMixerGroup.audioMixer;
 
 		audioMixer.SetFloat("MasterVol", Mathf.Lerp(-80.0f, 0.0f, PlayerPrefs.GetFloat("Master", 100) / 100));
 		audioMixer.SetFloat("BGMVol", Mathf.Lerp(-80.0f, 0.0f, PlayerPrefs.GetFloat("BGM", 100) / 100));
@@ -96,6 +102,7 @@ public class StaffRoll : MonoBehaviour
 	void Start ()
 	{
 		init();
+		createWords(createStrArray());
 
 		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.O))
 			.Subscribe(_ => {
@@ -113,30 +120,36 @@ public class StaffRoll : MonoBehaviour
 			.AddTo(this);
 	}
 
-	public void createStr()
+	/// <summary>
+	/// 文のリストを作成
+	/// </summary>
+	/// <returns>文をまとめた配列</returns>
+	string[] createStrArray()
 	{
-		Debug.Log("createStr");
-		var str = "";
-		switch (strCnt++) {
-			case 0:
-				str = "あいうえお";
-				break;
-			case 1:
-				str = "かきくけこ";
-				break;
-		}
-		StartCoroutine(createWords(str));
+		var txtArray = new string[] {
+			"あいうえお",
+			"かきくけこ"
+		};
+		return txtArray;
 	}
 
-	IEnumerator createWords(string str)
+	/// <summary>
+	/// 流れる文字を作る
+	/// </summary>
+	/// <param name="txtArray">文をまとめた配列</param>
+	void createWords(string[] txtArray)
 	{
-		for (var i = 0; i < str.Length; ++i) {
-			var go = FlyingText.GetObject(str[i].ToString());
-			var staffRollTxt = go.AddComponent<StaffRollText>();
-			staffRollTxt.setStaffRoll(this);
-			yield return new WaitForSeconds(Create_Word_Interval);
+		var wordPosX = First_Word_Pos_X;
+		for (var txtIndex = 0; txtIndex < txtArray.Length; ++txtIndex) {
+			for (var wordIndex = 0; wordIndex < txtArray[txtIndex].Length; ++wordIndex) {
+				var go = FlyingText.GetObject(txtArray[txtIndex][wordIndex].ToString());
+				var staffRollTxt = go.AddComponent<StaffRollText>();
+				staffRollTxt.setStaffRoll(this);
+				go.transform.localPosition = new Vector3(wordPosX, 6.0f);
+				wordPosX += Word_Interval;
+			}
+			wordPosX += Txt_Interval;
 		}
-		staffRollCamMover.resetWordDist();
 	}
 
 	/// <summary>

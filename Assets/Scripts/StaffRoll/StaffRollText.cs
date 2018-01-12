@@ -39,8 +39,6 @@ public class StaffRollText : MonoBehaviour
 		var col = gameObject.AddComponent<MeshCollider>();
 		col.convex = true;
 
-		transform.localPosition = new Vector3(Camera.main.transform.position.x + 10.0f, 6.0f);
-
 		this.UpdateAsObservable().Subscribe(_ => {
 			transform.Translate(new Vector2(-Move_Speed * Time.deltaTime, 0.0f));
 		})

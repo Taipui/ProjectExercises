@@ -20,6 +20,10 @@ public class StaffRollPlayerMove : Character
 	/// 歩く速度
 	/// </summary>
 	const float Walk_Speed = 0.7f;
+	/// <summary>
+	/// 走る速度
+	/// </summary>
+	const float Run_Speed = 1.4f;
 
 	#endregion
 
@@ -32,15 +36,40 @@ public class StaffRollPlayerMove : Character
 		canInput = val;
 	}
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void init()
+	{
+		canInput = false;
+	}
+
 	protected override void Start ()
 	{
 		base.Start();
 
+		init();
+
 		var tfm = transform;
+		var speed = Walk_Speed;
 
 		this.FixedUpdateAsObservable().Subscribe(_ => {
-			tfm.localPosition += new Vector3(Walk_Speed * Time.fixedDeltaTime, 0.0f);
+			tfm.localPosition += new Vector3(speed * Time.fixedDeltaTime, 0.0f);
 		})
 		.AddTo(this);
+
+		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.D) && !!canInput)
+			.Subscribe(_ => {
+				anim.SetBool("IsRun", true);
+				speed = Run_Speed;
+			})
+			.AddTo(this);
+
+		this.UpdateAsObservable().Where(x => !!Input.GetKeyUp(KeyCode.D) && !!canInput)
+			.Subscribe(_ => {
+				anim.SetBool("IsRun", false);
+				speed = Walk_Speed;
+			})
+			.AddTo(this);
 	}
 }
