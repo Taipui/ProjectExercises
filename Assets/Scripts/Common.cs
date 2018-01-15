@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 /// <summary>
 /// どのクラスでも使うものを集めたクラス
@@ -82,5 +83,27 @@ public static class Common
 		var tex = Resources.Load("Aim") as Texture2D;
 		var hotspot = new Vector2(tex.width / 2, tex.height / 2);
 		Cursor.SetCursor(tex, hotspot, CursorMode.ForceSoftware);
+	}
+
+	/// <summary>
+	/// 渡された重み付け配列からindexを得る
+	/// 重み付きランダム - Qiita
+	/// https://qiita.com/divideby_zero/items/a8e749e307013ab24a0b
+	/// </summary>
+	/// <param name="weightTable">重み付け配列</param>
+	/// <returns>weightTableのindex</returns>
+	public static int getRandomIndex(params int[] weightTable)
+	{
+		var totalWeight = weightTable.Sum();
+		var val = UnityEngine.Random.Range(1, totalWeight + 1);
+		var retIndex = -1;
+		for (var i = 0; i < weightTable.Length; ++i) {
+			if (weightTable[i] >= val) {
+				retIndex = i;
+				break;
+			}
+			val -= weightTable[i];
+		}
+		return retIndex;
 	}
 }

@@ -2892,6 +2892,14 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+  Avatars:
+  - {fileID: 9000000, guid: 8f0565f23a2b58541a475bd3c1393052, type: 3}
+  - {fileID: 9000000, guid: dd6ec75974b69a3409711f8110698bbb, type: 3}
+  - {fileID: 9000000, guid: 9e1a3eec54b60164aa04c196cc7f1fa6, type: 3}
+  Models:
+  - {fileID: 489443955}
+  - {fileID: 1275377607}
+  - {fileID: 382280995}
 --- !u!81 &326863000
 AudioListener:
   m_ObjectHideFlags: 0
@@ -2961,6 +2969,7 @@ Transform:
   - {fileID: 1315322292}
   - {fileID: 489443956}
   - {fileID: 1275377608}
+  - {fileID: 382280996}
   - {fileID: 869317553}
   - {fileID: 663310820}
   - {fileID: 1519022514}
@@ -3306,6 +3315,14 @@ Transform:
   m_Father: {fileID: 935273964}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &382280995 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100112, guid: 9e1a3eec54b60164aa04c196cc7f1fa6, type: 3}
+  m_PrefabInternal: {fileID: 1053976585}
+--- !u!4 &382280996 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 400114, guid: 9e1a3eec54b60164aa04c196cc7f1fa6, type: 3}
+  m_PrefabInternal: {fileID: 1053976585}
 --- !u!1 &383089925
 GameObject:
   m_ObjectHideFlags: 0
@@ -3904,7 +3921,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &489443956
 Transform:
   m_ObjectHideFlags: 0
@@ -5360,7 +5377,7 @@ Transform:
   m_Children:
   - {fileID: 800555289}
   m_Father: {fileID: 326863005}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &673592398
 GameObject:
@@ -6769,7 +6786,7 @@ Transform:
   m_Children:
   - {fileID: 26003610}
   m_Father: {fileID: 326863005}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &869317554
 MonoBehaviour:
@@ -11772,6 +11789,49 @@ Transform:
   m_Father: {fileID: 661236751}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1053976585
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 326863005}
+    m_Modifications:
+    - target: {fileID: 400114, guid: 9e1a3eec54b60164aa04c196cc7f1fa6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400114, guid: 9e1a3eec54b60164aa04c196cc7f1fa6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400114, guid: 9e1a3eec54b60164aa04c196cc7f1fa6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400114, guid: 9e1a3eec54b60164aa04c196cc7f1fa6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400114, guid: 9e1a3eec54b60164aa04c196cc7f1fa6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400114, guid: 9e1a3eec54b60164aa04c196cc7f1fa6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400114, guid: 9e1a3eec54b60164aa04c196cc7f1fa6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400114, guid: 9e1a3eec54b60164aa04c196cc7f1fa6, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 9500000, guid: 9e1a3eec54b60164aa04c196cc7f1fa6, type: 3}
+  m_ParentPrefab: {fileID: 100100000, guid: 9e1a3eec54b60164aa04c196cc7f1fa6, type: 3}
+  m_IsPrefabParent: 0
 --- !u!1 &1055980330
 GameObject:
   m_ObjectHideFlags: 0
@@ -14883,7 +14943,7 @@ Transform:
   m_Children:
   - {fileID: 1208701695}
   m_Father: {fileID: 326863005}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1532187838
 GameObject:
@@ -17874,7 +17934,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerTfm: {fileID: 326863005}
   PlayerAct: {fileID: 326862999}
-  StaffRoll: {fileID: 304177055}
 --- !u!124 &2011652951
 Behaviour:
   m_ObjectHideFlags: 0
