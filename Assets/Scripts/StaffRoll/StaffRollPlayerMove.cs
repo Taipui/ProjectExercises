@@ -28,6 +28,11 @@ public class StaffRollPlayerMove : Character
 	#endregion
 
 	/// <summary>
+	/// キャラクターが動く速度
+	/// </summary>
+	float speed;
+
+	/// <summary>
 	/// canInputに値をセットする
 	/// </summary>
 	/// <param name="val">セットする値</param>
@@ -42,6 +47,8 @@ public class StaffRollPlayerMove : Character
 	void init()
 	{
 		canInput = false;
+
+		speed = Walk_Speed;
 	}
 
 	protected override void Start ()
@@ -51,7 +58,6 @@ public class StaffRollPlayerMove : Character
 		init();
 
 		var tfm = transform;
-		var speed = Walk_Speed;
 
 		this.FixedUpdateAsObservable().Subscribe(_ => {
 			tfm.localPosition += new Vector3(speed * Time.fixedDeltaTime, 0.0f);
@@ -60,8 +66,7 @@ public class StaffRollPlayerMove : Character
 
 		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.D) && !!canInput)
 			.Subscribe(_ => {
-				anim.SetBool("IsRun", true);
-				speed = Run_Speed;
+				setRun();
 			})
 			.AddTo(this);
 
@@ -71,5 +76,24 @@ public class StaffRollPlayerMove : Character
 				speed = Walk_Speed;
 			})
 			.AddTo(this);
+	}
+
+	/// <summary>
+	/// Dキーを押していたら走る
+	/// </summary>
+	public void runCheck()
+	{
+		if (!!Input.GetKey(KeyCode.D)) {
+			setRun();
+		}
+	}
+
+	/// <summary>
+	/// 走っている状態にする
+	/// </summary>
+	void setRun()
+	{
+		anim.SetBool("IsRun", true);
+		speed = Run_Speed;
 	}
 }

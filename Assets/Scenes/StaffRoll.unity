@@ -17933,7 +17933,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerTfm: {fileID: 326863005}
-  PlayerAct: {fileID: 326862999}
 --- !u!124 &2011652951
 Behaviour:
   m_ObjectHideFlags: 0
