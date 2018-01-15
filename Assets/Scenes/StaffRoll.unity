@@ -2434,7 +2434,7 @@ MonoBehaviour:
   m_defaultColor: {r: 1, g: 1, b: 1, a: 1}
   m_computeTangents: 0
   m_defaultResolution: 5
-  m_defaultSize: 2
+  m_defaultSize: 1.5
   m_defaultDepth: 0.25
   m_defaultLetterSpacing: 1
   m_defaultLineSpacing: 1

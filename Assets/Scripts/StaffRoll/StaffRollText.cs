@@ -44,7 +44,8 @@ public class StaffRollText : MonoBehaviour
 		})
 		.AddTo(this);
 
-		col.OnCollisionEnterAsObservable().Subscribe(colGo => {
+		col.OnCollisionEnterAsObservable().Where(colGo => colGo.gameObject.tag == "Bullet")
+			.Subscribe(colGo => {
 			staffRoll.playSE(StaffRoll.SE.Kill, null);
 			Destroy(colGo.gameObject);
 			Destroy(gameObject);

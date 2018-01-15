@@ -23,7 +23,7 @@ public class StaffRollPlayerMove : Character
 	/// <summary>
 	/// 走る速度
 	/// </summary>
-	const float Run_Speed = 1.4f;
+	const float Run_Speed = 2.0f;
 
 	#endregion
 

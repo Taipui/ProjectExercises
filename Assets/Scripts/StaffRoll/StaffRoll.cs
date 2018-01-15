@@ -12,15 +12,27 @@ public class StaffRoll : MonoBehaviour
 	/// <summary>
 	/// 最初の文字のX座標
 	/// </summary>
-	const float First_Word_Pos_X = 25.0f;
+	const float First_Word_Pos_X = 30.0f;
 	/// <summary>
 	/// 文字の間隔
 	/// </summary>
-	const float Word_Interval = 2.0f;
+	const float Word_Interval = 1.5f;
 	/// <summary>
 	/// 文の間隔
 	/// </summary>
-	const float Txt_Interval = 2.0f;
+	const float Txt_Interval = 10.0f;
+	/// <summary>
+	/// 2行目のインデント
+	/// </summary>
+	const float Indent = 2.0f;
+	/// <summary>
+	/// 1行目のY座標
+	/// </summary>
+	const float Line_1_Pos_Y = 7.0f;
+	/// <summary>
+	/// 2行目のY座標
+	/// </summary>
+	const float Line_2_Pos_Y = 5.0f;
 
 	#endregion
 
@@ -127,8 +139,16 @@ public class StaffRoll : MonoBehaviour
 	string[] createStrArray()
 	{
 		var txtArray = new string[] {
-			"あいうえお",
-			"かきくけこ"
+			"ディレクター",
+			"速水大秀、畑舜矢",
+			"ゲームプランナー",
+			"速水大秀、畑舜矢",
+			"ゲームプログラマー",
+			"速水大秀",
+			"ゲームデザイナー",
+			"速水大秀、畑舜矢",
+			"",
+			"参考文献",
 		};
 		return txtArray;
 	}
@@ -140,15 +160,40 @@ public class StaffRoll : MonoBehaviour
 	void createWords(string[] txtArray)
 	{
 		var wordPosX = First_Word_Pos_X;
+		var prevWordPosXBegin = 0.0f;
+		var prevWordPosXEnd = 0.0f;
+
 		for (var txtIndex = 0; txtIndex < txtArray.Length; ++txtIndex) {
+			var isNewLine = txtIndex % 2 == 1;
+			if (!isNewLine) {
+				prevWordPosXBegin = wordPosX;
+			}
+			var isCenter = txtArray[Mathf.Max(0, txtIndex - 1)].Length == 0;
 			for (var wordIndex = 0; wordIndex < txtArray[txtIndex].Length; ++wordIndex) {
 				var go = FlyingText.GetObject(txtArray[txtIndex][wordIndex].ToString());
+
 				var staffRollTxt = go.AddComponent<StaffRollText>();
 				staffRollTxt.setStaffRoll(this);
-				go.transform.localPosition = new Vector3(wordPosX, 6.0f);
+
+				var indent = 0.0f;
+				var posY = Line_1_Pos_Y;
+				if (!!isNewLine) {
+					indent = Indent;
+					posY = Line_2_Pos_Y;
+				}
+				if (!!isCenter) {
+					posY = (Line_1_Pos_Y + Line_2_Pos_Y) / 2;
+				}
+
+				go.transform.localPosition = new Vector3(wordPosX + indent, posY);
 				wordPosX += Word_Interval;
 			}
-			wordPosX += Txt_Interval;
+			if (!!isNewLine) {
+				wordPosX = Mathf.Max(wordPosX, prevWordPosXEnd) + Txt_Interval;
+			} else {
+				prevWordPosXEnd = wordPosX;
+				wordPosX = prevWordPosXBegin;
+			}
 		}
 	}
 
