@@ -47,7 +47,7 @@ public class StaffRoll : MonoBehaviour
 	/// <summary>
 	/// 全角文字のチェックに使用
 	/// </summary>
-	Encoding sjisEnc = Encoding.GetEncoding("Shift_JIS");
+	Encoding enc = Encoding.GetEncoding("UTF-16");
 
 	/// <summary>
 	/// EndTextの文字数
@@ -459,6 +459,7 @@ public class StaffRoll : MonoBehaviour
 			}
 
 			for (var wordIndex = 0; wordIndex < txtArray[txtIndex].Length; ++wordIndex) {
+
 				var go = FlyingText.GetObject(txtArray[txtIndex][wordIndex].ToString());
 				go.transform.SetParent(TxtsParent);
 
@@ -523,7 +524,7 @@ public class StaffRoll : MonoBehaviour
 	/// <returns>全角ならtrue</returns>
 	bool isZenkaku(string str)
 	{
-		var num = sjisEnc.GetByteCount(str);
+		var num = enc.GetByteCount(str);
 		return num == str.Length * 2;
 	}
 
