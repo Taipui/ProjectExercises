@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 135360357397830834}
   - component: {fileID: 54825656936000784}
   - component: {fileID: 114784034458165930}
-  m_Layer: 9
+  m_Layer: 13
   m_Name: StaffRollBullet
   m_TagString: Bullet
   m_Icon: {fileID: 0}
