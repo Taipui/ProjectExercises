@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UniRx;
 using UniRx.Triggers;
+using System.Collections;
 using System.Text;
 using DG.Tweening;
 
@@ -58,6 +59,18 @@ public class StaffRoll : MonoBehaviour
 	/// </summary>
 	[SerializeField]
 	Image FadePanel;
+
+	/// <summary>
+	/// メインのCanvasを消してからも黒画面にするためのCanvasのGameObject
+	/// </summary>
+	[SerializeField]
+	GameObject BlackCanvasGo;
+
+	/// <summary>
+	/// テキストの親のTransform
+	/// </summary>
+	[SerializeField]
+	Transform TxtsParent;
 
 	#endregion
 
@@ -135,6 +148,10 @@ public class StaffRoll : MonoBehaviour
 
 		OptionCanvasGo.SetActive(false);
 
+		BlackCanvasGo.SetActive(false);
+
+		endTxtLen = 1;
+
 		//Player.transform.position = new Vector3(1000.0f, Player.transform.position.y, Player.transform.position.z);
 	}
 
@@ -144,7 +161,7 @@ public class StaffRoll : MonoBehaviour
 	void Start()
 	{
 		init();
-		createWords(createStrArray());
+		StartCoroutine(createWords(createStrArray()));
 
 		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.O))
 			.Subscribe(_ => {
@@ -420,7 +437,7 @@ public class StaffRoll : MonoBehaviour
 	/// 流れる文字を作る
 	/// </summary>
 	/// <param name="txtArray">文をまとめた配列</param>
-	void createWords(string[] txtArray)
+	IEnumerator createWords(string[] txtArray)
 	{
 		var wordPosX = First_Word_Pos_X;
 		var prevWordPosXBegin = 0.0f;
@@ -443,6 +460,7 @@ public class StaffRoll : MonoBehaviour
 
 			for (var wordIndex = 0; wordIndex < txtArray[txtIndex].Length; ++wordIndex) {
 				var go = FlyingText.GetObject(txtArray[txtIndex][wordIndex].ToString());
+				go.transform.SetParent(TxtsParent);
 
 				var col = go.AddComponent<MeshCollider>();
 				col.convex = true;
@@ -463,6 +481,8 @@ public class StaffRoll : MonoBehaviour
 
 				go.transform.localPosition = new Vector3(wordPosX + indent, posY);
 				wordPosX += col.bounds.size.x + wordInterval;
+
+				yield return 0;
 			}
 			if (!!isNewLine) {
 				wordPosX = Mathf.Max(wordPosX, prevWordPosXEnd) + Txt_Interval;
@@ -512,7 +532,6 @@ public class StaffRoll : MonoBehaviour
 	/// </summary>
 	public void cntEndTxt()
 	{
-		Debug.Log("cntEndTxt");
 		++endTxtCnt.Value;
 	}
 
@@ -529,6 +548,9 @@ public class StaffRoll : MonoBehaviour
 			3.0f
 		).OnComplete(() => {
 			SceneManager.LoadScene(Common.Title_Scene);
+			// このCanvasは他のシーンへ引き継がれてしまうため、消す必要がある
+			Destroy(gameObject);
+			BlackCanvasGo.SetActive(true);
 		});
 	}
 }

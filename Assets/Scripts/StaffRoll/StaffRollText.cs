@@ -48,7 +48,6 @@ public class StaffRollText : MonoBehaviour
 
 	void Start ()
 	{
-		Debug.Log("StaffRollText Start");
 		tag = setTag;
 
 		var col = GetComponent<MeshCollider>();
