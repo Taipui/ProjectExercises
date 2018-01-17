@@ -35,7 +35,7 @@ public class StaffRollGroundCreater : MonoBehaviour
 	/// <summary>
 	/// 最大生成列数
 	/// </summary>
-	const int Max_Create_Col = 100000;
+	const int Max_Create_Col = 50000;
 
 
 	float row;

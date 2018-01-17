@@ -19,7 +19,7 @@ public class Bullet : MonoBehaviour
 	const float Kill_Zone = -6.0f;
 
 	/// <summary>
-	/// 雪玉が地面に当たった時のエフェクト
+	/// 雪弾が地面に当たった時のエフェクト
 	/// </summary>
 	[SerializeField]
 	GameObject BulletEffect;

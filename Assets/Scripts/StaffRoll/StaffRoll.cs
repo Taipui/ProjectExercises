@@ -21,7 +21,7 @@ public class StaffRoll : MonoBehaviour
 	/// <summary>
 	/// 文字の間隔
 	/// </summary>
-	const float Word_Interval = 0.5f;
+	const float Word_Interval = 0.1f;
 	/// <summary>
 	/// 文の間隔
 	/// </summary>
@@ -30,6 +30,16 @@ public class StaffRoll : MonoBehaviour
 	/// 2行目のインデント
 	/// </summary>
 	const float Indent = 2.0f;
+	///// <summary>
+	///// センターのY座標
+	///// </summary>
+	//const float Center_Pos_Y = 5.0f;
+	///// <summary>
+	///// 行間隔
+	///// </summary>
+	//const float Row_Interval = 2.0f;
+	//const float 
+
 	/// <summary>
 	/// 1行目のY座標
 	/// </summary>
@@ -293,6 +303,10 @@ public class StaffRoll : MonoBehaviour
 			"汎用メソッド",
 			"重み付きランダム - Qiita",
 			"https://qiita.com/divideby_zero/items/a8e749e307013ab24a0b",
+			"",
+			"FlyingText3D",
+			"Unityで文字の3Dモデルを作る（FlyingText3Dアセット編） - Qiita",
+			"https://qiita.com/arumani/items/fc7211287678deb75277",
 			"",
 			"Grayちゃん",
 			"GrayChan_0_5_0",
