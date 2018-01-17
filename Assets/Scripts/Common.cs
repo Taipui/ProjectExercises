@@ -29,6 +29,10 @@ public static class Common
 	/// ゲームクリア
 	/// </summary>
 	public const string Clr_Scene = "Clear";
+	/// <summary>
+	/// スタッフロール
+	/// </summary>
+	public const string StaffRoll_Scene = "StaffRoll";
 	#endregion
 
 	#region レイヤー

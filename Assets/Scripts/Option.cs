@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 using UniRx;
 using UniRx.Triggers;
 using TMPro;
@@ -33,6 +34,12 @@ public class Option : MonoBehaviour
 	/// </summary>
 	[SerializeField]
 	Button BackBtn;
+
+	/// <summary>
+	/// スタッフロールボタン(タイトルのみ)
+	/// </summary>
+	[SerializeField]
+	Button StaffRollBtn;
 
 	#region Master関連
 
@@ -148,5 +155,13 @@ public class Option : MonoBehaviour
 			SEValTxt.text = ((int)val).ToString();
 			AudioMixer.SetFloat("SEVol", Mathf.Lerp(-80.0f, 0.0f, val / 100));
 		}).AddTo(this);
+
+		if (StaffRollBtn != null) {
+			StaffRollBtn.OnClickAsObservable().Subscribe(_ => {
+				Time.timeScale = 1.0f;
+				SceneManager.LoadScene(Common.StaffRoll_Scene);
+			})
+			.AddTo(this);
+		}
 	}
 }

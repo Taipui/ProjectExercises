@@ -451,7 +451,7 @@ public class PlayerAct : Character
 			})
 			.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!isLClk() && !!playerMove.IsTitle_)
+		this.UpdateAsObservable().Where(x => !!isLClk() && !!playerMove.IsTitle_ && !!canInput)
 			.Subscribe(_ => {
 				launch();
 			})

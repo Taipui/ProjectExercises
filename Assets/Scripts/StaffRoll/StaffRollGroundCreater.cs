@@ -20,7 +20,26 @@ public class StaffRollGroundCreater : MonoBehaviour
 	/// <summary>
 	/// ゲーム開始時に生成する列数
 	/// </summary>
-	const int Pre_Create_Col_Num = 10000;
+	const int Pre_Create_Col_Num = 150;
+
+	/// <summary>
+	/// 現在まで生成した列数
+	/// </summary>
+	int currentCol;
+
+	/// <summary>
+	/// 一回の生成で生成する列数
+	/// </summary>
+	const int Create_Col = 4;
+
+	/// <summary>
+	/// 最大生成列数
+	/// </summary>
+	const int Max_Create_Col = 100000;
+
+
+	float row;
+	float col;
 
 	/// <summary>
 	/// 初期化
@@ -42,11 +61,34 @@ public class StaffRollGroundCreater : MonoBehaviour
 	/// </summary>
 	void preCreate()
 	{
-		for (var row = 0.0f; row < groundChipWidth * Pre_Create_Col_Num; row += groundChipWidth) {
-			for (var col = 0.0f; col < groundChipHeight * Pre_Create_Row_Num; col += groundChipHeight) {
-				var go = Instantiate(GroundChipPrefab, new Vector3(row + groundChipWidth / 2, col + groundChipHeight / 2), Quaternion.identity);
-				//go.GetComponent<SpriteRenderer>().color = Color.red;
+		for (col = 0.0f; col < groundChipWidth * Pre_Create_Col_Num; col += groundChipWidth) {
+			for (var row = 0.0f; row < groundChipHeight * Pre_Create_Row_Num; row += groundChipHeight) {
+				Instantiate(GroundChipPrefab, new Vector3(col + groundChipWidth / 2, row + groundChipHeight / 2), Quaternion.identity);
 			}
 		}
+	}
+
+	/// <summary>
+	/// 地面を生成する
+	/// </summary>
+	void createStage()
+	{
+		for (; col < groundChipWidth * currentCol; col += groundChipWidth) {
+			for (var row = 0.0f; row < groundChipHeight * Pre_Create_Row_Num; row += groundChipHeight) {
+				Instantiate(GroundChipPrefab, new Vector3(col + groundChipWidth / 2, row + groundChipHeight / 2), Quaternion.identity);
+			}
+		}
+	}
+
+	/// <summary>
+	/// 地面を生成する
+	/// </summary>
+	public void create()
+	{
+		if (currentCol >= Max_Create_Col) {
+			return;
+		}
+		currentCol += Create_Col;
+		createStage();
 	}
 }
