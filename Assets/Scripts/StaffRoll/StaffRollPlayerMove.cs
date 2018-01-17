@@ -96,4 +96,9 @@ public class StaffRollPlayerMove : Character
 		anim.SetBool("IsRun", true);
 		speed = Run_Speed;
 	}
+
+	protected override void OnCollisionEnter(Collision collision)
+	{
+		// 何もしない
+	}
 }

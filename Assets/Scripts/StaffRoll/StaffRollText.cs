@@ -59,25 +59,24 @@ public class StaffRollText : MonoBehaviour
 
 		col.OnCollisionEnterAsObservable().Where(colGo => colGo.gameObject.tag == "Bullet")
 			.Subscribe(colGo => {
-			staffRoll.playSE(StaffRoll.SE.Kill, null);
-			Destroy(colGo.gameObject);
-			Destroy(gameObject);
-			var particleGo = Instantiate(Resources.Load("Prefabs/PopStar2"), transform.position, Quaternion.identity);
-			Destroy(particleGo, 1.0f);
+				staffRoll.playSE(StaffRoll.SE.Kill, null);
+				Destroy(gameObject);
+				var particleGo = Instantiate(Resources.Load("Prefabs/PopStar2"), transform.position, Quaternion.identity);
+				Destroy(particleGo, 1.0f);
 
-			var r = Random.Range(0, GameManager.Instance.ItemSprites_.Length + 1);
-			if (r <= 0) {
-				return;
-			}
-			var itemGo = Instantiate(Resources.Load("Prefabs/Item") as GameObject, transform.position, Quaternion.identity);
-			var vec = Vector3.up * Item_Launch_Power;
-			vec = Quaternion.Euler(new Vector3(0.0f, 0.0f, Random.Range(-Item_Launch_Angle_Range, Item_Launch_Angle_Range))) * vec;
-			itemGo.GetComponent<Rigidbody>().AddForce(vec, ForceMode.Impulse);
-			itemGo.tag = "Item" + r.ToString();
-			var sr = itemGo.GetComponent<SpriteRenderer>();
-			var index = r - 1;
-			sr.sprite = GameManager.Instance.ItemSprites_[index];
-			sr.material = GameManager.Instance.ItemMatsSprite_[index];
+				var r = Random.Range(0, GameManager.Instance.ItemSprites_.Length + 1);
+				if (r <= 0) {
+					return;
+				}
+				var itemGo = Instantiate(Resources.Load("Prefabs/Item") as GameObject, transform.position, Quaternion.identity);
+				var vec = Vector3.up * Item_Launch_Power;
+				vec = Quaternion.Euler(new Vector3(0.0f, 0.0f, Random.Range(-Item_Launch_Angle_Range, Item_Launch_Angle_Range))) * vec;
+				itemGo.GetComponent<Rigidbody>().AddForce(vec, ForceMode.Impulse);
+				itemGo.tag = "Item" + r.ToString();
+				var sr = itemGo.GetComponent<SpriteRenderer>();
+				var index = r - 1;
+				sr.sprite = GameManager.Instance.ItemSprites_[index];
+				sr.material = GameManager.Instance.ItemMatsSprite_[index];
 		})
 		.AddTo(this);
 	}

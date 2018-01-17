@@ -161,6 +161,7 @@
     <Compile Include="Assets\Scripts\Sandbox.cs" />
     <Compile Include="Assets\Scripts\StaffRoll\StaffRoll.cs" />
     <Compile Include="Assets\Scripts\StaffRoll\StaffRollBullet.cs" />
+    <Compile Include="Assets\Scripts\StaffRoll\StaffRollBulletManager.cs" />
     <Compile Include="Assets\Scripts\StaffRoll\StaffRollCameraMover.cs" />
     <Compile Include="Assets\Scripts\StaffRoll\StaffRollGroundCreater.cs" />
     <Compile Include="Assets\Scripts\StaffRoll\StaffRollPlayerAct.cs" />

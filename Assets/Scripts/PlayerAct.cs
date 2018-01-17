@@ -754,7 +754,7 @@ public class PlayerAct : Character
 		}
 		// アシストの数だけ一度に撃つ
 		foreach (Transform child in LauncherParent) {
-			child.GetComponent<Launcher>().launch(Bullet, mousePos, 13, BulletParentTfm, launchVec, scale);
+			child.GetComponent<Launcher>().createLaunch(Bullet, mousePos, 13, BulletParentTfm, launchVec, scale);
 		}
 
 		if (Main != null) {

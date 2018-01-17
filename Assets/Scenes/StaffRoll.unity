@@ -3091,6 +3091,7 @@ MonoBehaviour:
   - {fileID: 489443955}
   - {fileID: 1275377607}
   - {fileID: 382280995}
+  BulletManager: {fileID: 886413309}
 --- !u!81 &326863000
 AudioListener:
   m_ObjectHideFlags: 0
@@ -10501,6 +10502,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 886413308}
+  - component: {fileID: 886413309}
   m_Layer: 0
   m_Name: Bullets
   m_TagString: Untagged
@@ -10521,6 +10523,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &886413309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 886413307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bc8be044842eb34f9754b0b4efe94ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StaffRollBulletPrefab: {fileID: 1865988372435700, guid: 80c0b76370ac91741802ad21d666117f,
+    type: 2}
 --- !u!1 &897916872
 GameObject:
   m_ObjectHideFlags: 0

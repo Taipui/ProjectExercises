@@ -155,6 +155,9 @@ public class StaffRollPlayerAct : Character
 
 	#endregion
 
+	/// <summary>
+	/// スタッフロール用のPlayerMove
+	/// </summary>
 	StaffRollPlayerMove playerMove;
 
 	/// <summary>
@@ -167,6 +170,12 @@ public class StaffRollPlayerAct : Character
 	/// </summary>
 	[SerializeField]
 	GameObject[] Models;
+
+	/// <summary>
+	/// スタッフロール用のBulletManager
+	/// </summary>
+	[SerializeField]
+	StaffRollBulletManager BulletManager;
 
 	/// <summary>
 	/// canInputに値をセットする
@@ -303,7 +312,7 @@ public class StaffRollPlayerAct : Character
 		}
 		// アシストの数だけ一度に撃つ
 		foreach (Transform child in LauncherParent) {
-			child.GetComponent<Launcher>().launch(Bullet, mousePos, 13, BulletParentTfm, launchVec, scale);
+			child.GetComponent<Launcher>().cycleLaunch(BulletManager, mousePos, launchVec, scale);
 		}
 
 		StaffRoll.playSE(StaffRoll.SE.Launch, audioSource);
@@ -341,24 +350,22 @@ public class StaffRollPlayerAct : Character
 		vecs[1] = Vector3.right;
 		vecs[2] = Vector3.down;
 		for (var i = 0; i < 3; ++i) {
-			var go = Instantiate(Bullet, LaunchTfm.position, Quaternion.identity);
+			var bulletTfm = BulletManager.getBullet();
+			var bulletRb = bulletTfm.GetComponent<Rigidbody>();
 			if (i == 1) {
-				go.GetComponent<Rigidbody>().velocity = calcLaunchVec();
+				bulletRb.velocity = calcLaunchVec();
 			} else {
 				var sideVec = vecs[i];
 				var inverseLerp = Mathf.InverseLerp(10.0f, 20.0f, direction.magnitude);
 				var eval = ShotgunYVecCurve.Evaluate(inverseLerp);
 				sideVec *= eval;
-				//Debug.Log("direction.magnitude" + direction.magnitude);
-				//Debug.Log("InverseLerp:" + inverseLerp);
-				//Debug.Log("Eval:" + eval);
-				//Debug.Log("sideVec.magnitude:" + sideVec.magnitude);
 				var vec = (sideVec + direction.normalized) * Launch_Power;
-				go.GetComponent<Rigidbody>().velocity = vec;
+				bulletRb.velocity = vec;
 			}
-			go.layer = Common.PlayerBulletLayer;
+			bulletTfm.gameObject.layer = Common.PlayerBulletLayer;
+			bulletTfm.position = LaunchTfm.position;
+			bulletTfm.GetComponent<StaffRollBullet>().launch();
 		}
-		//Debug.Break();
 		--ItemDurability;
 	}
 
@@ -440,7 +447,6 @@ public class StaffRollPlayerAct : Character
 
 	protected override void OnCollisionEnter(Collision col)
 	{
-		base.OnCollisionEnter(col);
 		var tag = col.gameObject.tag;
 		if (tag.IndexOf("Item") < 0) {
 			return;

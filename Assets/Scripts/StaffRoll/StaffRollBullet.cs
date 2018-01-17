@@ -20,32 +20,96 @@ public class StaffRollBullet : MonoBehaviour
 	[SerializeField]
 	GameObject BulletEffect;
 
+	/// <summary>
+	/// Rigidbody
+	/// </summary>
+	Rigidbody rb;
+
+	/// <summary>
+	/// 初期の雪弾の大きさ
+	/// </summary>
+	Vector2 defaultSize;
+
+	/// <summary>
+	/// 自身のコライダ
+	/// </summary>
+	SphereCollider col;
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void init()
+	{
+		col = GetComponent<SphereCollider>();
+		col.enabled = false;
+
+		rb = GetComponent<Rigidbody>();
+		rb.isKinematic = true;
+
+		defaultSize = transform.localScale;
+	}
+
+	/// <summary>
+	/// 発射の処理をする
+	/// </summary>
+	public void launch()
+	{
+		col.enabled = false;
+		rb.isKinematic = false;
+		Invoke("enableCol", 0.1f);
+	}
+
+	/// <summary>
+	/// コライダを有効にする
+	/// </summary>
+	void enableCol()
+	{
+		col.enabled = true;
+	}
+
 	void Start ()
 	{
-		var col = GetComponent<SphereCollider>();
-		col.enabled = false;
+		init();
+
 
 		this.UpdateAsObservable().Where(x => transform.position.x > Camera.main.transform.position.x + 10.0f || transform.position.y <= Kill_Zone)
 			.Subscribe(_ => {
-				Destroy(gameObject);
+				changeNoUse();
 			})
 			.AddTo(this);
 
 		col.OnCollisionEnterAsObservable().Subscribe(colGo => {
-			Destroy(gameObject);
+			destroy();
 		})
 		.AddTo(this);
-
-		Observable.Timer(System.TimeSpan.FromSeconds(0.1f))
-			.Subscribe(_ => {
-				col.enabled = true;
-			})
-			.AddTo(this);
 	}
 
-	void OnDestroy()
+	/// <summary>
+	/// 自身を消す(再使用可能の状態にする)
+	/// </summary>
+	void destroy()
 	{
 		var go = Instantiate(BulletEffect, transform.position, Quaternion.identity);
 		Destroy(go, 0.5f * 2);
+		changeNoUse();
+	}
+
+	/// <summary>
+	/// 使われていない状態にする
+	/// </summary>
+	void changeNoUse()
+	{
+		rb.isKinematic = true;
+		transform.position = Vector2.zero;
+		transform.localScale = defaultSize;
+	}
+
+	/// <summary>
+	/// 使用可能かどうか
+	/// </summary>
+	/// <returns>使用可能ならtrue</returns>
+	public bool available()
+	{
+		return !!rb.isKinematic;
 	}
 }

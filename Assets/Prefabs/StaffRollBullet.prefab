@@ -69,8 +69,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7622b670a05c0fd458f152b9456135a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GroundBullet: {fileID: 1643971426085178, guid: 4ee00385ffdb9c44785b595b08ab9a74,
-    type: 2}
   BulletEffect: {fileID: 1216627828505754, guid: 2bfd3a3891524854485f64cb3acff0f9,
     type: 2}
 --- !u!135 &135360357397830834
