@@ -2845,7 +2845,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ca6d5fb7ffb45e4090b625ed106c22f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Bullet: {fileID: 1643971426085178, guid: 325224f187246bc44bf76f696688b0d5, type: 2}
+  Bullet: {fileID: 1865988372435700, guid: 80c0b76370ac91741802ad21d666117f, type: 2}
   BulletParentTfm: {fileID: 886413308}
   Main: {fileID: 0}
   LauncherParent: {fileID: 663310820}
@@ -2861,7 +2861,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2edc3801df9b65c408ea2d6fde3a7333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Bullet: {fileID: 1643971426085178, guid: 325224f187246bc44bf76f696688b0d5, type: 2}
+  Bullet: {fileID: 1865988372435700, guid: 80c0b76370ac91741802ad21d666117f, type: 2}
   BulletParentTfm: {fileID: 886413308}
   Main: {fileID: 0}
   LauncherParent: {fileID: 663310820}
