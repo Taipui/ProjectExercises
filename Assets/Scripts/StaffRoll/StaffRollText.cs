@@ -7,7 +7,10 @@ using UniRx.Triggers;
 
 public class StaffRollText : MonoBehaviour
 {
-	const float Move_Speed = 1.0f;
+	/// <summary>
+	/// 文字の移動速度
+	/// </summary>
+	const float Move_Speed = 2.0f;
 
 	#region アイテム関連
 	
@@ -22,22 +25,33 @@ public class StaffRollText : MonoBehaviour
 
 	#endregion
 
+	/// <summary>
+	/// StaffRoll
+	/// </summary>
 	StaffRoll staffRoll;
 
 	/// <summary>
-	/// StaffRollをセット
+	/// セットするタグのテキスト
+	/// </summary>
+	string setTag;
+
+	/// <summary>
+	/// 値をセット
 	/// </summary>
 	/// <param name="staffRoll_">セットするStaffRoll</param>
-	public void setStaffRoll(StaffRoll staffRoll_)
+	/// <param name="setTag_">セットするタグのテキスト</param>
+	public void setVal(StaffRoll staffRoll_, string setTag_)
 	{
 		staffRoll = staffRoll_;
+		setTag = setTag_;
 	}
 
 	void Start ()
 	{
-		tag = "Text";
-		var col = gameObject.AddComponent<MeshCollider>();
-		col.convex = true;
+		Debug.Log("StaffRollText Start");
+		tag = setTag;
+
+		var col = GetComponent<MeshCollider>();
 
 		this.UpdateAsObservable().Subscribe(_ => {
 			transform.Translate(new Vector2(-Move_Speed * Time.deltaTime, 0.0f));
@@ -67,5 +81,13 @@ public class StaffRollText : MonoBehaviour
 			sr.material = GameManager.Instance.ItemMatsSprite_[index];
 		})
 		.AddTo(this);
+	}
+
+	void OnDestroy()
+	{
+		if (tag != "EndText") {
+			return;
+		}
+		staffRoll.cntEndTxt();
 	}
 }

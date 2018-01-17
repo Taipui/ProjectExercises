@@ -16,12 +16,15 @@ public class StaffRollGroundCreater : MonoBehaviour
 	/// <summary>
 	/// ゲーム開始時に生成する行数
 	/// </summary>
-	const int Pre_Create_Row_Num = 1000;
+	const int Pre_Create_Row_Num = 5;
 	/// <summary>
 	/// ゲーム開始時に生成する列数
 	/// </summary>
-	const int Pre_Create_Col_Num = 5;
+	const int Pre_Create_Col_Num = 10000;
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void init()
 	{
 		groundChipWidth = GroundChipPrefab.transform.localScale.x / 100;
@@ -34,10 +37,13 @@ public class StaffRollGroundCreater : MonoBehaviour
 		preCreate();
 	}
 
+	/// <summary>
+	/// 事前生成
+	/// </summary>
 	void preCreate()
 	{
-		for (var row = 0.0f; row < groundChipWidth * Pre_Create_Row_Num; row += groundChipWidth) {
-			for (var col = 0.0f; col < groundChipHeight * Pre_Create_Col_Num; col += groundChipHeight) {
+		for (var row = 0.0f; row < groundChipWidth * Pre_Create_Col_Num; row += groundChipWidth) {
+			for (var col = 0.0f; col < groundChipHeight * Pre_Create_Row_Num; col += groundChipHeight) {
 				var go = Instantiate(GroundChipPrefab, new Vector3(row + groundChipWidth / 2, col + groundChipHeight / 2), Quaternion.identity);
 				//go.GetComponent<SpriteRenderer>().color = Color.red;
 			}

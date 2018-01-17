@@ -25,7 +25,7 @@ public class Eraser : MonoBehaviour
 	/// <returns>削除対象ならtrue</returns>
 	bool isErase(Collider col)
 	{
-		var isErase = col.tag == "Ground" || col.tag == "Signboard" || col.tag == "Obstacle" || col.tag == "Item" || col.tag == "Text";
+		var isErase = col.tag == "Ground" || col.tag == "Signboard" || col.tag == "Obstacle" || col.tag == "Item" || col.tag == "Text" || col.tag == "EndText";
 		return isErase || (LayerMask.LayerToName(col.gameObject.layer) == "Item");
 	}
 }
