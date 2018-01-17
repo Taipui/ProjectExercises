@@ -167,6 +167,13 @@ public class StaffRoll : MonoBehaviour
 			})
 			.AddTo(this);
 
+		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.Q))
+			.First()
+			.Subscribe(_ => {
+				end();
+			})
+			.AddTo(this);
+
 		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.Space))
 			.Subscribe(_ => {
 				Time.timeScale = 2.0f;
