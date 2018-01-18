@@ -36,6 +36,33 @@ public class StaffRollBullet : MonoBehaviour
 	SphereCollider col;
 
 	/// <summary>
+	/// StaffRoll
+	/// </summary>
+	StaffRoll staffRoll;
+
+	#region アイテム関連
+
+	/// <summary>
+	/// アイテムをドロップする力
+	/// </summary>
+	const float Item_Launch_Power = 2.0f;
+	/// <summary>
+	/// アイテムをドロップする角度の範囲
+	/// </summary>
+	const float Item_Launch_Angle_Range = 45.0f;
+
+	#endregion
+
+	/// <summary>
+	/// StaffRollをセット
+	/// </summary>
+	/// <param name="staffRoll_">セットするStaffRoll</param>
+	public void setStaffRoll(StaffRoll staffRoll_)
+	{
+		staffRoll = staffRoll_;
+	}
+
+	/// <summary>
 	/// 初期化
 	/// </summary>
 	void init()
@@ -71,17 +98,55 @@ public class StaffRollBullet : MonoBehaviour
 	{
 		init();
 
-
-		this.UpdateAsObservable().Where(x => transform.position.x > Camera.main.transform.position.x + 10.0f || transform.position.y <= Kill_Zone)
+		this.UpdateAsObservable().Where(x => !rb.isKinematic && transform.position.x > Camera.main.transform.position.x + 10.0f || transform.position.y <= Kill_Zone)
 			.Subscribe(_ => {
 				changeNoUse();
 			})
 			.AddTo(this);
 
 		col.OnCollisionEnterAsObservable().Subscribe(colGo => {
+			if (colGo.gameObject.tag == "Text" || colGo.gameObject.tag == "EndText") {
+				staffRoll.playSE(StaffRoll.SE.Kill, null);
+
+				Destroy(colGo.gameObject);
+
+				spawnParticle();
+
+				spawnItem();
+			}
+
 			destroy();
 		})
 		.AddTo(this);
+	}
+
+	/// <summary>
+	/// パーティクルを出現させる
+	/// </summary>
+	void spawnParticle()
+	{
+		var particleGo = Instantiate(Resources.Load("Prefabs/PopStar2"), transform.position, Quaternion.identity);
+		Destroy(particleGo, 1.0f);
+	}
+
+	/// <summary>
+	/// アイテムを出現させる
+	/// </summary>
+	void spawnItem()
+	{
+		var r = Random.Range(0, GameManager.Instance.ItemSprites_.Length + 1);
+		if (r <= 0) {
+			return;
+		}
+		var itemGo = Instantiate(Resources.Load("Prefabs/Item") as GameObject, transform.position, Quaternion.identity);
+		var vec = Vector3.up * Item_Launch_Power;
+		vec = Quaternion.Euler(new Vector3(0.0f, 0.0f, Random.Range(-Item_Launch_Angle_Range, Item_Launch_Angle_Range))) * vec;
+		itemGo.GetComponent<Rigidbody>().AddForce(vec, ForceMode.Impulse);
+		itemGo.tag = "Item" + r.ToString();
+		var sr = itemGo.GetComponent<SpriteRenderer>();
+		var index = r - 1;
+		sr.sprite = GameManager.Instance.ItemSprites_[index];
+		sr.material = GameManager.Instance.ItemMatsSprite_[index];
 	}
 
 	/// <summary>

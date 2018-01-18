@@ -481,8 +481,11 @@ public class StaffRoll : MonoBehaviour
 				var go = FlyingText.GetObject(txtArray[txtIndex][wordIndex].ToString());
 				go.transform.SetParent(TxtsParent);
 
-				var col = go.AddComponent<MeshCollider>();
-				col.convex = true;
+				// コライダを付けなくても当たり判定は付くが、雪弾を発射し続けるとエディターが落ちる
+				//var col = go.AddComponent<MeshCollider>();
+				//col.convex = true;
+
+				var col = go.AddComponent<BoxCollider>();
 
 				var staffRollTxt = go.AddComponent<StaffRollText>();
 				var setTag = !!isEndTxt ? "EndText" : "Text";

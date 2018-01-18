@@ -18,10 +18,17 @@ public class StaffRollBulletManager : MonoBehaviour
 	/// </summary>
 	const int Pre_Create_Bullet_Num = 30;
 
+	/// <summary>
+	/// StaffRoll
+	/// </summary>
+	[SerializeField]
+	StaffRoll StaffRoll;
+
 	void Start ()
 	{
 		for (var i = 0; i < Pre_Create_Bullet_Num; ++i) {
-			Instantiate(StaffRollBulletPrefab, transform);
+			var bulletGo = Instantiate(StaffRollBulletPrefab, transform);
+			bulletGo.GetComponent<StaffRollBullet>().setStaffRoll(StaffRoll);
 		}
 	}
 

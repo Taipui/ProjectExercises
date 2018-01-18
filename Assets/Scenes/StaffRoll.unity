@@ -10536,6 +10536,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StaffRollBulletPrefab: {fileID: 1865988372435700, guid: 80c0b76370ac91741802ad21d666117f,
     type: 2}
+  StaffRoll: {fileID: 304177055}
 --- !u!1 &897916872
 GameObject:
   m_ObjectHideFlags: 0
