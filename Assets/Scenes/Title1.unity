@@ -15438,12 +15438,32 @@ Prefab:
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 224010556840520454, guid: 5c94bff3f36a7fe4f93a05be55708135,
+    - target: {fileID: 224805522148571896, guid: 5c94bff3f36a7fe4f93a05be55708135,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 222.04
+      value: 170.25
       objectReference: {fileID: 0}
-    - target: {fileID: 224010556840520454, guid: 5c94bff3f36a7fe4f93a05be55708135,
+    - target: {fileID: 224805522148571896, guid: 5c94bff3f36a7fe4f93a05be55708135,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224969455200952774, guid: 5c94bff3f36a7fe4f93a05be55708135,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 84.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 224969455200952774, guid: 5c94bff3f36a7fe4f93a05be55708135,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224923017954055594, guid: 5c94bff3f36a7fe4f93a05be55708135,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 84.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 224923017954055594, guid: 5c94bff3f36a7fe4f93a05be55708135,
         type: 2}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -15513,6 +15533,16 @@ Prefab:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 224010556840520454, guid: 5c94bff3f36a7fe4f93a05be55708135,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 222.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 224010556840520454, guid: 5c94bff3f36a7fe4f93a05be55708135,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 224585341943362974, guid: 5c94bff3f36a7fe4f93a05be55708135,
         type: 2}
       propertyPath: m_SizeDelta.x
@@ -15523,26 +15553,6 @@ Prefab:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 224923017954055594, guid: 5c94bff3f36a7fe4f93a05be55708135,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 84.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 224923017954055594, guid: 5c94bff3f36a7fe4f93a05be55708135,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224805522148571896, guid: 5c94bff3f36a7fe4f93a05be55708135,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 170.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 224805522148571896, guid: 5c94bff3f36a7fe4f93a05be55708135,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 224492940934438698, guid: 5c94bff3f36a7fe4f93a05be55708135,
         type: 2}
       propertyPath: m_SizeDelta.x
@@ -15553,21 +15563,6 @@ Prefab:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 224969455200952774, guid: 5c94bff3f36a7fe4f93a05be55708135,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 84.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 224969455200952774, guid: 5c94bff3f36a7fe4f93a05be55708135,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114190358079600396, guid: 5c94bff3f36a7fe4f93a05be55708135,
-        type: 2}
-      propertyPath: StaffRollBtn
-      value: 
-      objectReference: {fileID: 1155507795}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5c94bff3f36a7fe4f93a05be55708135, type: 2}
   m_IsPrefabParent: 0
@@ -17601,12 +17596,6 @@ Transform:
   m_Father: {fileID: 17787805}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1155507795 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114412675408833158, guid: 5c94bff3f36a7fe4f93a05be55708135,
-    type: 2}
-  m_PrefabInternal: {fileID: 918766843}
-  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &1160846027
 GameObject:
   m_ObjectHideFlags: 0

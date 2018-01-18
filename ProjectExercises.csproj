@@ -167,6 +167,7 @@
     <Compile Include="Assets\Scripts\StaffRoll\StaffRollPlayerAct.cs" />
     <Compile Include="Assets\Scripts\StaffRoll\StaffRollPlayerMove.cs" />
     <Compile Include="Assets\Scripts\StaffRoll\StaffRollText.cs" />
+    <Compile Include="Assets\Scripts\TextButtonMouseOver.cs" />
     <Compile Include="Assets\Scripts\Tiling.cs" />
     <Compile Include="Assets\Scripts\Title\SceneSelecter.cs" />
     <Compile Include="Assets\Scripts\Title\Title1.cs" />

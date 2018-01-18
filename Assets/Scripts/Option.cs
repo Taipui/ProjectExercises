@@ -157,11 +157,30 @@ public class Option : MonoBehaviour
 		}).AddTo(this);
 
 		if (StaffRollBtn != null) {
+			StaffRollBtn.OnMouseOverAsObservable().Subscribe(_ => {
+				Debug.Log("mouse over");
+			})
+			.AddTo(this);
+		}
+
+		if (StaffRollBtn != null) {
+			StaffRollBtn.OnMouseExitAsObservable().Subscribe(_ => {
+				Debug.Log("mouse exit");
+			})
+			.AddTo(this);
+		}
+
+		if (StaffRollBtn != null) {
 			StaffRollBtn.OnClickAsObservable().Subscribe(_ => {
 				Time.timeScale = 1.0f;
 				SceneManager.LoadScene(Common.StaffRoll_Scene);
 			})
 			.AddTo(this);
 		}
+
+		BackBtn.OnMouseOverAsObservable().Subscribe(_ => {
+			Debug.Log("hoge");
+		})
+		.AddTo(this);
 	}
 }

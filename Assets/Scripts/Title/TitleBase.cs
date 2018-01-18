@@ -67,18 +67,27 @@ public class TitleBase : MonoBehaviour
 		/// </summary>
 		Wind,
 		/// <summary>
-		/// STARTが選択された時のSE
+		/// STARTが選択された時のSE(1016)
 		/// </summary>
 		Start,
 		/// <summary>
-		/// QUITが選択された時のSE(
+		/// QUITが選択された時のSE(16)
 		/// </summary>
 		Quit1,
+		/// <summary>
+		/// QUITが選択された時のSE(17)
+		/// </summary>
 		Quit2,
+		/// <summary>
+		/// QUITが選択された時のSE(18)
+		/// </summary>
 		Quit3,
+		/// <summary>
+		/// QUITが選択された時のSE(1028)
+		/// </summary>
 		Quit4,
 		/// <summary>
-		/// オプション画面の表示/非表示
+		/// オプション画面の表示/非表示(button71)
 		/// </summary>
 		Option
 	}

@@ -205,8 +205,9 @@ public class StaffRollPlayerAct : Character
 		init();
 		var prevStock = 0;
 		var stockBullets = new List<GameObject>();
+
 		var prevMousePos = Input.mousePosition;
-		var prevPlayerXPos = transform.localPosition.x;
+
 		var tfm = transform;
 
 		randomChangeAvatar();

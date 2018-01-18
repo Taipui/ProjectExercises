@@ -229,14 +229,17 @@ public class StaffRoll : MonoBehaviour
 			"速水大秀",
 			"ゲームデザイナー",
 			"速水大秀、畑舜矢",
+
 			"",
 			"参考文献",
+
 			"",
 			"ツール",
 			"SourceTree",
 			"https://ja.atlassian.com/software/sourcetree",
 			"Trello",
 			"https://trello.com/",
+
 			"",
 			"アセット",
 			"UniRx",
@@ -253,6 +256,7 @@ public class StaffRoll : MonoBehaviour
 			"https://www.assetstore.unity3d.com/jp/#!/content/68570",
 			"Skybox Series freebie",
 			"https://www.assetstore.unity3d.com/jp/#!/content/103633",
+
 			"",
 			"プログラム",
 			"",
@@ -312,11 +316,17 @@ public class StaffRoll : MonoBehaviour
 			"Unity - スクリプトリファレンス: MonoBehaviour.Invoke",
 			"https://docs.unity3d.com/jp/540/ScriptReference/MonoBehaviour.Invoke.html",
 			"",
+			"マウスオーバー",
+			"Unityの新GUIでマウスオーバー判定サンプル - Qiita",
+			"https://qiita.com/Hiramaru/items/238f9cbf07f6f3acc9f5",
+
+			"",
 			"Grayちゃん",
 			"GrayChan_0_5_0",
 			"http://rarihoma.xvs.jp/products/graychan",
 			"ライセンス",
 			"http://www.gray-chan.com/agreement",
+
 			"",
 			"リソース",
 			"",
@@ -335,6 +345,7 @@ public class StaffRoll : MonoBehaviour
 			"https://www.fontsquirrel.com/fonts/oswald",
 			"Ice Age Font",
 			"https://www.dafont.com/ice-age-font.font",
+
 			"",
 			"その他",
 			"",
@@ -441,6 +452,7 @@ public class StaffRoll : MonoBehaviour
 			"色の抽出",
 			"イメージカラーピッカー | 画像から色(カラーコード)を抽出",
 			"https://lab.syncer.jp/Tool/Image-Color-Picker/",
+
 			"",
 			"それと…",
 			"",
