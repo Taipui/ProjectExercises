@@ -2601,8 +2601,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_fontData:
-  - ttfFile: {fileID: 4900000, guid: cda8dd9b991b36b469fa49912f2adb2e, type: 3}
-    fontName: 03SmartFontUI
+  - ttfFile: {fileID: 4900000, guid: 6b193f7d4f519a14e9466bf8d47486b5, type: 3}
+    fontName: Rounded Mgen+ 1c black
   m_defaultFont: 0
   m_defaultMaterial: {fileID: 0}
   m_defaultEdgeMaterial: {fileID: 0}

@@ -260,6 +260,8 @@ public class StaffRoll : MonoBehaviour
 			"https://www.assetstore.unity3d.com/jp/#!/content/68570",
 			"Skybox Series freebie",
 			"https://www.assetstore.unity3d.com/jp/#!/content/103633",
+			"FlyingText3D",
+			"https://assetstore.unity.com/packages/tools/particles-effects/flyingtext3d-3627",
 
 			"",
 			"プログラム",
@@ -350,6 +352,8 @@ public class StaffRoll : MonoBehaviour
 			"https://www.fontsquirrel.com/fonts/oswald",
 			"Ice Age Font",
 			"https://www.dafont.com/ice-age-font.font",
+			"FlyingText3D",
+			"http://jikasei.me/font/rounded-mgenplus/",
 
 			"",
 			"その他",
