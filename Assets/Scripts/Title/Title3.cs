@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 
@@ -13,20 +14,15 @@ public class Title3 : TitleBase
 	RaycastHit hitInfo;
 
 	/// <summary>
-	/// UnityちゃんのTransform
+	/// タイトル用のキャラクターのTransform
 	/// </summary>
 	[SerializeField]
-	Transform UnityChanTfm;
+	Transform TitleCharTfm;
 	/// <summary>
-	/// Unityちゃんのアニメーター
+	/// タイトル用のキャラクターのアニメーターの配列
 	/// </summary>
 	[SerializeField]
-	Animator UnityChanAnim;
-	/// <summary>
-	/// Avatar
-	/// </summary>
-	[SerializeField]
-	Avatar[] Avatars;
+	Animator[] TitleCharAnimators;
 	/// <summary>
 	/// モデル
 	/// </summary>
@@ -42,24 +38,27 @@ public class Title3 : TitleBase
 	/// </summary>
 	const float SD_Y_Pos = -0.87f;
 
+	/// <summary>
+	/// 待機時のモーションを行う最低間隔
+	/// </summary>
+	const float Idle_Animation_Interval_Base = 15.0f;
+	/// <summary>
+	/// 待機時のモーションを行うランダムな間隔の範囲(Idle_Animation_Interval_Base + Random.Range(0, Idle_Animation_Interval_Random))
+	/// </summary>
+	const float Idle_Animation_Interval_Random = 15.0f;
+
+	/// <summary>
+	/// 現在のキャラクター
+	/// </summary>
+	int currentChar;
+
 	protected override void Start ()
 	{
 		base.Start();
 
-		for (var i = 0; i < Models.Length; ++i) {
-			Models[i].SetActive(false);
-		}
-		var r = Random.Range(0, 100);
-		//r = 0;
-		if (r == 0) {
-			Models[1].SetActive(true);
-			UnityChanAnim.avatar = Avatars[1];
-			UnityChanTfm.position = new Vector3(UnityChanTfm.position.x, SD_Y_Pos, UnityChanTfm.position.z);
-		} else {
-			Models[0].SetActive(true);
-			UnityChanAnim.avatar = Avatars[0];
-			UnityChanTfm.position = new Vector3(UnityChanTfm.position.x, Normal_Y_Pos, UnityChanTfm.position.z);
-		}
+		randomChangeAvatar();
+
+		StartCoroutine("randomInterval");
 
 		this.UpdateAsObservable().Where(x => !!isTxtMouseOver() && !!canInput)
 			.Subscribe(_ => {
@@ -70,6 +69,12 @@ public class Title3 : TitleBase
 		this.UpdateAsObservable().Where(x => !!isLClk() && !!isTxtMouseOver() && !!canInput)
 			.Subscribe(_ => {
 				decide();
+			})
+			.AddTo(this);
+
+		this.UpdateAsObservable().Where(x => Input.GetKeyDown(KeyCode.Alpha1))
+			.Subscribe(_ => {
+				TitleCharAnimators[currentChar].SetTrigger("doJump");
 			})
 			.AddTo(this);
 	}
@@ -137,5 +142,76 @@ public class Title3 : TitleBase
 	{
 		base.endOption();
 		Time.timeScale = 1.0f;
+	}
+
+	/// <summary>
+	/// ランダムにキャラクターを変える
+	/// </summary>
+	void randomChangeAvatar()
+	{
+		for (var i = 0; i < Models.Length; ++i) {
+			Models[i].SetActive(false);
+		}
+
+		currentChar = Common.getRandomIndex(1000, 50, 1);
+		//currentChar = 2;
+		Models[currentChar].SetActive(true);
+
+		var posY = 0.0f;
+
+		switch (currentChar) {
+			case 0:
+			case 2:
+				posY = Normal_Y_Pos;
+				break;
+			case 1:
+				posY = SD_Y_Pos;
+				break;
+		}
+
+		TitleCharTfm.position = new Vector3(TitleCharTfm.position.x, posY, TitleCharTfm.position.z);
+	}
+
+	/// <summary>
+	/// ランダムな間隔で実行する
+	/// </summary>
+	/// <returns></returns>
+	IEnumerator randomInterval()
+	{
+		while (true) {
+			yield return new WaitForSeconds(Idle_Animation_Interval_Base + Random.Range(0, Idle_Animation_Interval_Random));
+			randomIdleMotion();
+		}
+	}
+
+	/// <summary>
+	/// ランダムに待機時のモーションを行う
+	/// </summary>
+	void randomIdleMotion()
+	{
+		switch (currentChar) {
+			case 0:
+			case 2:
+				var animStr = "";
+
+				var r = Random.Range(0, 3);
+				//r = 2;
+				switch (r) {
+					case 0:
+						animStr = "doWAIT01";
+						break;
+					case 1:
+						animStr = "doWAIT02";
+						break;
+					case 2:
+						animStr = "doWAIT04";
+						break;
+				}
+				TitleCharAnimators[currentChar].SetTrigger(animStr);
+				//Debug.Log(r);
+				break;
+			case 1:
+				return;
+		}
 	}
 }
