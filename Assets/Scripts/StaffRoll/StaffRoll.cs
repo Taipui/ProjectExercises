@@ -23,31 +23,25 @@ public class StaffRoll : MonoBehaviour
 	/// </summary>
 	const float Word_Interval = 0.1f;
 	/// <summary>
-	/// 文の間隔
+	/// 行間隔
 	/// </summary>
-	const float Txt_Interval = 10.0f;
+	const float Row_Interval = 1.0f;
 	/// <summary>
 	/// 2行目のインデント
 	/// </summary>
 	const float Indent = 2.0f;
-	///// <summary>
-	///// センターのY座標
-	///// </summary>
-	//const float Center_Pos_Y = 5.0f;
-	///// <summary>
-	///// 行間隔
-	///// </summary>
-	//const float Row_Interval = 2.0f;
-	//const float 
-
 	/// <summary>
-	/// 1行目のY座標
+	/// センターのY座標
 	/// </summary>
-	const float Line_1_Pos_Y = 7.0f;
+	const float Center_Pos_Y = 5.0f;
 	/// <summary>
-	/// 2行目のY座標
+	/// 項目間の間隔
 	/// </summary>
-	const float Line_2_Pos_Y = 5.0f;
+	const float Center_Interval = 2.0f;
+	/// <summary>
+	/// 次の文との間隔
+	/// </summary>
+	const float Text_Interval = 4.0f;
 
 	/// <summary>
 	/// EndTextのカウント
@@ -81,6 +75,11 @@ public class StaffRoll : MonoBehaviour
 	/// </summary>
 	[SerializeField]
 	Transform TxtsParent;
+
+	/// <summary>
+	/// 文字の動く速度
+	/// </summary>
+	const float Text_Move_Speed = 2.0f;
 
 	#endregion
 
@@ -172,6 +171,11 @@ public class StaffRoll : MonoBehaviour
 	{
 		init();
 		StartCoroutine(createWords(createStrArray()));
+
+		this.UpdateAsObservable().Subscribe(_ => {
+			TxtsParent.Translate(new Vector3(-Text_Move_Speed * Time.deltaTime, 0));
+		})
+		.AddTo(this);
 
 		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.O))
 			.Subscribe(_ => {
@@ -337,6 +341,7 @@ public class StaffRoll : MonoBehaviour
 			"http://icooon-mono.com/11221-eighth-note-icon-8/?lang=en",
 			"mark_batsu.png",
 			"http://1.bp.blogspot.com/-eJGNGE4u8LA/UsZuCAMuehI/AAAAAAAAc2c/QQ5eBSC2Ey0/s800/mark_batsu.png",
+
 			"",
 			"フォント",
 			"スマートフォントUI",
@@ -469,27 +474,30 @@ public class StaffRoll : MonoBehaviour
 	/// <param name="txtArray">文をまとめた配列</param>
 	IEnumerator createWords(string[] txtArray)
 	{
+		// 今何行目か
+		var txtCnt = 1;
+		// 文字のX座標
 		var wordPosX = First_Word_Pos_X;
+		// 1文字目のX座標
 		var prevWordPosXBegin = 0.0f;
-		var prevWordPosXEnd = 0.0f;
+		// 一番長い行の最後のX座標
+		var maxWordPosXEnd = 0.0f;
 
 		for (var txtIndex = 0; txtIndex < txtArray.Length; ++txtIndex) {
-			var isNewLine = txtIndex % 2 == 1;
-			if (!isNewLine) {
+			// スタッフロールの最後の文字かどうか
+			var isEndTxt = txtIndex == txtArray.Length - 1;
+
+			// 1行だけかどうか
+			var isCenterSingleLine = txtArray[Mathf.Max(txtIndex - 1, 0)].Length == 0;
+			if (!!isCenterSingleLine) {
+				txtCnt = 1;
+			}
+			var isCenterMultiLine = (txtCnt == 1 && txtArray[Mathf.Min(txtIndex + 2, txtArray.Length - 1)].Length == 0) || (txtCnt == 2 && txtArray[Mathf.Min(txtIndex + 1, txtArray.Length - 1)].Length == 0);
+			// 1行目なら最初のX座標を保存
+			if (txtCnt % 2 == 1) {
 				prevWordPosXBegin = wordPosX;
 			}
-
-			var isCenter = txtArray[Mathf.Max(0, txtIndex - 1)].Length == 0;
-
-			var wordInterval = !!isZenkaku(txtArray[txtIndex]) ? Word_Interval : Word_Interval / 1.5f;
-
-			var isEndTxt = txtIndex == txtArray.Length - 1;
-			if (!!isEndTxt) {
-				endTxtLen = txtArray[txtIndex].Length;
-			}
-
 			for (var wordIndex = 0; wordIndex < txtArray[txtIndex].Length; ++wordIndex) {
-
 				var go = FlyingText.GetObject(txtArray[txtIndex][wordIndex].ToString());
 				go.transform.SetParent(TxtsParent);
 
@@ -503,26 +511,50 @@ public class StaffRoll : MonoBehaviour
 				var setTag = !!isEndTxt ? "EndText" : "Text";
 				staffRollTxt.setVal(this, setTag);
 
+				var wordInterval = !!isZenkaku(txtArray[txtIndex]) ? Word_Interval : Word_Interval / 1.5f;
+
 				var indent = 0.0f;
-				var posY = Line_1_Pos_Y;
-				if (!!isNewLine) {
+				if (txtCnt % 2 == 0) {
 					indent = Indent;
-					posY = Line_2_Pos_Y;
-				}
-				if (!!isCenter) {
-					posY = (Line_1_Pos_Y + Line_2_Pos_Y) / 2;
 				}
 
+				var posY = 0.0f;
+				if (!!isCenterSingleLine) {
+					posY = Center_Pos_Y;
+				} else if (!!isCenterMultiLine) {
+					if (txtCnt == 1) {
+						posY = Center_Pos_Y + Center_Interval / 2;
+					} else {
+						posY = Center_Pos_Y + Center_Interval / 2 - Row_Interval;
+					}
+				} else {
+					switch (txtCnt) {
+						case 1:
+							posY = Center_Pos_Y + Center_Interval / 2 + Row_Interval + Row_Interval / 2;
+							break;
+						case 2:
+							posY = Center_Pos_Y + Center_Interval / 2 + Row_Interval / 2;
+							break;
+						case 3:
+							posY = Center_Pos_Y - Center_Interval / 2;
+							break;
+						case 4:
+							posY = Center_Pos_Y - Center_Interval / 2 - Row_Interval;
+							break;
+					}
+				}
 				go.transform.localPosition = new Vector3(wordPosX + indent, posY);
 				wordPosX += col.bounds.size.x + wordInterval;
-
 				yield return 0;
 			}
-			if (!!isNewLine) {
-				wordPosX = Mathf.Max(wordPosX, prevWordPosXEnd) + Txt_Interval;
+			maxWordPosXEnd = Mathf.Max(maxWordPosXEnd, wordPosX);
+			if (txtCnt == 4 || !!isCenterSingleLine || (!!isCenterMultiLine && txtCnt == 2)) {
+				wordPosX = maxWordPosXEnd + Text_Interval;
+				maxWordPosXEnd = 0.0f;
+				txtCnt = 1;
 			} else {
-				prevWordPosXEnd = wordPosX;
 				wordPosX = prevWordPosXBegin;
+				++txtCnt;
 			}
 		}
 	}

@@ -8,11 +8,6 @@ using UniRx.Triggers;
 public class StaffRollText : MonoBehaviour
 {
 	/// <summary>
-	/// 文字の移動速度
-	/// </summary>
-	const float Move_Speed = 2.0f;
-
-	/// <summary>
 	/// StaffRoll
 	/// </summary>
 	StaffRoll staffRoll;
@@ -36,11 +31,6 @@ public class StaffRollText : MonoBehaviour
 	void Start ()
 	{
 		tag = setTag;
-
-		this.UpdateAsObservable().Subscribe(_ => {
-			transform.Translate(new Vector2(-Move_Speed * Time.deltaTime, 0.0f));
-		})
-		.AddTo(this);
 	}
 
 	void OnDestroy()
