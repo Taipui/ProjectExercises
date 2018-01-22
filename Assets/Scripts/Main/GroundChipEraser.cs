@@ -60,7 +60,11 @@ public class GroundChipEraser : MonoBehaviour
 
 	void OnTriggerEnter(Collider col)
 	{
-		Destroy(col.gameObject);
+		if (col.name == "StaffRollBullet(Clone)") {
+			col.GetComponent<StaffRollBullet>().changeNoUse();
+		} else {
+			Destroy(col.gameObject);
+		}
 		isMove = false;
 		groundChipEraserCollider.enabled = false;
 		transform.localPosition = new Vector3(transform.localPosition.x, defaultYPos);

@@ -162,7 +162,7 @@ public class StaffRollBullet : MonoBehaviour
 	/// <summary>
 	/// 使われていない状態にする
 	/// </summary>
-	void changeNoUse()
+	public void changeNoUse()
 	{
 		rb.isKinematic = true;
 		transform.position = Vector2.zero;
@@ -176,5 +176,10 @@ public class StaffRollBullet : MonoBehaviour
 	public bool available()
 	{
 		return !!rb.isKinematic;
+	}
+
+	private void OnDestroy()
+	{
+		Debug.Log("destroy");
 	}
 }
