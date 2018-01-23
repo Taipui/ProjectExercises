@@ -14978,7 +14978,6 @@ GameObject:
   - component: {fileID: 1519022514}
   - component: {fileID: 1519022513}
   - component: {fileID: 1519022512}
-  - component: {fileID: 1519022511}
   - component: {fileID: 1519022509}
   - component: {fileID: 1519022510}
   m_Layer: 11
@@ -15012,38 +15011,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1cbeefc80b0ed241a1333be8331dcf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!23 &1519022511
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1519022508}
-  m_Enabled: 0
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 1
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
 --- !u!135 &1519022512
 SphereCollider:
   m_ObjectHideFlags: 0
