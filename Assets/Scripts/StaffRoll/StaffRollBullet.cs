@@ -177,9 +177,4 @@ public class StaffRollBullet : MonoBehaviour
 	{
 		return !!rb.isKinematic;
 	}
-
-	private void OnDestroy()
-	{
-		Debug.Log("destroy");
-	}
 }

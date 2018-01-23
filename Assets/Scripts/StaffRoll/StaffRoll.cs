@@ -355,6 +355,12 @@ public class StaffRoll : MonoBehaviour
 			"FlyingText3D",
 			"http://jikasei.me/font/rounded-mgenplus/",
 
+			"BGM",
+			"UNDERVEIL",
+			"http://underveil.unisphere.tv/origin/",
+			"UNITE IN THE SKY",
+			"http://unity-chan.com/download/releaseNote.php?id=imagealbum-vol1",
+
 			"",
 			"その他",
 			"",
