@@ -3070,8 +3070,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94942e0d9fa7ee248814c56df4dd807a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Title: {fileID: 0}
-  Index: 0
+  Title: {fileID: 180972784}
+  Index: 1
   IsCheckCol: 0
 --- !u!114 &1065185941
 MonoBehaviour:
@@ -7092,7 +7092,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94942e0d9fa7ee248814c56df4dd807a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Title: {fileID: 0}
+  Title: {fileID: 180972784}
   Index: 0
   IsCheckCol: 0
 --- !u!114 &1522009026
