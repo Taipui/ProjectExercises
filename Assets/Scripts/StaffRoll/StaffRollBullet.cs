@@ -105,7 +105,7 @@ public class StaffRollBullet : MonoBehaviour
 			.AddTo(this);
 
 		col.OnCollisionEnterAsObservable().Subscribe(colGo => {
-			if (colGo.gameObject.tag == "Text" || colGo.gameObject.tag == "EndText") {
+			if (colGo.gameObject.tag == "Text" || colGo.gameObject.tag == "EndText" || colGo.gameObject.tag == "Piyo") {
 				staffRoll.playSE(StaffRoll.SE.Kill, null);
 
 				Destroy(colGo.gameObject);

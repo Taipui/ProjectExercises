@@ -18,12 +18,26 @@ public class Piyo : MonoBehaviour
 	public int ColIndex { private set; get; }
 
 	/// <summary>
-	/// Piyoの種類をセット
+	/// ParticleのPrefab
 	/// </summary>
-	/// <param name="index">セットする値</param>
-	public void setColIndex(int index)
+	GameObject particlePrefab;
+
+	/// <summary>
+	/// Particleの色の配列
+	/// </summary>
+	Color[] particleCols;
+
+	/// <summary>
+	/// Piyoに各種変数をセット
+	/// </summary>
+	/// <param name="index">種類</param>
+	/// <param name="prefab">ParticleのPrefab</param>
+	/// <param name="cols">Particleの色の配列</param>
+	public void setVals(int index, GameObject prefab, Color[] cols)
 	{
 		ColIndex = index;
+		particlePrefab = prefab;
+		particleCols = cols;
 	}
 
 	/// <summary>
@@ -45,19 +59,13 @@ public class Piyo : MonoBehaviour
 			.AddTo(this);
 	}
 
-	/// <summary>
-	/// 自身を消す
-	/// </summary>
-	/// <param name="particle">消す時に生成するパーティクルのPrefab</param>
-	/// <param name="col">パーティクルの色</param>
-	public void dead(GameObject particle, Color col)
+	void OnDestroy()
 	{
-		Destroy(gameObject);
-		var go = Instantiate(particle, new Vector3(transform.position.x, transform.position.y, -5.0f), Quaternion.identity);
-		var goParticle = go.GetComponent<ParticleSystem>();
+		var go = Instantiate(particlePrefab, new Vector3(transform.position.x, transform.position.y, -5.0f), Quaternion.identity);
 		var goCol = new ParticleSystem.MinMaxGradient();
 		goCol.mode = ParticleSystemGradientMode.Color;
-		goCol.color = col;
+		goCol.color = particleCols[ColIndex];
+		var goParticle = go.GetComponent<ParticleSystem>();
 		var main = goParticle.main;
 		main.startColor = goCol;
 		Destroy(go, goParticle.main.duration * 2);

@@ -86,14 +86,16 @@ public class LoadGame : MonoBehaviour
 	{
 		assertCheck();
 
+		GameObject piyo = null;
+
 		Observable.Interval(System.TimeSpan.FromSeconds(Spawn_Interval)).Subscribe(_ => {
 			spawnPiyo();
 		})
 		.AddTo(this);
 
-		this.UpdateAsObservable().Where(x => !!checkPiyo())
+		this.UpdateAsObservable().Where(x => (piyo = checkPiyo()) != null)
 			.Subscribe(_ => {
-				kill();
+				Destroy(piyo);
 			})
 			.AddTo(this);
 	}
@@ -107,7 +109,7 @@ public class LoadGame : MonoBehaviour
 		sphere.transform.SetPositionAndRotation(new Vector3(Random.Range(-Spawn_X_Range, Spawn_X_Range), 10.0f), Random.rotation);
 
 		var r = Random.Range(0, PiyoMats.Length);
-		sphere.AddComponent<Piyo>().setColIndex(r);
+		sphere.AddComponent<Piyo>().setColVals(r, DeadParticlePrefab, ParticleCols);
 		sphere.GetComponent<Renderer>().material = PiyoMats[r];
 
 		var rb = sphere.AddComponent<Rigidbody>();
@@ -133,25 +135,17 @@ public class LoadGame : MonoBehaviour
 	/// <summary>
 	/// Piyoをクリックしたかどうか
 	/// </summary>
-	/// <returns>クリックしたものがPiyoならtrue</returns>
-	bool checkPiyo()
+	/// <returns>クリックしたものがPiyoならPiyoのGameObject</returns>
+	GameObject checkPiyo()
 	{
 		if (!Input.GetMouseButtonDown(0)) {
-			return false;
+			return null;
 		}
 		var col = checkMouseOverObj().collider;
 		if (col == null) {
-			return false;
+			return null;
 		}
-		clickedPiyo = col.gameObject.GetComponent<Piyo>();
-		return clickedPiyo != null;
-	}
 
-	/// <summary>
-	/// Piyoを消す
-	/// </summary>
-	void kill()
-	{
-		clickedPiyo.dead(DeadParticlePrefab, ParticleCols[clickedPiyo.ColIndex]);
+		return col.gameObject.GetComponent<Piyo>() == null ? null : col.gameObject;
 	}
 }
