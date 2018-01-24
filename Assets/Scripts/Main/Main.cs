@@ -164,6 +164,16 @@ public class Main : MonoBehaviour
 	/// </summary>
 	[SerializeField]
 	AudioClip[] SEs;
+
+	/// <summary>
+	/// 登場時に再生するSEの配列
+	/// 2
+	/// 51
+	/// 52
+	/// </summary>
+	[SerializeField]
+	AudioClip[] AppearSEs;
+
 	#endregion
 
 	/// <summary>
@@ -334,6 +344,14 @@ public class Main : MonoBehaviour
 			source = SEAudioSource;
 		}
 		source.PlayOneShot(SEs[(int)se]);
+	}
+
+	/// <summary>
+	/// Grayちゃん出現時のSEを再生する
+	/// </summary>
+	public void playAppearSE()
+	{
+		SEAudioSource.PlayOneShot(AppearSEs[Random.Range(0, AppearSEs.Length)]);
 	}
 
 	/// <summary>

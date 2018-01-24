@@ -147,6 +147,7 @@
     <Compile Include="Assets\Scripts\Main\Eraser.cs" />
     <Compile Include="Assets\Scripts\Main\FloatMover.cs" />
     <Compile Include="Assets\Scripts\Main\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Main\GrayChanAppearTrigger.cs" />
     <Compile Include="Assets\Scripts\Main\GroundChipEraser.cs" />
     <Compile Include="Assets\Scripts\Main\LaunchTrigger.cs" />
     <Compile Include="Assets\Scripts\Main\LocusDrawCollider.cs" />

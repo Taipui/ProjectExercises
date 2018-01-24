@@ -35477,6 +35477,7 @@ Transform:
   - {fileID: 1253991346}
   - {fileID: 1650350538}
   - {fileID: 2015467235}
+  - {fileID: 2064438965}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -44494,6 +44495,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f5f3e09ef248149918ae12fcee944309, type: 3}
   - {fileID: 8300000, guid: c66e87e26a6994c768b643743f6494cd, type: 3}
   - {fileID: 8300000, guid: d057fdd975ac543dd80c54a62a5d09a6, type: 3}
+  AppearSEs:
+  - {fileID: 8300000, guid: a70f6f75bc2a85143a0f3c664a517a27, type: 3}
+  - {fileID: 8300000, guid: 43e5adf3e3949b7449992a90d8c1bea2, type: 3}
   BanImgGo: {fileID: 472046586}
   OptionCanvasGo: {fileID: 1686341247}
   PlayerAct: {fileID: 1433481731}
@@ -45523,6 +45527,34 @@ MonoBehaviour:
   PlayerTfm: {fileID: 1232336293}
   IsAlways: 0
   ModelGo: {fileID: 1466859759}
+  AtkSEs:
+  - {fileID: 8300000, guid: e71970f61873a064fbe8f8f85c16ab79, type: 3}
+  - {fileID: 8300000, guid: 9780579b91db45a41b31bb69b5b65af1, type: 3}
+  - {fileID: 8300000, guid: 5fe5fbe98bd8b3a48b1a8124a7596b64, type: 3}
+  - {fileID: 8300000, guid: 2ac254742d139894cb7446010b8a4d28, type: 3}
+  - {fileID: 8300000, guid: b18d5865818d8354282fcfcd295723d0, type: 3}
+  - {fileID: 8300000, guid: 8ebf8e4d16f02124c8dbe77685c82cab, type: 3}
+  - {fileID: 8300000, guid: 4115ade99d3cd414da6779c448ccc924, type: 3}
+  - {fileID: 8300000, guid: 8c81f45a87620304ea9bec86c28a5bf8, type: 3}
+  - {fileID: 8300000, guid: e3e853713e8856946abae81b64d3307b, type: 3}
+  - {fileID: 8300000, guid: c8c2e56ee8d10cb4388354130d091b4e, type: 3}
+  - {fileID: 8300000, guid: 696e59f4ed1b99241a71203e85747db9, type: 3}
+  DmgSEs:
+  - {fileID: 8300000, guid: bd683807fc183ae46a208438c309cd5a, type: 3}
+  - {fileID: 8300000, guid: 536e98a914f0dae4eaffc82b76a6f117, type: 3}
+  - {fileID: 8300000, guid: 2900c09deebdca1418f7d1450c81c5fd, type: 3}
+  - {fileID: 8300000, guid: f5de3c37f3d76014896fdeb10ea7a10f, type: 3}
+  - {fileID: 8300000, guid: 5fc946bda3fab0c448b2d9a32bcf4776, type: 3}
+  - {fileID: 8300000, guid: 753b3b90c1281244daa2e1526567c77a, type: 3}
+  - {fileID: 8300000, guid: 80e8d3a082ff1df4eb6bcb859d40acd7, type: 3}
+  - {fileID: 8300000, guid: 7e28c559ac0e9014e9028b5a0fa308ee, type: 3}
+  - {fileID: 8300000, guid: 43e7839bb45aea54380bc5c1bfab8d22, type: 3}
+  - {fileID: 8300000, guid: 7d136df0aaa3dbb44a79cee051eed3bd, type: 3}
+  - {fileID: 8300000, guid: 07a0dd9c0c97086409efd70e61403d00, type: 3}
+  LoseSEs:
+  - {fileID: 8300000, guid: 065fb706cc0456443a8e483a5a473731, type: 3}
+  - {fileID: 8300000, guid: b3563569c17382c4392841dc543da60c, type: 3}
+  - {fileID: 8300000, guid: 9d73039aaf85cec45830adc6d975e18e, type: 3}
 --- !u!54 &1531212954
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -62651,6 +62683,60 @@ Transform:
   m_Father: {fileID: 1057421775}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2064438964
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2064438965}
+  - component: {fileID: 2064438967}
+  - component: {fileID: 2064438966}
+  m_Layer: 0
+  m_Name: GrayChanAppearTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2064438965
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2064438964}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 120.65, y: -1.22, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1183311852}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2064438966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2064438964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58c8183c46306e4a9e791d74c789bd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Main: {fileID: 1495790034}
+--- !u!65 &2064438967
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2064438964}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 5, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2069481569
 GameObject:
   m_ObjectHideFlags: 0

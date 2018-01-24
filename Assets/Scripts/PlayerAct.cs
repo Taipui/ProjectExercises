@@ -300,41 +300,69 @@ public class PlayerAct : Character
 	#region SE関連
 	/// <summary>
 	/// ダメージを受けた時に再生するSEの配列
+	/// 9
+	/// 1030
+	/// 1038
+	/// 1091
+	/// 1092
+	/// 1093
+	/// 1094
+	/// 1095
+	/// 1258
+	/// 1259
 	/// </summary>
 	[SerializeField]
 	AudioClip[] DmgSEs;
 	/// <summary>
 	/// ゲームオーバーになった時に再生するSEの配列
+	/// 4
+	/// 0010
+	/// 0011
+	/// 1024
+	/// 1025
 	/// </summary>
 	[SerializeField]
 	AudioClip[] GameOverSEs;
 	/// <summary>
 	/// アイテム取得時のSEの配列
+	/// 1
+	/// 1070
 	/// </summary>
 	[SerializeField]
 	AudioClip[] ItemSEs;
 	/// <summary>
 	/// 雪弾を投げる時のSEの配列
+	/// 1
+	/// 1179
 	/// </summary>
 	[SerializeField]
 	AudioClip[] LaunchSEs;
 	/// <summary>
 	/// ショットガンを撃つ時のSEの配列
+	/// 1
+	/// 1222
 	/// </summary>
 	[SerializeField]
 	AudioClip[] ShotgunLaunchSEs;
 	/// <summary>
 	/// マシンガンを撃つ時のSEの配列
+	/// 2
+	/// 1223
+	/// 1227
 	/// </summary>
 	[SerializeField]
 	AudioClip[] MachinegunLaunchSEs;
 	/// <summary>
 	/// 雪弾のストックがない状態で発射しようとした時のSEの配列
+	/// 1
+	/// 1229
 	/// </summary>
 	[SerializeField]
 	AudioClip[] EmptySEs;
 	/// <summary>
 	/// 変身時のSEの配列
+	/// 1
+	/// 1087
 	/// </summary>
 	[SerializeField]
 	AudioClip[] TransformSEs;

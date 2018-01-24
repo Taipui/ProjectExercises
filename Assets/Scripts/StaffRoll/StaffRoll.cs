@@ -408,6 +408,12 @@ public class StaffRoll : MonoBehaviour
 			"UNITE IN THE SKY",
 			"http://unity-chan.com/download/releaseNote.php?id=imagealbum-vol1",
 
+			"SE",
+			"全曲無料・フリー音楽素材/魔王魂",
+			"https://maoudamashii.jokersounds.com/",
+			"\"Unity-chan!\" Model",
+			"https://www.assetstore.unity3d.com/jp/#!/content/18705",
+
 			"",
 			"その他",
 			"",
