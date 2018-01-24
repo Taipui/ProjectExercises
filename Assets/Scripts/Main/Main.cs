@@ -273,6 +273,12 @@ public class Main : MonoBehaviour
 
 		OptionCanvasGo.SetActive(false);
 
+		audioMixer.SetFloat("MasterVol", Mathf.Lerp(-80.0f, 0.0f, PlayerPrefs.GetFloat("Master", 100) / 100));
+		audioMixer.SetFloat("BGMVol", Mathf.Lerp(-80.0f, 0.0f, PlayerPrefs.GetFloat("BGM", 100) / 100));
+		audioMixer.SetFloat("BGM1Vol", 0.0f);
+		audioMixer.SetFloat("BGM2Vol", -80.0f);
+		audioMixer.SetFloat("SEVol", Mathf.Lerp(-80.0f, 0.0f, PlayerPrefs.GetFloat("SE", 100) / 100));
+
 		if (GameManager.Instance.BGMs_ == null) {
 			return;
 		}
