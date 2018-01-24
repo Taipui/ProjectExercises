@@ -86,7 +86,7 @@ public class LoadGame : MonoBehaviour
 	{
 		assertCheck();
 
-		GameObject piyo = null;
+		Piyo piyo = null;
 
 		Observable.Interval(System.TimeSpan.FromSeconds(Spawn_Interval)).Subscribe(_ => {
 			spawnPiyo();
@@ -95,7 +95,7 @@ public class LoadGame : MonoBehaviour
 
 		this.UpdateAsObservable().Where(x => (piyo = checkPiyo()) != null)
 			.Subscribe(_ => {
-				Destroy(piyo);
+				piyo.dead();
 			})
 			.AddTo(this);
 	}
@@ -135,8 +135,8 @@ public class LoadGame : MonoBehaviour
 	/// <summary>
 	/// Piyoをクリックしたかどうか
 	/// </summary>
-	/// <returns>クリックしたものがPiyoならtrue</returns>
-	GameObject checkPiyo()
+	/// <returns>クリックしたものがPiyoならPiyoのスクリプト、Piyoでないならnull</returns>
+	Piyo checkPiyo()
 	{
 		if (!Input.GetMouseButtonDown(0)) {
 			return null;
@@ -146,6 +146,6 @@ public class LoadGame : MonoBehaviour
 			return null;
 		}
 
-		return col.gameObject.GetComponent<Piyo>() == null ? null : col.gameObject;
+		return col.gameObject.GetComponent<Piyo>();
 	}
 }

@@ -108,7 +108,11 @@ public class StaffRollBullet : MonoBehaviour
 			if (colGo.gameObject.tag == "Text" || colGo.gameObject.tag == "EndText" || colGo.gameObject.tag == "Piyo") {
 				staffRoll.playSE(StaffRoll.SE.Kill, null);
 
-				Destroy(colGo.gameObject);
+				if (colGo.gameObject.tag == "Piyo") {
+					colGo.gameObject.GetComponent<Piyo>().dead();
+				} else {
+					Destroy(colGo.gameObject);
+				}
 
 				spawnParticle();
 

@@ -449,6 +449,10 @@ public class StaffRollPlayerAct : Character
 	protected override void OnCollisionEnter(Collision col)
 	{
 		var tag = col.gameObject.tag;
+		if (tag == "Piyo") {
+			col.gameObject.GetComponent<Piyo>().dead();
+			return;
+		}
 		if (tag.IndexOf("Item") < 0) {
 			return;
 		}

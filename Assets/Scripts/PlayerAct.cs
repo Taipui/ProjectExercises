@@ -617,8 +617,6 @@ public class PlayerAct : Character
 		return !!Input.GetButtonDown("Jump");
 	}
 
-
-
 	/// <summary>
 	/// 左のShiftキーを押したかどうか
 	/// </summary>

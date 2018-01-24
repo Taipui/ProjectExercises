@@ -59,7 +59,10 @@ public class Piyo : MonoBehaviour
 			.AddTo(this);
 	}
 
-	void OnDestroy()
+	/// <summary>
+	/// 死亡処理
+	/// </summary>
+	public void dead()
 	{
 		var go = Instantiate(particlePrefab, new Vector3(transform.position.x, transform.position.y, -5.0f), Quaternion.identity);
 		var goParticle = go.GetComponent<ParticleSystem>();
@@ -69,5 +72,6 @@ public class Piyo : MonoBehaviour
 		var main = goParticle.main;
 		main.startColor = goCol;
 		Destroy(go, goParticle.main.duration * 2);
+		Destroy(gameObject);
 	}
 }
