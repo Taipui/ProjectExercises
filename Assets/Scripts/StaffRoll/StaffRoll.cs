@@ -325,6 +325,10 @@ public class StaffRoll : MonoBehaviour
 			"マウスオーバー",
 			"Unityの新GUIでマウスオーバー判定サンプル - Qiita",
 			"https://qiita.com/Hiramaru/items/238f9cbf07f6f3acc9f5",
+			"",
+			"レイヤー",
+			"unityメモ: unity Gameobjectのlayerがスクリプトから変更できないとき",
+			"http://unitymemonote.blogspot.jp/2015/04/unity-gameobjectlayer.html",
 
 			"",
 			"Grayちゃん",
@@ -510,6 +514,7 @@ public class StaffRoll : MonoBehaviour
 			for (var wordIndex = 0; wordIndex < txtArray[txtIndex].Length; ++wordIndex) {
 				var go = FlyingText.GetObject(txtArray[txtIndex][wordIndex].ToString());
 				go.transform.SetParent(TxtsParent);
+				go.layer = LayerMask.NameToLayer("Text");
 
 				// コライダを付けなくても当たり判定は付くが、雪弾を発射し続けるとエディターが落ちる
 				//var col = go.AddComponent<MeshCollider>();
