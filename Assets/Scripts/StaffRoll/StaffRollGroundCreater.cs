@@ -7,10 +7,19 @@ using UnityEngine;
 /// </summary>
 public class StaffRollGroundCreater : MonoBehaviour
 {
+	/// <summary>
+	/// GroundChipのPrefab
+	/// </summary>
 	[SerializeField]
 	GameObject GroundChipPrefab;
 
+	/// <summary>
+	/// GroundChipの幅
+	/// </summary>
 	float groundChipWidth;
+	/// <summary>
+	/// GroundChipの高さ
+	/// </summary>
 	float groundChipHeight;
 
 	/// <summary>
@@ -37,9 +46,17 @@ public class StaffRollGroundCreater : MonoBehaviour
 	/// </summary>
 	const int Max_Create_Col = 50000;
 
-
+	/// <summary>
+	/// 生成時に使用する変数
+	/// </summary>
 	float row;
 	float col;
+
+	/// <summary>
+	/// 生成したGroundChipを格納するGameObjectのTransform
+	/// </summary>
+	[SerializeField]
+	Transform GroundChipParent;
 
 	/// <summary>
 	/// 初期化
@@ -63,7 +80,8 @@ public class StaffRollGroundCreater : MonoBehaviour
 	{
 		for (col = 0.0f; col < groundChipWidth * Pre_Create_Col_Num; col += groundChipWidth) {
 			for (var row = 0.0f; row < groundChipHeight * Pre_Create_Row_Num; row += groundChipHeight) {
-				Instantiate(GroundChipPrefab, new Vector3(col + groundChipWidth / 2, row + groundChipHeight / 2), Quaternion.identity);
+				var go = Instantiate(GroundChipPrefab, new Vector3(col + groundChipWidth / 2, row + groundChipHeight / 2), Quaternion.identity);
+				go.transform.SetParent(GroundChipParent);
 			}
 		}
 	}
@@ -75,7 +93,8 @@ public class StaffRollGroundCreater : MonoBehaviour
 	{
 		for (; col < groundChipWidth * currentCol; col += groundChipWidth) {
 			for (var row = 0.0f; row < groundChipHeight * Pre_Create_Row_Num; row += groundChipHeight) {
-				Instantiate(GroundChipPrefab, new Vector3(col + groundChipWidth / 2, row + groundChipHeight / 2), Quaternion.identity);
+				var go = Instantiate(GroundChipPrefab, new Vector3(col + groundChipWidth / 2, row + groundChipHeight / 2), Quaternion.identity);
+				go.transform.SetParent(GroundChipParent);
 			}
 		}
 	}

@@ -2677,6 +2677,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GroundChipPrefab: {fileID: 1931872184840946, guid: e51d58bcb2cb2244fb2b97d9a21b1aca,
     type: 2}
+  GroundChipParent: {fileID: 1000886273}
 --- !u!1 &306121302
 GameObject:
   m_ObjectHideFlags: 0
@@ -11462,6 +11463,34 @@ MonoBehaviour:
   - {fileID: 255338030}
   - {fileID: 1600405238}
   threshold: 0.01
+--- !u!1 &1000886272
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1000886273}
+  m_Layer: 0
+  m_Name: Grounds
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1000886273
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1000886272}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1007754367
 GameObject:
   m_ObjectHideFlags: 0
