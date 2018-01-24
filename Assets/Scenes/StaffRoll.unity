@@ -18004,6 +18004,7 @@ GameObject:
   - component: {fileID: 2011652952}
   - component: {fileID: 2011652951}
   - component: {fileID: 2011652950}
+  - component: {fileID: 2011652949}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -18011,6 +18012,32 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2011652949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2011652948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65e7b4bd7ff92b841b9eec3d0c68a8f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PiyoMats:
+  - {fileID: 2100000, guid: 1facfcb34c4c54340afd3ecbeccdfd4c, type: 2}
+  - {fileID: 2100000, guid: 73f35762a72ee5545b2c5aaba29ccf3c, type: 2}
+  - {fileID: 2100000, guid: 0d13aaff3daaa7f4ea2a0c0daecac55b, type: 2}
+  - {fileID: 2100000, guid: a9127a4cc0e17fb4eaffdc8b429f8068, type: 2}
+  - {fileID: 2100000, guid: 2e9a30605d40a134386a8e19675638f1, type: 2}
+  PiyoPm: {fileID: 13400000, guid: 7131e26e31a15e542a96eedd15effba3, type: 2}
+  DeadParticlePrefab: {fileID: 1106667406422502, guid: 91478ee3839f4c64789b87f3cc8cee48,
+    type: 2}
+  ParticleCols:
+  - {r: 0, g: 0, b: 1, a: 1}
+  - {r: 0, g: 1, b: 0, a: 1}
+  - {r: 1, g: 0, b: 1, a: 1}
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 1, g: 1, b: 0, a: 1}
 --- !u!114 &2011652950
 MonoBehaviour:
   m_ObjectHideFlags: 0

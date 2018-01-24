@@ -1,12 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Assertions;
-using UniRx;
-using UniRx.Triggers;
 
 /// <summary>
-/// ロード中にゲームを行うクラス
+/// Piyoを出現させるクラス
 /// </summary>
-public class LoadGame : MonoBehaviour
+public class PiyoSpawner : MonoBehaviour
 {
 	/// <summary>
 	/// Sphereに適用するPiyoのマテリアルの配列
@@ -30,11 +30,11 @@ public class LoadGame : MonoBehaviour
 	Color[] ParticleCols;
 
 	/// <summary>
-	/// Piyoを生成する間隔
+	/// カメラからどれだけ離れた位置をPiyoの生成時の基準にするか
 	/// </summary>
-	const float Spawn_Interval = 1.0f;
+	const float Offset_X = 10.0f;
 	/// <summary>
-	/// Piyoをランダムに生成するX方向の範囲
+	/// Piyoをランダムに生成するX方向の範囲(Offset_X + Random.Range(0, Spawn_X_Range))
 	/// </summary>
 	const float Spawn_X_Range = 5.0f;
 	/// <summary>
@@ -47,9 +47,18 @@ public class LoadGame : MonoBehaviour
 	const float Mass = 1.0f;
 
 	/// <summary>
-	/// クリックしたPiyoのスクリプト
+	/// ランダムな間隔でPiyoを出現させる時の最低間隔
 	/// </summary>
-	Piyo clickedPiyo;
+	const float Spawn_Interval_Base = 15.0f;
+	/// <summary>
+	/// ランダムな間隔でPiyoを出現させる時のランダムな間隔の範囲(Random_Interval_Base + Random.Range(0, Random_Interval_Random))
+	/// </summary>
+	const float Spawn_Interval_Random = 15.0f;
+
+	/// <summary>
+	/// 自身のTransform
+	/// </summary>
+	Transform tfm;
 
 	/// <summary>
 	/// アサートのチェック
@@ -86,27 +95,30 @@ public class LoadGame : MonoBehaviour
 	{
 		assertCheck();
 
-		GameObject piyo = null;
+		tfm = transform;
 
-		Observable.Interval(System.TimeSpan.FromSeconds(Spawn_Interval)).Subscribe(_ => {
-			spawnPiyo();
-		})
-		.AddTo(this);
-
-		this.UpdateAsObservable().Where(x => (piyo = checkPiyo()) != null)
-			.Subscribe(_ => {
-				Destroy(piyo);
-			})
-			.AddTo(this);
+		StartCoroutine("randomInterval");
 	}
 
 	/// <summary>
-	/// Piyoを生成する
+	/// ランダムな間隔で実行する
 	/// </summary>
-	void spawnPiyo()
+	/// <returns></returns>
+	IEnumerator randomInterval()
+	{
+		while (true) {
+			yield return new WaitForSeconds(Spawn_Interval_Base + Random.Range(0, Spawn_Interval_Random));
+			spawn();
+		}
+	}
+
+	/// <summary>
+	/// Piyoを出現させる
+	/// </summary>
+	void spawn()
 	{
 		var sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-		sphere.transform.SetPositionAndRotation(new Vector3(Random.Range(-Spawn_X_Range, Spawn_X_Range), 10.0f), Random.rotation);
+		sphere.transform.SetPositionAndRotation(new Vector3(tfm.position.x + Offset_X + Random.Range(0, Spawn_X_Range), 10.0f), Random.rotation);
 
 		var r = Random.Range(0, PiyoMats.Length);
 		sphere.AddComponent<Piyo>().setVals(r, DeadParticlePrefab, ParticleCols);
@@ -118,34 +130,8 @@ public class LoadGame : MonoBehaviour
 		rb.mass = Mass;
 
 		sphere.GetComponent<SphereCollider>().material = PiyoPm;
-	}
 
-	/// <summary>
-	/// マウスオーバーしたオブジェクトをチェックする
-	/// </summary>
-	/// <returns>マウスオーバーしたものの情報</returns>
-	RaycastHit checkMouseOverObj()
-	{
-		var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		var hit = new RaycastHit();
-		Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity);
-		return hit;
-	}
-
-	/// <summary>
-	/// Piyoをクリックしたかどうか
-	/// </summary>
-	/// <returns>クリックしたものがPiyoならtrue</returns>
-	GameObject checkPiyo()
-	{
-		if (!Input.GetMouseButtonDown(0)) {
-			return null;
-		}
-		var col = checkMouseOverObj().collider;
-		if (col == null) {
-			return null;
-		}
-
-		return col.gameObject.GetComponent<Piyo>() == null ? null : col.gameObject;
+		sphere.tag = "Piyo";
 	}
 }
+

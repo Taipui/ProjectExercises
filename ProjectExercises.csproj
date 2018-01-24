@@ -159,6 +159,7 @@
     <Compile Include="Assets\Scripts\PlayerAct.cs" />
     <Compile Include="Assets\Scripts\PlayerMove.cs" />
     <Compile Include="Assets\Scripts\Sandbox.cs" />
+    <Compile Include="Assets\Scripts\StaffRoll\PiyoSpawner.cs" />
     <Compile Include="Assets\Scripts\StaffRoll\StaffRoll.cs" />
     <Compile Include="Assets\Scripts\StaffRoll\StaffRollBullet.cs" />
     <Compile Include="Assets\Scripts\StaffRoll\StaffRollBulletManager.cs" />
