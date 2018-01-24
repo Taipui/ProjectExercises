@@ -94,11 +94,11 @@
     <Reference Include="DOTweenPro">
       <HintPath>Assets\Demigiant\DOTweenPro\DOTweenPro.dll</HintPath>
     </Reference>
-    <Reference Include="TextMeshPro-1.0.55.2017.1.0b12">
-      <HintPath>Assets\TextMesh Pro\Plugins\TextMeshPro-1.0.55.2017.1.0b12.dll</HintPath>
-    </Reference>
     <Reference Include="FlyingText3D">
       <HintPath>Assets\FlyingText3D\Plugins\FlyingText3D.dll</HintPath>
+    </Reference>
+    <Reference Include="TextMeshPro-1.0.55.2017.1.0b12">
+      <HintPath>Assets\TextMesh Pro\Plugins\TextMeshPro-1.0.55.2017.1.0b12.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
