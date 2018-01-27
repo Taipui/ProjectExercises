@@ -14,7 +14,7 @@ public class SceneSelecter : MonoBehaviour
 
 	void Start ()
 	{
-		if (GameManager.Instance.BGMs_ == null) {
+		if (GameManager.Instance.MainBGMs == null) {
 			Instantiate(Resources.Load("Prefabs/BGMLoader"));
 		}
 

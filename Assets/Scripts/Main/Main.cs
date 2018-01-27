@@ -289,11 +289,11 @@ public class Main : MonoBehaviour
 		audioMixer.SetFloat("BGM2Vol", -80.0f);
 		audioMixer.SetFloat("SEVol", Mathf.Lerp(-80.0f, 0.0f, PlayerPrefs.GetFloat("SE", 100) / 100));
 
-		if (GameManager.Instance.BGMs_ == null) {
+		if (GameManager.Instance.MainBGMs == null) {
 			return;
 		}
 		selectedBGMIds = new List<int>();
-		BGMAudioSource1.clip = GameManager.Instance.BGMs_[chooseBGMID()];
+		BGMAudioSource1.clip = GameManager.Instance.MainBGMs[chooseBGMID()];
 		BGMAudioSource1.Play();
 
 		Cursor.visible = true;
@@ -365,7 +365,7 @@ public class Main : MonoBehaviour
 		}
 		++currentStage;
 		if (currentStage < 5) {
-			if (GameManager.Instance.BGMs_ != null) {
+			if (GameManager.Instance.MainBGMs != null) {
 				crossFade();
 			}
 		} else {
@@ -383,7 +383,7 @@ public class Main : MonoBehaviour
 		var r = 0;
 		do {
 			isDuplication = false;
-			r = Random.Range(0, GameManager.Instance.CurrentLoadBGMIndex);
+			r = Random.Range(0, GameManager.Instance.MainBGMs.Length);
 			for (var i = 0; i < selectedBGMIds.Count; ++i) {
 				if (r == selectedBGMIds[i]) {
 					isDuplication = true;
@@ -438,7 +438,7 @@ public class Main : MonoBehaviour
 			mixerParam1 = mixerParam1.Insert(3, "1");
 			mixerParam2 = mixerParam2.Insert(3, "2");
 		}
-		var clip = GameManager.Instance.BGMs_[chooseBGMID()];
+		var clip = GameManager.Instance.MainBGMs[chooseBGMID()];
 		if (!!useBGM1) {
 			BGMAudioSource1.clip = clip;
 			BGMAudioSource1.Play();

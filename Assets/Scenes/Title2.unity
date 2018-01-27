@@ -3043,6 +3043,10 @@ Prefab:
       propertyPath: m_TagString
       value: Text
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: c09ee09ae4c58ea49af05761dc4133cd, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c09ee09ae4c58ea49af05761dc4133cd, type: 3}
   m_IsPrefabParent: 0

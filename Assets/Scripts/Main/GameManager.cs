@@ -74,17 +74,31 @@ public class GameManager
 	}
 
 	/// <summary>
-	/// BGMの配列
+	/// Mainシーンで使うBGMの配列
 	/// </summary>
-	AudioClip[] BGMs;
-	public AudioClip[] BGMs_ {
+	AudioClip[] mainBGMs;
+	public AudioClip[] MainBGMs {
 		get
 		{
-			return BGMs;
+			return mainBGMs;
 		}
 		set
 		{
-			BGMs = value;
+			mainBGMs = value;
+		}
+	}
+	/// <summary>
+	/// スタッフロールシーンで使うBGMの配列
+	/// </summary>
+	AudioClip[] staffRollBGMs;
+	public AudioClip[] StaffRollBGMs {
+		get
+		{
+			return staffRollBGMs;
+		}
+		set
+		{
+			staffRollBGMs = value;
 		}
 	}
 
