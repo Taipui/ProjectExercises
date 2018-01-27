@@ -370,6 +370,12 @@
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
+    <None Include="Assets\Unity Technologies\Recorder\Extensions\UTJ\License.txt" />
+    <None Include="Assets\Unity Technologies\Recorder\Framework\Core\Shaders\VerticalFlipper.shader" />
+    <None Include="Assets\Unity Technologies\Recorder\Framework\Inputs\CBRenderTexture\Shaders\CopyFB.shader" />
+    <None Include="Assets\Unity Technologies\Recorder\Framework\Inputs\RenderTextureSampler\Shaders\BS4Accumulate.shader" />
+    <None Include="Assets\Unity Technologies\Recorder\Framework\Inputs\RenderTextureSampler\Shaders\BS4Normalize.shader" />
+    <None Include="Assets\Unity Technologies\Recorder\Framework\Inputs\RenderTextureSampler\Shaders\BS4SuperShader.shader" />
     <None Include="Assets\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_akarami_blend.shader" />
     <None Include="Assets\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_eye.shader" />
     <None Include="Assets\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_eye_blend.shader" />
