@@ -76,6 +76,9 @@ public class Main : MonoBehaviour
 	/// </summary>
 	[SerializeField]
 	AudioSource BGMAudioSource2;
+	/// <summary>
+	/// 現在流れているBGMの名前を表示するテキスト
+	/// </summary>
 	[SerializeField]
 	TextMeshProUGUI NowPlayingBGMTxt;
 
@@ -409,7 +412,7 @@ public class Main : MonoBehaviour
 		}
 
 		NowPlayingBGMTxt.color = new Color(NowPlayingBGMTxt.color.r, NowPlayingBGMTxt.color.g, NowPlayingBGMTxt.color.b, 1.0f);
-		NowPlayingBGMTxt.text = "<sprite=\"Note\" name=\"Note\">" + Common.BGM_Title_List[index];
+		NowPlayingBGMTxt.text = "<sprite=\"Note\" name=\"Note\">" + Common.Main_BGM_Title_List[index];
 
 		yield return new WaitForSeconds(1.0f);
 
@@ -512,7 +515,7 @@ public class Main : MonoBehaviour
 			} else {
 				BGMAudioSource2.Play();
 			}
-			StartCoroutine(showNowPlayingBGM(Common.BGM_Title_List.Count - 1, true));
+			StartCoroutine(showNowPlayingBGM(Common.Main_BGM_Title_List.Count - 1, true));
 		});
 	}
 

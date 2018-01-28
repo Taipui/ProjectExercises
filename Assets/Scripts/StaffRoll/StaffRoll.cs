@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using DG.Tweening;
+using TMPro;
 
 /// <summary>
 /// スタッフロールに関するクラス
@@ -96,6 +97,12 @@ public class StaffRoll : MonoBehaviour
 	/// 既に選ばれたBGMのIDを格納するリスト
 	/// </summary>
 	List<int> selectedBGMIds;
+
+	/// <summary>
+	/// 現在流れているBGMの名前を表示するテキスト
+	/// </summary>
+	[SerializeField]
+	TextMeshProUGUI NowPlayingBGMTxt;
 
 	#endregion
 
@@ -379,8 +386,10 @@ public class StaffRoll : MonoBehaviour
 
 			"",
 			"BGM",
+			"UNITE IN THE SKY",
+			"http://unity-chan.com/download/releaseNote.php?id=imagealbum-vol1",
 			"UNDERVEIL",
-			"http://underveil.unisphere.tv/origin/",
+			"http://underveil.unisphere.tv/",
 			"",
 			"クレジット",
 			"Enemy Approaching アレンジ",
@@ -423,8 +432,66 @@ public class StaffRoll : MonoBehaviour
 			"silentroom",
 			"Re-Undulate",
 			"Kankitsu",
-			"UNITE IN THE SKY",
-			"http://unity-chan.com/download/releaseNote.php?id=imagealbum-vol1",
+			"Silentroom",
+			"PRESS START! ...too clicke",
+			"taqumi",
+			"Nu Dating",
+			"Yamajet",
+			"Death by Glamour (Yamajet Cyber Disco Remix)",
+			"seaside-metro",
+			"Only my determination",
+			"izna",
+			"Rug Lags",
+			"こふ",
+			"Wish upon the overground",
+			"オオドラ",
+			"Everyone's Home",
+			"モリモリあつし+hara kana",
+			"Dummy! (FOOLISH HEART MRM REMIX)",
+			"TCT a.k.a. anubasu-anubasu",
+			"Dogdonk",
+			"l.olo.l",
+			"ihatov_x86",
+			"猫smoke with ハマチルアウツ",
+			"Ruins(猫smoke with ハマチルアウツ)",
+			"daph",
+			"It's cold outside",
+			"shimaL",
+			"ASGORE (shimaL Remix)",
+			"糸奇 はな",
+			"HerTears",
+			"ryhki",
+			"Your Very Bery Best Friend",
+			"Frums",
+			"ultra-blazures",
+			"Se-U-Ra",
+			"Aster Mirror",
+			"s-don",
+			"Undying vs. Endlessness",
+			"Kankitsu",
+			"MEGALOVANIA (Kankitsu Remix)",
+			"Kiryu",
+			"In Another Time",
+			"MYTK",
+			"Waterfall (MYTK Remix)",
+			"コルソン",
+			"TRUE HERO ~Memory of Justice~",
+			"nitro",
+			"kiss the sexy robot ultimate championship 201X!!!",
+			"Tanchiky",
+			"COME ON! DISCO THE SOULS",
+			"tc-taka",
+			"His Hopes and His Dreams",
+			"梅干茶漬け",
+			"From U to E",
+			"ゆうゆ",
+			"DREEMURRS",
+			"ああああ",
+			"our stories will never end!",
+			"Saiph",
+			"HOPEALIVE",
+			"ぷりりー",
+			"Undertale(improvisation)",
 
 			"SE",
 			"全曲無料・フリー音楽素材/魔王魂",
@@ -658,6 +725,9 @@ public class StaffRoll : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// BGMを再生していくコルーチンを実行する
+	/// </summary>
 	void startBGMCoroutine()
 	{
 		StartCoroutine(checkEndMusic(() => {
@@ -694,7 +764,28 @@ public class StaffRoll : MonoBehaviour
 			}
 		} while (!!isDuplication);
 		selectedBGMIds.Add(r);
+		StartCoroutine(showNowPlayingBGM(r));
 		return r;
+	}
+
+	/// <summary>
+	/// 現在流れている曲のタイトルを表示
+	/// </summary>
+	/// <param name="index">選ばれた曲のインデックス</param>
+	/// <returns></returns>
+	IEnumerator showNowPlayingBGM(int index)
+	{
+		NowPlayingBGMTxt.color = new Color(NowPlayingBGMTxt.color.r, NowPlayingBGMTxt.color.g, NowPlayingBGMTxt.color.b, 1.0f);
+		NowPlayingBGMTxt.text = "<sprite=\"Note\" name=\"Note\">" + Common.StaffRoll_BGM_Title_List[index];
+
+		yield return new WaitForSeconds(1.0f);
+
+		DOTween.ToAlpha(
+			() => NowPlayingBGMTxt.color,
+			color => NowPlayingBGMTxt.color = color,
+			0.0f,
+			3.0f
+		);
 	}
 
 	/// <summary>

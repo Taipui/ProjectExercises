@@ -51,9 +51,9 @@ public static class Common
 	#endregion
 
 	/// <summary>
-	/// BGMのタイトルのリスト
+	/// Mainシーンで使うBGMのタイトルのリスト
 	/// </summary>
-	public static readonly ReadOnlyCollection<string> BGM_Title_List =
+	public static readonly ReadOnlyCollection<string> Main_BGM_Title_List =
 		Array.AsReadOnly(new string[] {
 		"オオドラ\nEnemy Approaching アレンジ",
 		"こふ\nFallen Down (Reprise) Butterscotch cinnamon mix",
@@ -76,6 +76,43 @@ public static class Common
 		"Silentroom\nNEVERAGAIN",
 		"Kankitsu\nRe-Undulate",
 		"Unite In The Sky"
+		});
+
+	/// <summary>
+	/// スタッフロールシーンで使うBGMのタイトルのリスト
+	/// </summary>
+	public static readonly ReadOnlyCollection<string> StaffRoll_BGM_Title_List =
+		Array.AsReadOnly(new string[] {
+		"Silentroom\nPRESS START! ...too clicke",
+		"taqumi\nNu Dating",
+		"Yamajet\nDeath by Glamour (Yamajet Cyber Disco Remix)",
+		"seaside-metro\nOnly my determination",
+		"izna\nRug Lags",
+		"こふ\nWish upon the overground",
+		"オオドラ\nEveryone's Home",
+		"モリモリあつし+hara kana\nDummy! (FOOLISH HEART MRM REMIX)",
+		"TCT a.k.a. anubasu-anubasu\nDogdonk",
+		"l.olo.l\nihatov_x86",
+		"猫smoke with ハマチルアウツ\nRuins(猫smoke with ハマチルアウツ)",
+		"daph\nIt's cold outside",
+		"shimaL\nASGORE (shimaL Remix)",
+		"糸奇 はな\nHerTears",
+		"ryhki\nYour Very Bery Best Friend",
+		"Frums\nultra-blazures",
+		"Se-U-Ra\nAster Mirror",
+		"s-don\nUndying vs. Endlessness",
+		"Kankitsu\nMEGALOVANIA (Kankitsu Remix)",
+		"Kiryu\nIn Another Time",
+		"MYTK\nWaterfall (MYTK Remix)",
+		"コルソン\nTRUE HERO ~Memory of Justice~",
+		"nitro\nkiss the sexy robot ultimate championship 201X!!!",
+		"Tanchiky\nCOME ON! DISCO THE SOULS",
+		"tc-taka\nHis Hopes and His Dreams",
+		"梅干茶漬け\nFrom U to E",
+		"ゆうゆ\nDREEMURRS",
+		"ああああ\nour stories will never end!",
+		"Saiph\nHOPEALIVE",
+		"ぷりりー\nUndertale(improvisation)",
 		});
 
 	/// <summary>
