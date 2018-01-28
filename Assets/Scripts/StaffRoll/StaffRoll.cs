@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UniRx;
 using UniRx.Triggers;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using DG.Tweening;
 
@@ -80,6 +81,21 @@ public class StaffRoll : MonoBehaviour
 	/// 文字の動く速度
 	/// </summary>
 	const float Text_Move_Speed = 2.0f;
+
+	#endregion
+
+	#region BGM関連
+
+	/// <summary>
+	/// BGMのAudioSource
+	/// </summary>
+	[SerializeField]
+	AudioSource BGMAudioSource;
+
+	/// <summary>
+	/// 既に選ばれたBGMのIDを格納するリスト
+	/// </summary>
+	List<int> selectedBGMIds;
 
 	#endregion
 
@@ -161,7 +177,7 @@ public class StaffRoll : MonoBehaviour
 
 		endTxtLen = 1;
 
-		//Player.transform.position = new Vector3(1000.0f, Player.transform.position.y, Player.transform.position.z);
+		selectedBGMIds = new List<int>();
 	}
 
 	/// <summary>
@@ -171,6 +187,8 @@ public class StaffRoll : MonoBehaviour
 	{
 		init();
 		StartCoroutine(createWords(createStrArray()));
+
+		startBGMCoroutine();
 
 		this.UpdateAsObservable().Subscribe(_ => {
 			TxtsParent.Translate(new Vector3(-Text_Move_Speed * Time.deltaTime, 0));
@@ -621,6 +639,62 @@ public class StaffRoll : MonoBehaviour
 				++txtCnt;
 			}
 		}
+	}
+
+	public delegate void functionType();
+	/// <summary>
+	/// 曲の終了をチェックする
+	/// </summary>
+	/// <param name="callback">曲の終了後に実行する関数</param>
+	/// <returns></returns>
+	IEnumerator checkEndMusic(functionType callback)
+	{
+		while (true) {
+			yield return new WaitForFixedUpdate();
+			if (!BGMAudioSource.isPlaying) {
+				callback();
+				break;
+			}
+		}
+	}
+
+	void startBGMCoroutine()
+	{
+		StartCoroutine(checkEndMusic(() => {
+			playBGM();
+			startBGMCoroutine();
+		}));
+	}
+
+	/// <summary>
+	/// BGMを再生する
+	/// </summary>
+	void playBGM()
+	{
+		BGMAudioSource.clip = GameManager.Instance.StaffRollBGMs[chooseBGMID()];
+		BGMAudioSource.Play();
+	}
+
+	/// <summary>
+	/// 以前選ばれたIDを回避してランダムでBGMのIDを選ぶ
+	/// </summary>
+	/// <returns>BGMのID</returns>
+	int chooseBGMID()
+	{
+		var isDuplication = false;
+		var r = 0;
+		do {
+			isDuplication = false;
+			r = Random.Range(0, GameManager.Instance.StaffRollBGMs.Length);
+			for (var i = 0; i < selectedBGMIds.Count; ++i) {
+				if (r == selectedBGMIds[i]) {
+					isDuplication = true;
+					break;
+				}
+			}
+		} while (!!isDuplication);
+		selectedBGMIds.Add(r);
+		return r;
 	}
 
 	/// <summary>

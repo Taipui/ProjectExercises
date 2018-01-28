@@ -376,7 +376,7 @@ public class Main : MonoBehaviour
 	/// <summary>
 	/// 以前選ばれたIDを回避してランダムでBGMのIDを選ぶ
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>BGMのID</returns>
 	int chooseBGMID()
 	{
 		var isDuplication = false;
