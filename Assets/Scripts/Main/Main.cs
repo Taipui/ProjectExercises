@@ -320,10 +320,12 @@ public class Main : MonoBehaviour
 					prevTimeScale = Time.timeScale;
 					Time.timeScale = 0.0f;
 					PlayerAct.setCanInput(false);
+					GameObject.Find("BGMLoader(Clone)").GetComponent<BGMLoader>().StartCoroutine("loadBGM");
 				} else {
 					OptionCanvasGo.SetActive(false);
 					Time.timeScale = prevTimeScale;
 					PlayerAct.setCanInput(true);
+					GameObject.Find("BGMLoader(Clone)").GetComponent<BGMLoader>().StopCoroutine("loadBGM");
 				}
 			})
 			.AddTo(this);

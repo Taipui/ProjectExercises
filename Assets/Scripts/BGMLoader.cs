@@ -26,12 +26,16 @@ public class BGMLoader : MonoBehaviour
 	/// BGMを裏読みする
 	/// </summary>
 	/// <returns></returns>
-	IEnumerator loadBGM()
+	public IEnumerator loadBGM()
 	{
 		GameManager.Instance.MainBGMs = new AudioClip[20];
 		GameManager.Instance.StaffRollBGMs = new AudioClip[30];
 
 		while (true) {
+			if (GameManager.Instance.CurrentLoadBGMIndex >= GameManager.Instance.MainBGMs.Length) {
+				break;
+			}
+
 			GameManager.Instance.PrevLoadBGMIndex = GameManager.Instance.CurrentLoadBGMIndex;
 
 			var resReq = Resources.LoadAsync<AudioClip>("BGM/Main/mainBgm" + (GameManager.Instance.CurrentLoadBGMIndex + 1).ToString());
@@ -42,14 +46,16 @@ public class BGMLoader : MonoBehaviour
 
 			GameManager.Instance.MainBGMs[GameManager.Instance.CurrentLoadBGMIndex] = resReq.asset as AudioClip;
 
-			if (++GameManager.Instance.CurrentLoadBGMIndex >= GameManager.Instance.MainBGMs.Length) {
-				break;
-			}
+			++GameManager.Instance.CurrentLoadBGMIndex;
 		}
 
 		yield return 0;
 
 		while (true) {
+			if (GameManager.Instance.CurrentLoadBGMIndex >= GameManager.Instance.MainBGMs.Length + GameManager.Instance.StaffRollBGMs.Length) {
+				break;
+			}
+
 			GameManager.Instance.PrevLoadBGMIndex = GameManager.Instance.CurrentLoadBGMIndex;
 
 			var resReq = Resources.LoadAsync<AudioClip>("BGM/StaffRoll/staffRollBgm" + ((GameManager.Instance.CurrentLoadBGMIndex + 1) - GameManager.Instance.MainBGMs.Length).ToString());
@@ -59,10 +65,8 @@ public class BGMLoader : MonoBehaviour
 			}
 
 			GameManager.Instance.StaffRollBGMs[GameManager.Instance.CurrentLoadBGMIndex - GameManager.Instance.MainBGMs.Length] = resReq.asset as AudioClip;
-
-			if (++GameManager.Instance.CurrentLoadBGMIndex >= GameManager.Instance.MainBGMs.Length + GameManager.Instance.StaffRollBGMs.Length) {
-				break;
-			}
+			Debug.Log(GameManager.Instance.CurrentLoadBGMIndex);
+			++GameManager.Instance.CurrentLoadBGMIndex;
 		}
 		Destroy(gameObject);
 	}

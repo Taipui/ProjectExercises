@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.Assertions;
 using TMPro;
 using DG.Tweening;
+using UniRx;
+using UniRx.Triggers;
 
 /// <summary>
 /// Mainシーンを読み込む
@@ -111,10 +113,15 @@ public class SceneLoader : MonoBehaviour
 		Cursor.visible = true;
 	}
 
-	IEnumerator Start()
+	void Start()
 	{
 		init();
 
+		StartCoroutine("load");
+	}
+
+	IEnumerator load()
+	{
 		if (!IsLoad) {
 			yield break;
 		}
@@ -197,6 +204,7 @@ public class SceneLoader : MonoBehaviour
 			1.0f,
 			1.0f
 		).OnComplete(() => {
+			bgmLoader.StopCoroutine("loadBGM");
 			SceneManager.LoadScene(Common.Main_Scene);
 		});
 	}

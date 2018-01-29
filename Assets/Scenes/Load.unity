@@ -1023,7 +1023,7 @@ MonoBehaviour:
   LoadingCircleImg: {fileID: 1666446395}
   LoadDoneImgGo: {fileID: 1293146477}
   IsLoad: 1
-  IsLoadStaffRollBGM: 1
+  IsLoadStaffRollBGM: 0
   FadeImg: {fileID: 304612188}
 --- !u!114 &1131158658
 MonoBehaviour:
