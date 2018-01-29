@@ -160,7 +160,7 @@ public class SceneLoader : MonoBehaviour
 			currentProgressTween = DOTween.To(
 				() => TmpCurrentProgress,
 				(x) => TmpCurrentProgress = x,
-				(100 * (GameManager.Instance.CurrentLoadBGMIndex + 1)) / (GameManager.Instance.MainBGMs.Length + GameManager.Instance.StaffRollBGMs.Length),
+				(100 * ((GameManager.Instance.CurrentLoadBGMIndex + 1) - GameManager.Instance.MainBGMs.Length)) / GameManager.Instance.StaffRollBGMs.Length,
 				Load_Progress_Anim_Speed
 			).SetEase(Ease.Linear);
 
