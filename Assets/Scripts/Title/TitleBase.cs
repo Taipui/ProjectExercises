@@ -193,6 +193,17 @@ public class TitleBase : MonoBehaviour
 			onClickOptionBtn();
 		})
 		.AddTo(this);
+
+		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.O))
+			.Subscribe(_ => {
+				if (!OptionCanvasGo.activeSelf) {
+					onClickOptionBtn();
+				} else {
+					OptionCanvasGo.SetActive(false);
+					endOption();
+				}
+			})
+			.AddTo(this);
 	}
 
 	/// <summary>
