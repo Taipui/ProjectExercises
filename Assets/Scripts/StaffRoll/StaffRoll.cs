@@ -649,6 +649,7 @@ public class StaffRoll : MonoBehaviour
 				var go = FlyingText.GetObject(txtArray[txtIndex][wordIndex].ToString());
 				go.transform.SetParent(TxtsParent);
 				go.layer = LayerMask.NameToLayer("Text");
+				go.isStatic = true;
 
 				// コライダを付けなくても当たり判定は付くが、雪弾を発射し続けるとエディターが落ちる
 				//var col = go.AddComponent<MeshCollider>();
