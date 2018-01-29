@@ -741,7 +741,9 @@ public class StaffRoll : MonoBehaviour
 	/// </summary>
 	void playBGM()
 	{
-		BGMAudioSource.clip = GameManager.Instance.StaffRollBGMs[chooseBGMID()];
+		if (GameManager.Instance.StaffRollBGMs != null) {
+			BGMAudioSource.clip = GameManager.Instance.StaffRollBGMs[chooseBGMID()];
+		}
 		BGMAudioSource.Play();
 	}
 
@@ -836,6 +838,12 @@ public class StaffRoll : MonoBehaviour
 	void end()
 	{
 		FadePanel.color = Color.clear;
+		DOTween.To(
+			() => BGMAudioSource.volume,
+			val => BGMAudioSource.volume = val,
+			0,
+			3.0f
+		);
 		DOTween.ToAlpha(
 			() => FadePanel.color,
 			color => FadePanel.color = color,
