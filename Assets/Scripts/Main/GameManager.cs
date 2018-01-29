@@ -132,9 +132,25 @@ public class GameManager
 		}
 	}
 
+	/// <summary>
+	/// 一度クリアしたかどうか
+	/// </summary>
+	bool isClr;
+	public bool IsClr {
+		get
+		{
+			return isClr;
+		}
+		set
+		{
+			isClr = value;
+		}
+	}
+
 	GameManager()
 	{
 		currentLoadBGMIndex = 0;
 		prevLoadBGMIndex = 0;
+		isClr = false;
 	}
 }

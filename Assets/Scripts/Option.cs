@@ -36,10 +36,10 @@ public class Option : MonoBehaviour
 	Button BackBtn;
 
 	/// <summary>
-	/// スタッフロールボタン(タイトルのみ)
+	/// スタッフロールボタンのGameObject(タイトルのみ)
 	/// </summary>
 	[SerializeField]
-	Button StaffRollBtn;
+	GameObject StaffRollBtnGo;
 
 	#region Master関連
 
@@ -124,6 +124,12 @@ public class Option : MonoBehaviour
 
 		checkAssert();
 
+		Button staffRollBtn = null;
+		if (StaffRollBtnGo != null) {
+			StaffRollBtnGo.SetActive(GameManager.Instance.IsClr);
+			staffRollBtn = StaffRollBtnGo.GetComponent<Button>();
+		}
+
 		BackBtn.OnClickAsObservable().Subscribe(_ => {
 			gameObject.SetActive(false);
 			if (Title != null) {
@@ -156,22 +162,22 @@ public class Option : MonoBehaviour
 			AudioMixer.SetFloat("SEVol", Mathf.Lerp(-80.0f, 0.0f, val / 100));
 		}).AddTo(this);
 
-		if (StaffRollBtn != null) {
-			StaffRollBtn.OnMouseOverAsObservable().Subscribe(_ => {
+		if (StaffRollBtnGo != null) {
+			staffRollBtn.OnMouseOverAsObservable().Subscribe(_ => {
 				Debug.Log("mouse over");
 			})
 			.AddTo(this);
 		}
 
-		if (StaffRollBtn != null) {
-			StaffRollBtn.OnMouseExitAsObservable().Subscribe(_ => {
+		if (StaffRollBtnGo != null) {
+			staffRollBtn.OnMouseExitAsObservable().Subscribe(_ => {
 				Debug.Log("mouse exit");
 			})
 			.AddTo(this);
 		}
 
-		if (StaffRollBtn != null) {
-			StaffRollBtn.OnClickAsObservable().Subscribe(_ => {
+		if (StaffRollBtnGo != null) {
+			staffRollBtn.OnClickAsObservable().Subscribe(_ => {
 				Time.timeScale = 1.0f;
 				SceneManager.LoadScene(Common.StaffRoll_Scene);
 			})

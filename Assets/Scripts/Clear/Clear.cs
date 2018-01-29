@@ -34,6 +34,8 @@ public class Clear : MonoBehaviour
 	{
 		init();
 
+		GameManager.Instance.IsClr = true;
+
 		this.UpdateAsObservable().Where(x => !isTransition && !!isInput())
 			.Subscribe(_ => {
 				transition();
