@@ -20,8 +20,6 @@ public class SceneSelecter : MonoBehaviour
 
 		AudioMixer.SetFloat("MasterVol", Mathf.Lerp(-80.0f, 0.0f, PlayerPrefs.GetFloat("Master", 100) / 100));
 		AudioMixer.SetFloat("BGMVol", Mathf.Lerp(-80.0f, 0.0f, PlayerPrefs.GetFloat("BGM", 100) / 100));
-		AudioMixer.SetFloat("BGM1Vol", 0.0f);
-		AudioMixer.SetFloat("BGM2Vol", -80.0f);
 		AudioMixer.SetFloat("SEVol", Mathf.Lerp(-80.0f, 0.0f, PlayerPrefs.GetFloat("SE", 100) / 100));
 
 		var r = Random.Range(0, 3);

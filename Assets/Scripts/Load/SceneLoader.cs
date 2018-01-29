@@ -52,6 +52,11 @@ public class SceneLoader : MonoBehaviour
 	/// </summary>
 	[SerializeField]
 	bool IsLoad;
+	/// <summary>
+	/// スタッフロール用のBGMをロードするかどうか
+	/// </summary>
+	[SerializeField]
+	bool IsLoadStaffRollBGM;
 
 	/// <summary>
 	/// フェードアウトに使用するPanelのImage
@@ -150,31 +155,33 @@ public class SceneLoader : MonoBehaviour
 			yield return 0;
 		}
 
-		TmpCurrentProgress = 0;
+		if (!!IsLoadStaffRollBGM) {
+			TmpCurrentProgress = 0;
 
-		while (GameManager.Instance.CurrentLoadBGMIndex < GameManager.Instance.MainBGMs.Length + GameManager.Instance.StaffRollBGMs.Length) {
-			if (GameManager.Instance.PrevLoadBGMIndex >= GameManager.Instance.CurrentLoadBGMIndex) {
+			while (GameManager.Instance.CurrentLoadBGMIndex < GameManager.Instance.MainBGMs.Length + GameManager.Instance.StaffRollBGMs.Length) {
+				if (GameManager.Instance.PrevLoadBGMIndex >= GameManager.Instance.CurrentLoadBGMIndex) {
+					yield return 0;
+				}
+				currentProgressTween.Kill();
+				currentProgressTween = DOTween.To(
+					() => TmpCurrentProgress,
+					(x) => TmpCurrentProgress = x,
+					(100 * ((GameManager.Instance.CurrentLoadBGMIndex + 1) - GameManager.Instance.MainBGMs.Length)) / GameManager.Instance.StaffRollBGMs.Length,
+					Load_Progress_Anim_Speed
+				).SetEase(Ease.Linear);
+
+				totalProgressTween.Kill();
+				totalProgressTween = DOTween.To(
+					() => TmpTotalProgress,
+					(x) => TmpTotalProgress = x,
+					(100 * (GameManager.Instance.CurrentLoadBGMIndex + 1)) / (GameManager.Instance.MainBGMs.Length + GameManager.Instance.StaffRollBGMs.Length),
+					Load_Progress_Anim_Speed
+				).SetEase(Ease.Linear);
+
+				LoadTxt.text = "Loading StaffRollBGM(" + ((GameManager.Instance.CurrentLoadBGMIndex + 1) - GameManager.Instance.MainBGMs.Length).ToString() + '/' + GameManager.Instance.StaffRollBGMs.Length.ToString() + ")...";
+
 				yield return 0;
 			}
-			currentProgressTween.Kill();
-			currentProgressTween = DOTween.To(
-				() => TmpCurrentProgress,
-				(x) => TmpCurrentProgress = x,
-				(100 * ((GameManager.Instance.CurrentLoadBGMIndex + 1) - GameManager.Instance.MainBGMs.Length)) / GameManager.Instance.StaffRollBGMs.Length,
-				Load_Progress_Anim_Speed
-			).SetEase(Ease.Linear);
-
-			totalProgressTween.Kill();
-			totalProgressTween = DOTween.To(
-				() => TmpTotalProgress,
-				(x) => TmpTotalProgress = x,
-				(100 * (GameManager.Instance.CurrentLoadBGMIndex + 1)) / (GameManager.Instance.MainBGMs.Length + GameManager.Instance.StaffRollBGMs.Length),
-				Load_Progress_Anim_Speed
-			).SetEase(Ease.Linear);
-
-			LoadTxt.text = "Loading StaffRollBGM(" + ((GameManager.Instance.CurrentLoadBGMIndex + 1) - GameManager.Instance.MainBGMs.Length).ToString() + '/' + GameManager.Instance.StaffRollBGMs.Length.ToString() + ")...";
-
-			yield return 0;
 		}
 
 		LoadDoneImgGo.SetActive(true);

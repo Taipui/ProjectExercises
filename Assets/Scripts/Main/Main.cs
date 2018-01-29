@@ -238,22 +238,15 @@ public class Main : MonoBehaviour
 	{
 		CurrentGameState = GameState.Clr;
 		Time.timeScale = Slow_Speed;
-		var useBGM1 = BGMAudioSource1.clip == null;
-		var mixerParam = "BGMVol";
-		if (!!useBGM1) {
-			mixerParam = mixerParam.Insert(3, "2");
-		} else {
-			mixerParam = mixerParam.Insert(3, "1");
-		}
-		var vol = 0.0f;
+		var useBGM1 = BGMAudioSource1.clip != null;
+		AudioSource bgmAudioSource = null;
+		bgmAudioSource = !!useBGM1 ? BGMAudioSource1 : BGMAudioSource2;
 		DOTween.To(
-			() => vol,
-			val => vol = val,
-			-80.0f,
+			() => bgmAudioSource.volume,
+			val => bgmAudioSource.volume = val,
+			0,
 			Fade_Time
-		).OnUpdate(() => {
-			audioMixer.SetFloat(mixerParam, vol);
-		});
+		).SetUpdate(true);
 		DOTween.ToAlpha(
 			() => FadeImg.color,
 			color => FadeImg.color = color,
@@ -288,8 +281,7 @@ public class Main : MonoBehaviour
 
 		audioMixer.SetFloat("MasterVol", Mathf.Lerp(-80.0f, 0.0f, PlayerPrefs.GetFloat("Master", 100) / 100));
 		audioMixer.SetFloat("BGMVol", Mathf.Lerp(-80.0f, 0.0f, PlayerPrefs.GetFloat("BGM", 100) / 100));
-		audioMixer.SetFloat("BGM1Vol", 0.0f);
-		audioMixer.SetFloat("BGM2Vol", -80.0f);
+		BGMAudioSource2.volume = 0;
 		audioMixer.SetFloat("SEVol", Mathf.Lerp(-80.0f, 0.0f, PlayerPrefs.GetFloat("SE", 100) / 100));
 
 		if (GameManager.Instance.MainBGMs == null) {
@@ -430,50 +422,32 @@ public class Main : MonoBehaviour
 	void crossFade()
 	{
 		var fadeTime = 3.0f;
-		var vol1 = 0.0f;
-		var mixerParam1 = "BGMVol";
-		var mixerParam2 = mixerParam1;
-		var useBGM1 = BGMAudioSource1.clip == null;
+		AudioSource bgmAudioSource1 = null;
+		AudioSource bgmAudioSource2 = null;
+		var useBGM1 = BGMAudioSource1.clip != null;
 		if (!!useBGM1) {
-			mixerParam1 = mixerParam1.Insert(3, "2");
-			mixerParam2 = mixerParam2.Insert(3, "1");
+			bgmAudioSource1 = BGMAudioSource1;
+			bgmAudioSource2 = BGMAudioSource2;
 		} else {
-			mixerParam1 = mixerParam1.Insert(3, "1");
-			mixerParam2 = mixerParam2.Insert(3, "2");
+			bgmAudioSource1 = BGMAudioSource2;
+			bgmAudioSource2 = BGMAudioSource1;
 		}
 		var clip = GameManager.Instance.MainBGMs[chooseBGMID()];
-		if (!!useBGM1) {
-			BGMAudioSource1.clip = clip;
-			BGMAudioSource1.Play();
-		} else {
-			BGMAudioSource2.clip = clip;
-			BGMAudioSource2.Play();
-		}
-		audioMixer.SetFloat(mixerParam1, vol1);
+		bgmAudioSource2.clip = clip;
+		bgmAudioSource2.Play();
 		DOTween.To(
-			() => vol1,
-			val => vol1 = val,
-			-80.0f,
+			() => bgmAudioSource1.volume,
+			val => bgmAudioSource1.volume = val,
+			0,
 			fadeTime
-		).OnUpdate(() => {
-			audioMixer.SetFloat(mixerParam1, vol1);
-		});
-		var vol2 = -80.0f;
-		audioMixer.SetFloat(mixerParam2, vol2);
+		);
 		DOTween.To(
-			() => vol2,
-			val => vol2 = val,
-			0.0f,
+			() => bgmAudioSource2.volume,
+			val => bgmAudioSource2.volume = val,
+			1.0f,
 			fadeTime
-		).OnUpdate(() => {
-			audioMixer.SetFloat(mixerParam2, vol2);
-		})
-		.OnComplete(() => {
-			if (!!useBGM1) {
-				BGMAudioSource2.clip = null;
-			} else {
-				BGMAudioSource1.clip = null;
-			}
+		).OnComplete(() => {
+			bgmAudioSource1.clip = null;
 		});
 	}
 
@@ -483,38 +457,26 @@ public class Main : MonoBehaviour
 	void changeBossBGM()
 	{
 		var fadeTime = 1.0f;
-		var vol1 = 0.0f;
-		var mixerParam1 = "BGMVol";
-		var mixerParam2 = mixerParam1;
-		var useBGM1 = BGMAudioSource1.clip == null;
+		AudioSource bgmAudioSource1 = null;
+		AudioSource bgmAudioSource2 = null;
+		var useBGM1 = BGMAudioSource1.clip != null;
 		if (!!useBGM1) {
-			mixerParam1 = mixerParam1.Insert(3, "2");
-			mixerParam2 = mixerParam2.Insert(3, "1");
+			bgmAudioSource1 = BGMAudioSource1;
+			bgmAudioSource2 = BGMAudioSource2;
 		} else {
-			mixerParam1 = mixerParam1.Insert(3, "1");
-			mixerParam2 = mixerParam2.Insert(3, "2");
+			bgmAudioSource1 = BGMAudioSource2;
+			bgmAudioSource2 = BGMAudioSource1;
 		}
 		var clip = BossBGM;
-		if (!!useBGM1) {
-			BGMAudioSource1.clip = clip;
-		} else {
-			BGMAudioSource2.clip = clip;
-		}
-		audioMixer.SetFloat(mixerParam1, vol1);
+		bgmAudioSource2.clip = clip;
 		DOTween.To(
-			() => vol1,
-			val => vol1 = val,
-			-80.0f,
+			() => bgmAudioSource1.volume,
+			val => bgmAudioSource1.volume = val,
+			0,
 			fadeTime
-		).OnUpdate(() => {
-			audioMixer.SetFloat(mixerParam1, vol1);
-		}).OnComplete(() => {
-			audioMixer.SetFloat(mixerParam2, 0.0f);
-			if (!!useBGM1) {
-				BGMAudioSource1.Play();
-			} else {
-				BGMAudioSource2.Play();
-			}
+		).OnComplete(() => {
+			bgmAudioSource2.volume = 1;
+			bgmAudioSource2.Play();
 			StartCoroutine(showNowPlayingBGM(Common.Main_BGM_Title_List.Count - 1, true));
 		});
 	}
