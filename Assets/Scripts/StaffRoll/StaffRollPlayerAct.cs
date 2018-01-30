@@ -494,6 +494,7 @@ public class StaffRollPlayerAct : Character
 		}
 
 		var r = Common.getRandomIndex(1000, 50, 1);
+		r = 1;
 		anim.avatar = Avatars[r];
 		Models[r].SetActive(true);
 	}

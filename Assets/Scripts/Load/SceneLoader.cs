@@ -204,7 +204,6 @@ public class SceneLoader : MonoBehaviour
 			1.0f,
 			1.0f
 		).OnComplete(() => {
-			bgmLoader.StopCoroutine("loadBGM");
 			SceneManager.LoadScene(Common.Main_Scene);
 		});
 	}

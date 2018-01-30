@@ -165,7 +165,12 @@ public class StaffRoll : MonoBehaviour
 	/// プレイヤーのアクションに関連するスクリプト
 	/// </summary>
 	[SerializeField]
-	StaffRollPlayerAct Player;
+	StaffRollPlayerAct PlayerAct;
+	/// <summary>
+	/// プレイヤーの動作に関連するスクリプト
+	/// </summary>
+	[SerializeField]
+	StaffRollPlayerMove playerMove;
 
 	/// <summary>
 	/// 初期化
@@ -208,11 +213,11 @@ public class StaffRoll : MonoBehaviour
 					OptionCanvasGo.SetActive(true);
 					prevTimeScale = Time.timeScale;
 					Time.timeScale = 0.0f;
-					Player.setCanInput(false);
+					PlayerAct.setCanInput(false);
 				} else {
 					OptionCanvasGo.SetActive(false);
 					Time.timeScale = prevTimeScale;
-					Player.setCanInput(true);
+					PlayerAct.setCanInput(true);
 				}
 			})
 			.AddTo(this);
@@ -743,7 +748,9 @@ public class StaffRoll : MonoBehaviour
 	void playBGM()
 	{
 		if (GameManager.Instance.StaffRollBGMs != null) {
-			BGMAudioSource.clip = GameManager.Instance.StaffRollBGMs[chooseBGMID()];
+			var chooseBgmId = chooseBGMID();
+			BGMAudioSource.clip = GameManager.Instance.StaffRollBGMs[chooseBgmId];
+			playerMove.setWalkSpeed(Common.StaffRoll_BGM_Walk_Speed_List[chooseBgmId]);
 		}
 		BGMAudioSource.Play();
 	}
@@ -809,7 +816,7 @@ public class StaffRoll : MonoBehaviour
 	public void endOption()
 	{
 		Time.timeScale = prevTimeScale;
-		Player.setCanInput(true);
+		PlayerAct.setCanInput(true);
 	}
 
 	/// <summary>

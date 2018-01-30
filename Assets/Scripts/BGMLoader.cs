@@ -65,7 +65,6 @@ public class BGMLoader : MonoBehaviour
 			}
 
 			GameManager.Instance.StaffRollBGMs[GameManager.Instance.CurrentLoadBGMIndex - GameManager.Instance.MainBGMs.Length] = resReq.asset as AudioClip;
-			Debug.Log(GameManager.Instance.CurrentLoadBGMIndex);
 			++GameManager.Instance.CurrentLoadBGMIndex;
 		}
 		Destroy(gameObject);

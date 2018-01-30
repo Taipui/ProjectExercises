@@ -49,6 +49,8 @@ public class StaffRollPlayerMove : Character
 		canInput = false;
 
 		speed = Walk_Speed;
+
+		setWalkSpeed(1.45f * 10);
 	}
 
 	protected override void Start ()
@@ -95,6 +97,16 @@ public class StaffRollPlayerMove : Character
 	{
 		anim.SetBool("IsRun", true);
 		speed = Run_Speed;
+	}
+
+	/// <summary>
+	/// 歩く速度(歩くアニメーションの再生速度とキャラクターの動く速度)をセット
+	/// </summary>
+	/// <param name="speed">歩くアニメーションの再生速度とキャラクターの動く速度にかける値</param>
+	public void setWalkSpeed(float speed_)
+	{
+		anim.SetFloat("WalkSpeed", speed_);
+		speed *= speed_;
 	}
 
 	protected override void OnCollisionEnter(Collision collision)

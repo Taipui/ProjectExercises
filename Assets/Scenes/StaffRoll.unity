@@ -2303,7 +2303,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d790586617f6cc342bc89ae8cfbeed27, type: 3}
   - {fileID: 8300000, guid: 0dba8bfe01c5ec049860295fd44ccab0, type: 3}
   OptionCanvasGo: {fileID: 952250046}
-  Player: {fileID: 326862999}
+  PlayerAct: {fileID: 326862999}
+  playerMove: {fileID: 326862998}
 --- !u!82 &304177056
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2393,9 +2394,9 @@ AudioSource:
   m_GameObject: {fileID: 304177054}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 243153534067911882, guid: 029e1b5b9c9093d48bc37361c7f17d37,
+  OutputAudioMixerGroup: {fileID: 243468995445962368, guid: 029e1b5b9c9093d48bc37361c7f17d37,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 8b289f53a631c6d4b9067abf64ee6e53, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 03aad5ff78774ad4fbd53a8bca4fc7f9, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
