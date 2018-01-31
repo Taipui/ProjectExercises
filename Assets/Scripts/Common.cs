@@ -55,27 +55,27 @@ public static class Common
 	/// </summary>
 	public static readonly ReadOnlyCollection<string> Main_BGM_Title_List =
 		Array.AsReadOnly(new string[] {
-		"オオドラ\nEnemy Approaching アレンジ",
-		"こふ\nFallen Down (Reprise) Butterscotch cinnamon mix",
-		"mossari\nSnowy (mossari Remix)",
-		"ああああ\nfluffy spooky blooky!",
-		"daph\nBattle of Ordeal",
-		"梅干茶漬け\nTrident of Sadness",
-		"orangentle\nHopes and Dreams\n'A newer new home.'",
-		"Tanchiky\nUnbelievable surrounded by Blue",
-		"ryhki\nFascinate ft. Muffet",
-		"s-don\nDogdance",
-		"Kiryu\nThe Star of the Underground",
-		"izna\nOnly",
-		"shimaL\nUndersouls",
-		"Frums\nUndiscardable",
-		"ゆうゆ\nHowdy! and... Good-Die!",
-		"モリモリあつし\nSpear of Justice(MRM REMIX)",
-		"Puru\nASGORE (Puru Remix)",
-		"Saiph\nDREAMEND",
-		"Silentroom\nNEVERAGAIN",
-		"Kankitsu\nRe-Undulate",
-		"Unite In The Sky"
+			"オオドラ\nEnemy Approaching アレンジ",
+			"こふ\nFallen Down (Reprise) Butterscotch cinnamon mix",
+			"mossari\nSnowy (mossari Remix)",
+			"ああああ\nfluffy spooky blooky!",
+			"daph\nBattle of Ordeal",
+			"梅干茶漬け\nTrident of Sadness",
+			"orangentle\nHopes and Dreams\n'A newer new home.'",
+			"Tanchiky\nUnbelievable surrounded by Blue",
+			"ryhki\nFascinate ft. Muffet",
+			"s-don\nDogdance",
+			"Kiryu\nThe Star of the Underground",
+			"izna\nOnly",
+			"shimaL\nUndersouls",
+			"Frums\nUndiscardable",
+			"ゆうゆ\nHowdy! and... Good-Die!",
+			"モリモリあつし\nSpear of Justice(MRM REMIX)",
+			"Puru\nASGORE (Puru Remix)",
+			"Saiph\nDREAMEND",
+			"Silentroom\nNEVERAGAIN",
+			"Kankitsu\nRe-Undulate",
+			"Unite In The Sky"
 		});
 
 	/// <summary>
