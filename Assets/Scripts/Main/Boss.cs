@@ -70,15 +70,6 @@ public class Boss : Enemy
 	/// </summary>
 	[SerializeField]
 	AudioClip[] DmgSEs;
-	/// <summary>
-	/// 敗北時に再生するSEの配列
-	/// 3
-	/// 29
-	/// 50
-	/// 62
-	/// </summary>
-	[SerializeField]
-	AudioClip[] LoseSEs;
 
 	#endregion
 
@@ -180,7 +171,6 @@ public class Boss : Enemy
 	/// </summary>
 	protected override void dead()
 	{
-		seAudioSource.PlayOneShot(LoseSEs[Random.Range(0, LoseSEs.Length)]);
 		base.dead();
 		Main.clr();
 	}

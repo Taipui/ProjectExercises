@@ -624,6 +624,10 @@ public class StaffRoll : MonoBehaviour
 			"Animator",
 			"&quot;Animator does not have an AnimatorController&quot;と&quot;Animator is not playing a Playable&quot; - Qiita",
 			"https://qiita.com/MARQUE/items/65b7736bce4b1f09daf1",
+			"",
+			"Texture2D",
+			"Texutre2Dのサイズ変更【Unity】 - (:3[kanのメモ帳]",
+			"http://kan-kikuchi.hatenablog.com/entry/TextureScale",
 
 			"",
 			"それと…",

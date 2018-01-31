@@ -169,13 +169,22 @@ public class Main : MonoBehaviour
 	AudioClip[] SEs;
 
 	/// <summary>
-	/// 登場時に再生するSEの配列
+	/// Grayちゃんの登場時に再生するSEの配列
 	/// 2
 	/// 51
 	/// 52
 	/// </summary>
 	[SerializeField]
-	AudioClip[] AppearSEs;
+	AudioClip[] GrayChanAppearSEs;
+	/// <summary>
+	/// Grayちゃんの敗北時に再生するSEの配列
+	/// 3
+	/// 29
+	/// 50
+	/// 62
+	/// </summary>
+	[SerializeField]
+	AudioClip[] GrayChanLoseSEs;
 
 	#endregion
 
@@ -257,6 +266,8 @@ public class Main : MonoBehaviour
 			Time.timeScale = 1.0f;
 			SceneManager.LoadScene(Common.Clr_Scene);
 		});
+
+		playLoseSE();
 	}
 
 	/// <summary>
@@ -346,7 +357,15 @@ public class Main : MonoBehaviour
 	/// </summary>
 	public void playAppearSE()
 	{
-		SEAudioSource.PlayOneShot(AppearSEs[Random.Range(0, AppearSEs.Length)]);
+		SEAudioSource.PlayOneShot(GrayChanAppearSEs[Random.Range(0, GrayChanAppearSEs.Length)]);
+	}
+
+	/// <summary>
+	/// Grayちゃんの敗北時のSEを再生する
+	/// </summary>
+	void playLoseSE()
+	{
+		SEAudioSource.PlayOneShot(GrayChanLoseSEs[Random.Range(0, GrayChanLoseSEs.Length)]);
 	}
 
 	/// <summary>

@@ -162,6 +162,8 @@ public class SceneLoader : MonoBehaviour
 			yield return 0;
 		}
 
+		currentProgressTween.Kill();
+
 		if (!!IsLoadStaffRollBGM) {
 			TmpCurrentProgress = 0;
 

@@ -44356,7 +44356,6 @@ GameObject:
   - component: {fileID: 1495790032}
   - component: {fileID: 1495790031}
   - component: {fileID: 1495790030}
-  - component: {fileID: 1495790029}
   - component: {fileID: 1495790035}
   - component: {fileID: 1495790037}
   - component: {fileID: 1495790036}
@@ -44368,19 +44367,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1495790029
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1495790028}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6b78557b1fe1e5429dd34bcb235c189, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ImgTfm: {fileID: 79796024}
-  AudioSource: {fileID: 0}
 --- !u!114 &1495790030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44495,9 +44481,13 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f5f3e09ef248149918ae12fcee944309, type: 3}
   - {fileID: 8300000, guid: c66e87e26a6994c768b643743f6494cd, type: 3}
   - {fileID: 8300000, guid: d057fdd975ac543dd80c54a62a5d09a6, type: 3}
-  AppearSEs:
+  GrayChanAppearSEs:
   - {fileID: 8300000, guid: a70f6f75bc2a85143a0f3c664a517a27, type: 3}
   - {fileID: 8300000, guid: 43e5adf3e3949b7449992a90d8c1bea2, type: 3}
+  GrayChanLoseSEs:
+  - {fileID: 8300000, guid: 065fb706cc0456443a8e483a5a473731, type: 3}
+  - {fileID: 8300000, guid: b3563569c17382c4392841dc543da60c, type: 3}
+  - {fileID: 8300000, guid: 9d73039aaf85cec45830adc6d975e18e, type: 3}
   BanImgGo: {fileID: 472046586}
   OptionCanvasGo: {fileID: 1686341247}
   PlayerAct: {fileID: 1433481731}
@@ -45551,10 +45541,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 43e7839bb45aea54380bc5c1bfab8d22, type: 3}
   - {fileID: 8300000, guid: 7d136df0aaa3dbb44a79cee051eed3bd, type: 3}
   - {fileID: 8300000, guid: 07a0dd9c0c97086409efd70e61403d00, type: 3}
-  LoseSEs:
-  - {fileID: 8300000, guid: 065fb706cc0456443a8e483a5a473731, type: 3}
-  - {fileID: 8300000, guid: b3563569c17382c4392841dc543da60c, type: 3}
-  - {fileID: 8300000, guid: 9d73039aaf85cec45830adc6d975e18e, type: 3}
 --- !u!54 &1531212954
 Rigidbody:
   m_ObjectHideFlags: 0
