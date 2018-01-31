@@ -387,8 +387,6 @@ public class StaffRoll : MonoBehaviour
 			"http://icooon-mono.com/11221-eighth-note-icon-8/?lang=en",
 			"mark_batsu.png",
 			"http://1.bp.blogspot.com/-eJGNGE4u8LA/UsZuCAMuehI/AAAAAAAAc2c/QQ5eBSC2Ey0/s800/mark_batsu.png",
-			"照準",
-			"http://free-illustrations-ls01.gatag.net/images/lgi01a201403160800.jpg",
 
 			"",
 			"フォント",

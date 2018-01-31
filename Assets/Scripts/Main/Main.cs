@@ -284,13 +284,13 @@ public class Main : MonoBehaviour
 		BGMAudioSource2.volume = 0;
 		audioMixer.SetFloat("SEVol", Mathf.Lerp(-80.0f, 0.0f, PlayerPrefs.GetFloat("SE", 100) / 100));
 
-		if (GameManager.Instance.MainBGMs == null) {
-			return;
+		if (GameManager.Instance.MainBGMs != null) {
+			selectedBGMIds = new List<int>();
+			BGMAudioSource1.clip = GameManager.Instance.MainBGMs[chooseBGMID()];
+			BGMAudioSource1.Play();		
 		}
-		selectedBGMIds = new List<int>();
-		BGMAudioSource1.clip = GameManager.Instance.MainBGMs[chooseBGMID()];
-		BGMAudioSource1.Play();
 
+		Common.setCursor();
 		Cursor.visible = true;
 	}
 
