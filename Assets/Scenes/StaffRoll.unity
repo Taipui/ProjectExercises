@@ -2396,7 +2396,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 243468995445962368, guid: 029e1b5b9c9093d48bc37361c7f17d37,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 03aad5ff78774ad4fbd53a8bca4fc7f9, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 7e12f78d53ed2d64e9e6a6895634dec6, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -2920,6 +2920,7 @@ MonoBehaviour:
   Main: {fileID: 0}
   LauncherParent: {fileID: 663310820}
   Decals: []
+  StaffRoll: {fileID: 304177055}
   Anims:
   - {fileID: 489443957}
   - {fileID: 1275377609}

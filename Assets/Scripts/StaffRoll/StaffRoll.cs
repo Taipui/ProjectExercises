@@ -238,12 +238,14 @@ public class StaffRoll : MonoBehaviour
 		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.Space))
 			.Subscribe(_ => {
 				Time.timeScale = 2.0f;
+				setPitch(BGMAudioSource.pitch * 2);
 			})
 			.AddTo(this);
 
 		this.UpdateAsObservable().Where(x => !!Input.GetKeyUp(KeyCode.Space))
 			.Subscribe(_ => {
 				Time.timeScale = 1.0f;
+				setPitch(BGMAudioSource.pitch / 2);
 			})
 			.AddTo(this);
 	}
@@ -796,6 +798,24 @@ public class StaffRoll : MonoBehaviour
 			0.0f,
 			3.0f
 		);
+	}
+
+	/// <summary>
+	/// 現在のピッチを返す
+	/// </summary>
+	/// <returns>現在のピッチ</returns>
+	public float getPitch()
+	{
+		return BGMAudioSource.pitch;
+	}
+
+	/// <summary>
+	/// ピッチをセットする
+	/// </summary>
+	/// <param name="pitch">セットするピッチ</param>
+	public void setPitch(float pitch)
+	{
+		BGMAudioSource.pitch = pitch;
 	}
 
 	/// <summary>

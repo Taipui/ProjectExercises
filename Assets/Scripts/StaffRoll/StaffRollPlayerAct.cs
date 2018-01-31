@@ -494,7 +494,7 @@ public class StaffRollPlayerAct : Character
 		}
 
 		CurrentChar = Common.getRandomIndex(1000, 50, 1);
-		CurrentChar = 1;
+		CurrentChar = 0;
 		Models[CurrentChar].SetActive(true);
 
 		callback(CurrentChar);

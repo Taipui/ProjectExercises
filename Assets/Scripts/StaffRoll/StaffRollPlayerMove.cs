@@ -9,6 +9,12 @@ using UniRx.Triggers;
 /// </summary>
 public class StaffRollPlayerMove : Character
 {
+	/// <summary>
+	/// StaffRoll
+	/// </summary>
+	[SerializeField]
+	StaffRoll StaffRoll;
+
 	#region アニメーション関連
 	/// <summary>
 	/// Animatorの配列
@@ -67,7 +73,7 @@ public class StaffRollPlayerMove : Character
 
 		playerAct.randomChangeAvatar((currentChar_) => {
 			currentChar = currentChar_;
-			setWalkSpeed(1.45f);
+			setWalkSpeed(2.1f);
 		});
 	}
 
@@ -87,13 +93,15 @@ public class StaffRollPlayerMove : Character
 		this.UpdateAsObservable().Where(x => !!Input.GetKeyDown(KeyCode.D) && !!canInput)
 			.Subscribe(_ => {
 				setRun();
+				StaffRoll.setPitch(StaffRoll.getPitch() * 1.5f);
 			})
 			.AddTo(this);
 
 		this.UpdateAsObservable().Where(x => !!Input.GetKeyUp(KeyCode.D) && !!canInput)
 			.Subscribe(_ => {
-				anim.SetBool("IsRun", false);
+				Anims[currentChar].SetBool("IsRun", false);
 				speed = Walk_Speed;
+				StaffRoll.setPitch(StaffRoll.getPitch() / 1.5f);
 			})
 			.AddTo(this);
 	}
@@ -105,6 +113,7 @@ public class StaffRollPlayerMove : Character
 	{
 		if (!!Input.GetKey(KeyCode.D)) {
 			setRun();
+			StaffRoll.setPitch(StaffRoll.getPitch() * 1.5f);
 		}
 	}
 
