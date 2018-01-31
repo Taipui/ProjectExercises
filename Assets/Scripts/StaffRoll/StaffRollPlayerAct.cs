@@ -161,15 +161,15 @@ public class StaffRollPlayerAct : Character
 	StaffRollPlayerMove playerMove;
 
 	/// <summary>
-	/// Avatar
-	/// </summary>
-	[SerializeField]
-	Avatar[] Avatars;
-	/// <summary>
-	/// モデル
+	/// モデルのGameObject
 	/// </summary>
 	[SerializeField]
 	GameObject[] Models;
+
+	/// <summary>
+	/// 現在のキャラクター
+	/// </summary>
+	public int CurrentChar { private set; get; }
 
 	/// <summary>
 	/// スタッフロール用のBulletManager
@@ -209,8 +209,6 @@ public class StaffRollPlayerAct : Character
 		var prevMousePos = Input.mousePosition;
 
 		var tfm = transform;
-
-		randomChangeAvatar();
 
 		this.UpdateAsObservable().Where(x => !!isPlay() && !!isRClk() && !isMaxStock() && !!canInput)
 			.Subscribe(_ => {
@@ -484,18 +482,21 @@ public class StaffRollPlayerAct : Character
 		}
 	}
 
+	public delegate void onComplete(int currentChar);
 	/// <summary>
 	/// ランダムにキャラクターを変える
+	/// <param name="callback">StaffRollPlayerMoveに返す</param>
 	/// </summary>
-	void randomChangeAvatar()
+	public void randomChangeAvatar(onComplete callback)
 	{
 		for (var i = 0; i < Models.Length; ++i) {
 			Models[i].SetActive(false);
 		}
 
-		var r = Common.getRandomIndex(1000, 50, 1);
-		r = 1;
-		anim.avatar = Avatars[r];
-		Models[r].SetActive(true);
+		CurrentChar = Common.getRandomIndex(1000, 50, 1);
+		CurrentChar = 1;
+		Models[CurrentChar].SetActive(true);
+
+		callback(CurrentChar);
 	}
 }

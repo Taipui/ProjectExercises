@@ -10,6 +10,13 @@ using UniRx.Triggers;
 public class StaffRollPlayerMove : Character
 {
 	#region アニメーション関連
+	/// <summary>
+	/// Animatorの配列
+	/// </summary>
+	[SerializeField]
+	Animator[] Anims;
+
+	int currentChar;
 
 	/// <summary>
 	/// アニメーションの再生速度
@@ -33,6 +40,11 @@ public class StaffRollPlayerMove : Character
 	float speed;
 
 	/// <summary>
+	/// スタッフロール用のPlayerAct
+	/// </summary>
+	StaffRollPlayerAct playerAct;
+
+	/// <summary>
 	/// canInputに値をセットする
 	/// </summary>
 	/// <param name="val">セットする値</param>
@@ -50,7 +62,13 @@ public class StaffRollPlayerMove : Character
 
 		speed = Walk_Speed;
 
-		setWalkSpeed(1.45f * 10);
+
+		playerAct = GetComponent<StaffRollPlayerAct>();
+
+		playerAct.randomChangeAvatar((currentChar_) => {
+			currentChar = currentChar_;
+			setWalkSpeed(1.45f);
+		});
 	}
 
 	protected override void Start ()
@@ -95,7 +113,7 @@ public class StaffRollPlayerMove : Character
 	/// </summary>
 	void setRun()
 	{
-		anim.SetBool("IsRun", true);
+		Anims[currentChar].SetBool("IsRun", true);
 		speed = Run_Speed;
 	}
 
@@ -105,7 +123,10 @@ public class StaffRollPlayerMove : Character
 	/// <param name="speed">歩くアニメーションの再生速度とキャラクターの動く速度にかける値</param>
 	public void setWalkSpeed(float speed_)
 	{
-		anim.SetFloat("WalkSpeed", speed_);
+		if (currentChar < 0) {
+			currentChar = playerAct.CurrentChar;
+		}
+		Anims[currentChar].SetFloat("WalkSpeed", speed_);
 		speed *= speed_;
 	}
 

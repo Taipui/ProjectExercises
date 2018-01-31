@@ -154,7 +154,7 @@ public class Title3 : TitleBase
 		}
 
 		currentChar = Common.getRandomIndex(1000, 50, 1);
-		//currentChar = 2;
+		currentChar = 1;
 		Models[currentChar].SetActive(true);
 
 		var posY = 0.0f;
