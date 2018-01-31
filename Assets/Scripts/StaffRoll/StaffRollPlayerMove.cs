@@ -73,7 +73,7 @@ public class StaffRollPlayerMove : Character
 
 		playerAct.randomChangeAvatar((currentChar_) => {
 			currentChar = currentChar_;
-			setWalkSpeed(2.1f);
+			setWalkSpeed(1.1f * 0.9f);
 		});
 	}
 
@@ -141,6 +141,6 @@ public class StaffRollPlayerMove : Character
 
 	protected override void OnCollisionEnter(Collision collision)
 	{
-		// 何もしない
+		// 当たり判定の処理はPlayerActが行うので、ここでは何もしない
 	}
 }

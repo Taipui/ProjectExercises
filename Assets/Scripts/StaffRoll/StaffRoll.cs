@@ -752,7 +752,7 @@ public class StaffRoll : MonoBehaviour
 		if (GameManager.Instance.StaffRollBGMs != null) {
 			var chooseBgmId = chooseBGMID();
 			BGMAudioSource.clip = GameManager.Instance.StaffRollBGMs[chooseBgmId];
-			playerMove.setWalkSpeed(Common.StaffRoll_BGM_Walk_Speed_List[chooseBgmId]);
+			playerMove.setWalkSpeed(Common.StaffRoll_BGM_Walk_Speed_List[chooseBgmId] * (0.9f * System.Convert.ToInt32(PlayerAct.CurrentChar == 1)));
 		}
 		BGMAudioSource.Play();
 	}
