@@ -21,12 +21,12 @@ public class WarningBarManager : MonoBehaviour
 	/// <summary>
 	/// 帯の再生時間
 	/// </summary>
-	const float Play_Time = 1.0f;
+	const float Play_Time = 0.8f;
 
 	/// <summary>
 	/// 帯がスライドイン/スライドアウトする速度
 	/// </summary>
-	const float Slide_Speed = 0.3f;
+	const float Slide_Speed = 0.2f;
 
 	void Start ()
 	{

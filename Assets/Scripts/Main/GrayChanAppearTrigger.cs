@@ -18,6 +18,12 @@ public class GrayChanAppearTrigger : MonoBehaviour
 	[SerializeField]
 	WarningBarManager Wbm;
 
+	[SerializeField]
+	WarningTextMover Wtm;
+
+	[SerializeField]
+	WarningPanelFlicker Wpf;
+
 	void Start ()
 	{
 		var col = GetComponent<BoxCollider>();
@@ -26,6 +32,8 @@ public class GrayChanAppearTrigger : MonoBehaviour
 			.Subscribe(_ => {
 				Main.playAppearSE();
 				Wbm.play();
+				Wtm.play();
+				Wpf.play();
 				Destroy(gameObject);
 			})
 			.AddTo(this);

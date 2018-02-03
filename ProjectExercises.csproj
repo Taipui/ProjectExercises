@@ -158,6 +158,8 @@
     <Compile Include="Assets\Scripts\Main\Tutorial.cs" />
     <Compile Include="Assets\Scripts\Main\WarningBarManager.cs" />
     <Compile Include="Assets\Scripts\Main\WarningBarMover.cs" />
+    <Compile Include="Assets\Scripts\Main\WarningPanelFlicker.cs" />
+    <Compile Include="Assets\Scripts\Main\WarningTextMover.cs" />
     <Compile Include="Assets\Scripts\Normal.cs" />
     <Compile Include="Assets\Scripts\Option.cs" />
     <Compile Include="Assets\Scripts\PlayerAct.cs" />
