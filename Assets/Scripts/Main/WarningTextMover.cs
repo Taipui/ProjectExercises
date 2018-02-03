@@ -20,7 +20,7 @@ public class WarningTextMover : MonoBehaviour
 	/// <summary>
 	/// テキストが画面の中央で止まる時間
 	/// </summary>
-	const float Show_Time = Move_Speed + 0.1f;
+	const float Show_Time = Move_Speed + 0.15f;
 
 	void Start ()
 	{
