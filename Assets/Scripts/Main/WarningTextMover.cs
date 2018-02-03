@@ -10,7 +10,7 @@ public class WarningTextMover : MonoBehaviour
 	/// <summary>
 	/// テキストの出現前/出現後のX座標を、中心からどれだけ離れた位置にするか
 	/// </summary>
-	const float Default_Offset = 1000.0f;
+	const float Default_Offset = 5000.0f;
 
 	/// <summary>
 	/// テキストが動く速度
@@ -26,7 +26,7 @@ public class WarningTextMover : MonoBehaviour
 	{
 		var tfm = transform;
 
-		tfm.Translate(new Vector3(Default_Offset, 0));
+		tfm.position = new Vector3(Default_Offset, tfm.position.y, tfm.position.z);
 	}
 
 	/// <summary>
