@@ -156,6 +156,8 @@
     <Compile Include="Assets\Scripts\Main\SmallGroundCreater.cs" />
     <Compile Include="Assets\Scripts\Main\TargetRotator.cs" />
     <Compile Include="Assets\Scripts\Main\Tutorial.cs" />
+    <Compile Include="Assets\Scripts\Main\WarningBarManager.cs" />
+    <Compile Include="Assets\Scripts\Main\WarningBarMover.cs" />
     <Compile Include="Assets\Scripts\Normal.cs" />
     <Compile Include="Assets\Scripts\Option.cs" />
     <Compile Include="Assets\Scripts\PlayerAct.cs" />
@@ -212,7 +214,9 @@
     <None Include="Assets\Shaders\Gradation.shader" />
     <None Include="Assets\Shaders\Masked.shader" />
     <None Include="Assets\Shaders\MaskedUI.shader" />
+    <None Include="Assets\Shaders\NewUnlitShader.shader" />
     <None Include="Assets\Shaders\ProjectorDecal.shader" />
+    <None Include="Assets\Shaders\Scroll.shader" />
     <None Include="Assets\TextMesh Pro\Fonts\Anton OFL.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\Bangers - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />

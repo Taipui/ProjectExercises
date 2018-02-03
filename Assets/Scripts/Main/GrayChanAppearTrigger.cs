@@ -15,6 +15,9 @@ public class GrayChanAppearTrigger : MonoBehaviour
 	[SerializeField]
 	Main Main;
 
+	[SerializeField]
+	WarningBarManager Wbm;
+
 	void Start ()
 	{
 		var col = GetComponent<BoxCollider>();
@@ -22,6 +25,7 @@ public class GrayChanAppearTrigger : MonoBehaviour
 		col.OnCollisionEnterAsObservable().Where(colGo => colGo.gameObject.tag == "Player")
 			.Subscribe(_ => {
 				Main.playAppearSE();
+				Wbm.play();
 				Destroy(gameObject);
 			})
 			.AddTo(this);

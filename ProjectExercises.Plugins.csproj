@@ -350,7 +350,9 @@
     <None Include="Assets\Shaders\Gradation.shader" />
     <None Include="Assets\Shaders\Masked.shader" />
     <None Include="Assets\Shaders\MaskedUI.shader" />
+    <None Include="Assets\Shaders\NewUnlitShader.shader" />
     <None Include="Assets\Shaders\ProjectorDecal.shader" />
+    <None Include="Assets\Shaders\Scroll.shader" />
     <None Include="Assets\TextMesh Pro\Fonts\Anton OFL.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\Bangers - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
