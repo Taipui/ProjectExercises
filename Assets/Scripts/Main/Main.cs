@@ -229,6 +229,12 @@ public class Main : MonoBehaviour
 	#endregion
 
 	/// <summary>
+	/// プレゼンモードかどうか
+	/// </summary>
+	[SerializeField]
+	bool PresentationMode;
+
+	/// <summary>
 	/// ゲームオーバーの処理
 	/// </summary>
 	public void gameOver()
@@ -303,6 +309,8 @@ public class Main : MonoBehaviour
 
 		Common.setCursor();
 		Cursor.visible = true;
+
+		NowPlayingBGMTxt.text = "";
 	}
 
 	void Start ()
@@ -418,6 +426,10 @@ public class Main : MonoBehaviour
 	/// <returns></returns>
 	IEnumerator showNowPlayingBGM(int index, bool isBoss = false)
 	{
+		if (!!PresentationMode) {
+			yield break;
+		}
+
 		if (!!isBoss) {
 			yield return new WaitForSeconds(0.5f);
 		}
