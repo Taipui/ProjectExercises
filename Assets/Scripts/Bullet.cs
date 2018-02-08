@@ -50,7 +50,7 @@ public class Bullet : MonoBehaviour
 			var groundBulletGo = Instantiate(GroundBullet, transform.position, Quaternion.identity);
 			var groundBullet = groundBulletGo.AddComponent<GroundBullet>();
 			groundBullet.setDestroyEffectGo(BulletEffect);
-			groundBullet.destroy();
+			groundBullet.startDestroy();
 		})
 		.AddTo(this);
 

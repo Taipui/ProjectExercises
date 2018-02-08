@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 /// <summary>
 /// 地面に当たった雪弾
@@ -27,13 +28,17 @@ public class GroundBullet : MonoBehaviour
 	/// <summary>
 	/// 一定時間後に消す
 	/// </summary>
-	public void destroy()
+	public void startDestroy()
 	{
-		Destroy(gameObject, Destroy_Time);
+		Invoke("onDestroy", Destroy_Time);
 	}
 
-	void OnDestroy()
+	/// <summary>
+	/// 一定時間後に消す
+	/// </summary>
+	void onDestroy()
 	{
 		Instantiate(destroyEffectGo, transform.position, Quaternion.identity);
+		Destroy(gameObject);
 	}
 }

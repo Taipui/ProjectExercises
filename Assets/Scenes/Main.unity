@@ -44875,7 +44875,7 @@ MonoBehaviour:
   PlayerAct: {fileID: 1433481731}
   HPGo: {fileID: 2003021955}
   InvincibleTxtGo: {fileID: 437287166}
-  PresentationMode: 1
+  PresentationMode: 0
 --- !u!82 &1495790035
 AudioSource:
   m_ObjectHideFlags: 0

@@ -68,12 +68,11 @@ public class StaffRollPlayerMove : Character
 
 		speed = Walk_Speed;
 
-
 		playerAct = GetComponent<StaffRollPlayerAct>();
 
 		playerAct.randomChangeAvatar((currentChar_) => {
 			currentChar = currentChar_;
-			setWalkSpeed(1.1f * 0.9f);
+			StaffRoll.startBGMCoroutine();
 		});
 	}
 

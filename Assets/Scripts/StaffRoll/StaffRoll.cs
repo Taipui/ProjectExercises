@@ -200,8 +200,6 @@ public class StaffRoll : MonoBehaviour
 		init();
 		StartCoroutine(createWords(createStrArray()));
 
-		startBGMCoroutine();
-
 		this.UpdateAsObservable().Subscribe(_ => {
 			TxtsParent.Translate(new Vector3(-Text_Move_Speed * Time.deltaTime, 0));
 		})
@@ -758,7 +756,7 @@ public class StaffRoll : MonoBehaviour
 	/// <summary>
 	/// BGMを再生していくコルーチンを実行する
 	/// </summary>
-	void startBGMCoroutine()
+	public void startBGMCoroutine()
 	{
 		StartCoroutine(checkEndMusic(() => {
 			playBGM();
@@ -774,9 +772,13 @@ public class StaffRoll : MonoBehaviour
 		if (GameManager.Instance.StaffRollBGMs != null) {
 			var chooseBgmId = chooseBGMID();
 			BGMAudioSource.clip = GameManager.Instance.StaffRollBGMs[chooseBgmId];
-			playerMove.setWalkSpeed(Common.StaffRoll_BGM_Walk_Speed_List[chooseBgmId] * (0.9f * System.Convert.ToInt32(PlayerAct.CurrentChar == 1)));
+			var bias = PlayerAct.CurrentChar == 1 ? 0.9f : 1.0f;
+			playerMove.setWalkSpeed(Common.StaffRoll_BGM_Walk_Speed_List[chooseBgmId] * bias);
+			BGMAudioSource.Play();
+		} else {
+			playerMove.setWalkSpeed(1.0f);
+			BGMAudioSource.Play();
 		}
-		BGMAudioSource.Play();
 	}
 
 	/// <summary>
