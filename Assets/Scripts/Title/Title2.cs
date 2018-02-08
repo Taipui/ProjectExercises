@@ -36,7 +36,7 @@ public class Title2 : TitleBase
 
 		this.UpdateAsObservable().Where(x => !!isTxtMouseOver() && !!canInput)
 			.Subscribe(_ => {
-				currentSelect.Value = hitInfo.collider.gameObject.transform.parent.transform.parent.GetComponent<Txt>().Index_;
+				currentSelect.Value = hitInfo.collider.GetComponent<Txt>().Index_;
 			})
 			.AddTo(this);
 
